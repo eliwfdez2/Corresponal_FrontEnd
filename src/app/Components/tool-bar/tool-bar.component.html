@@ -9,35 +9,35 @@
 
   <ul class="nav nav-pills flex-column">
     <li class="nav-item">
-      <a href="#" class="nav-link" 
+      <a class="nav-link" 
          [class.active]="currentActiveItem === 'dashboard'" 
          (click)="navigateTo('dashboard', $event)">
         <i class="fas fa-tachometer-alt"></i> Dashboard
       </a>
     </li>
     <li>
-      <a href="#" class="nav-link" 
+      <a class="nav-link" 
          [class.active]="currentActiveItem === 'historial'" 
          (click)="navigateTo('historial', $event)">
         <i class="fas fa-history"></i> Historial
       </a>
     </li>
     <li>
-      <a href="#" class="nav-link" 
+      <a class="nav-link" 
          [class.active]="currentActiveItem === 'perfil'" 
          (click)="navigateTo('perfil', $event)">
         <i class="fas fa-user-circle"></i> Mi perfil
       </a>
     </li>
     <li>
-      <a href="#" class="nav-link" 
+      <a class="nav-link" 
          [class.active]="currentActiveItem === 'administrar-usuarios'" 
          (click)="navigateTo('administrar-usuarios', $event)">
         <i class="fas fa-users-cog"></i> Administrar Usuarios
       </a>
     </li>
     <li>
-      <a href="#" class="nav-link" 
+      <a class="nav-link" 
          [class.active]="currentActiveItem === 'ajustes'" 
          (click)="navigateTo('ajustes', $event)">
         <i class="fas fa-cogs"></i> Ajustes
