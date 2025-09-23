@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+
+import { AuthService } from '../../core/services/auth.service';
 
 interface LoginData {
   username: string;
@@ -16,26 +18,38 @@ interface LoginData {
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
-  loginData: LoginData = {
-    username: '',
-    password: '',
-    rememberUser: false
-  };
+export class LoginComponent implements OnInit {
+  nombre_usuario: string = '';
+  password_hash: string = '';
+  error: string = '';
+  loading: boolean = false;
+  rememberUser: boolean = false;   // 👈 ahora existe
 
-  constructor(private router: Router) {}
 
-  onSubmit() {
-    if (this.loginData.username && this.loginData.password) {
-      console.log('Intento de inicio de sesión', this.loginData);
-      
-      // Simulate successful login
-      alert(`¡Bienvenido ${this.loginData.username}! Redirigiendo al dashboard...`);
-      
-      // Redirect to dashboard after successful login
-      this.router.navigate(['/dashboard']);
-    } else {
-      alert('Por favor, completa todos los campos requeridos.');
+
+  constructor(private router: Router, private authService: AuthService) {}
+
+  ngOnInit() {
+    const savedUser = localStorage.getItem('nombre_usuario');
+    if (savedUser) {
+      this.nombre_usuario = savedUser;
+      this.rememberUser = true;
     }
+  }
+
+  login(): void {
+    this.loading = true;
+    this.error = '';
+
+    this.authService.login(this.nombre_usuario, this.password_hash, this.rememberUser).subscribe({
+      next: () => {
+        this.loading = false;
+        this.router.navigate(['/dashboard']);
+      },
+      error: () => {
+        this.error = 'Usuario o contraseña incorrectos';
+        this.loading = false;
+      }
+    });
   }
 }
