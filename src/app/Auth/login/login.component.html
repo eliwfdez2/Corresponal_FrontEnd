@@ -7,7 +7,7 @@
     </div>
 
     <!-- Login Form -->
-    <form class="login-form" (ngSubmit)="onSubmit()">
+    <form class="login-form" (ngSubmit)="login()">
       <!-- Username Field -->
       <div class="form-group">
         <label for="username" class="form-label">Usuario</label>
@@ -17,8 +17,9 @@
           name="username"
           class="form-input"
           placeholder="Ingresa tu usuario"
-          [(ngModel)]="loginData.username"
+          [(ngModel)]="nombre_usuario"
           required
+        
         >
       </div>
 
@@ -31,7 +32,7 @@
           name="password"
           class="form-input"
           placeholder="Ingresa tu contraseña"
-          [(ngModel)]="loginData.password"
+          [(ngModel)]="password_hash"
           required
         >
       </div>
@@ -39,7 +40,7 @@
       <!-- Options Row -->
       <div class="options-row">
         <label class="checkbox-container">
-          <input type="checkbox" [(ngModel)]="loginData.rememberUser" name="rememberUser">
+          <input type="checkbox" [(ngModel)]="rememberUser" name="rememberUser">
           <span class="checkmark"></span>
           <span class="checkbox-label">Recordar Usuario</span>
         </label>
@@ -47,9 +48,10 @@
       </div>
 
       <!-- Login Button -->
-      <button type="submit" class="login-button">
+      <button type="submit" class="login-button" [disabled]="loading">
         Iniciar Sesión
       </button>
+      <div *ngIf="error" style="color:red">{{ error }}</div>
     </form>
 
     <!-- Footer -->

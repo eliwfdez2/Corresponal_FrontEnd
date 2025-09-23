@@ -34,11 +34,6 @@ export class PerfilComponent {
 
   constructor(private router: Router) {}
 
-  // Método para editar perfil
-  editProfile(): void {
-    console.log('Editar perfil clickeado');
-    // Aquí implementarías la lógica para abrir un modal o navegar a una página de edición
-  }
 
   // Método para actualizar información
   updateInfo(): void {
