@@ -1,0 +1,64 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="title">Corresponsalías</h1>
+      <p class="subtitle">Acceso al Sistema de Referencias</p>
+    </div>
+
+    <!-- Login Form -->
+    <form class="login-form" (ngSubmit)="onSubmit()">
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="username" class="form-label">Usuario</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username"
+          class="form-input"
+          placeholder="Ingresa tu usuario"
+          [(ngModel)]="loginData.username"
+          required
+        >
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password"
+          class="form-input"
+          placeholder="Ingresa tu contraseña"
+          [(ngModel)]="loginData.password"
+          required
+        >
+      </div>
+
+      <!-- Options Row -->
+      <div class="options-row">
+        <label class="checkbox-container">
+          <input type="checkbox" [(ngModel)]="loginData.rememberUser" name="rememberUser">
+          <span class="checkmark"></span>
+          <span class="checkbox-label">Recordar Usuario</span>
+        </label>
+        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <!-- Login Button -->
+      <button type="submit" class="login-button">
+        Iniciar Sesión
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="divider"></div>
+      <p class="footer-text">
+        Si no tienes credenciales de acceso, contacta al administrador del sistema.
+      </p>
+      <p class="copyright">© 2025 Corresponsalías</p>
+    </div>
+  </div>
+</div>

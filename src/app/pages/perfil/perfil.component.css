@@ -1,0 +1,230 @@
+/* perfil.component.css */
+
+.perfil-container {
+  margin-left: 280px; /* Espacio para el sidebar */
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 0;
+}
+
+.content-wrapper {
+  padding: 2rem;
+  max-width: 1200px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 2rem;
+  padding: 0;
+}
+
+/* Sección de información del usuario */
+.user-info-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.user-avatar {
+  flex-shrink: 0;
+}
+
+.avatar-placeholder {
+  width: 120px;
+  height: 120px;
+  background-color: #e9ecef;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-details {
+  flex-grow: 1;
+}
+
+.user-name {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 0.5rem;
+}
+
+.user-role {
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-edit-profile {
+  background-color: #212529;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-edit-profile:hover {
+  background-color: #495057;
+}
+
+/* Contenido principal */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Sección de información */
+.info-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f1f3f4;
+  gap: 1rem;
+}
+
+.info-item:last-of-type {
+  border-bottom: none;
+}
+
+.icon {
+  color: #6c757d;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.info-item span {
+  color: #495057;
+  font-weight: 500;
+}
+
+.registration-info {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.registration-label {
+  color: #495057;
+  font-weight: 500;
+}
+
+.btn-update-info {
+  background-color: #212529;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.btn-update-info:hover {
+  background-color: #495057;
+}
+
+/* Sección de actividad */
+.activity-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0;
+  gap: 1rem;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.activity-item:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2rem;
+}
+
+.activity-icon {
+  color: #6c757d;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.activity-item span {
+  color: #495057;
+  font-weight: 400;
+}
+
+/* Sección de sesión */
+.session-section {
+  border-top: 2px solid #e9ecef;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.session-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 0.75rem;
+}
+
+.last-login {
+  color: #6c757d;
+  margin: 0;
+}
+
+.date {
+  color: #495057;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .perfil-container {
+    margin-left: 0;
+  }
+  
+  .content-wrapper {
+    padding: 1rem;
+  }
+  
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .user-info-section {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+}

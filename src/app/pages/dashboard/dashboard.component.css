@@ -1,0 +1,96 @@
+/* dashboard.component.css */
+
+.dashboard-container {
+  display: flex;
+}
+
+.main-content {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  padding: 2.5rem;
+  background-color: #f8fafc;
+}
+
+/* Statistics Cards */
+.stat-card {
+  background: white;
+  border: 1px solid #eef0f2;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card .card-body {
+  padding: 1.5rem;
+}
+
+.stat-card .card-title {
+  font-size: 2.25rem;
+}
+
+.stat-card .card-text {
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+}
+
+/* Quick Actions Section Header */
+.actions-header {
+  background-color: #f1f5f9;
+  border-radius: 0.75rem;
+}
+
+/* Quick Action Buttons */
+.quick-action-btn {
+  border: 1px solid #e2e8f0;
+  background: white;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  color: #374151;
+  text-align: left; /* Alinea el texto a la izquierda */
+  justify-content: flex-start !important; /* Alinea el contenido flex a la izquierda */
+}
+
+.quick-action-btn .d-flex {
+  width: 100%;
+}
+
+.quick-action-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+/* Search Engine Integration */
+app-buscador-referencias {
+  display: block;
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 1.5rem;
+  }
+  
+  .col-md-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .quick-action-btn {
+    font-size: 0.9rem;
+  }
+  
+  .header-title {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+}

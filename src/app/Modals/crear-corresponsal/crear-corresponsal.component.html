@@ -1,0 +1,73 @@
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" *ngIf="isOpen" (click)="closeModal()"></div>
+
+<!-- Modal Dialog -->
+<div class="modal-dialog" *ngIf="isOpen" [@slideIn]>
+  <div class="modal-content">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h5 class="modal-title">Nuevo Proveedor o corresponsal</h5>
+      <button type="button" class="btn-close" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()" #corresponsalForm="ngForm">
+        <!-- Name Field -->
+        <div class="form-group mb-4">
+          <label for="name" class="form-label">Nombre</label>
+          <input 
+            type="text" 
+            id="name"
+            name="name"
+            class="form-control"
+            [(ngModel)]="corresponsalData.name"
+            placeholder="Ejemplo S.A."
+            required>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group mb-4">
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input 
+            type="email" 
+            id="email"
+            name="email"
+            class="form-control"
+            [(ngModel)]="corresponsalData.email"
+            placeholder="Correo@ejemplo.com"
+            required>
+        </div>
+
+        <!-- Phone Field -->
+        <div class="form-group mb-4">
+          <label for="phone" class="form-label">Teléfono</label>
+          <input 
+            type="tel" 
+            id="phone"
+            name="phone"
+            class="form-control"
+            [(ngModel)]="corresponsalData.phone"
+            placeholder="123-456-7890"
+            required>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">
+        Cancelar
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        (click)="saveCorresponsal()"
+        [disabled]="!corresponsalForm.form.valid">
+        Guardar
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" *ngIf="isOpen" (click)="closeModal()"></div>
+
+<!-- Modal Dialog -->
+<div class="modal-dialog" *ngIf="isOpen" [@slideIn]>
+  <div class="modal-content">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h5 class="modal-title">Crear Referencia Nueva</h5>
+      <button type="button" class="btn-close" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()" #referenceForm="ngForm">
+        <!-- Reference Name Field -->
+        <div class="form-group mb-4">
+          <label for="referenceName" class="form-label">Nombre de la referencia</label>
+          <input 
+            type="text" 
+            id="referenceName"
+            name="referenceName"
+            class="form-control"
+            [(ngModel)]="referenceData.name"
+            placeholder="VER25-000000"
+            required>
+        </div>
+
+        <!-- Providers Field -->
+        <div class="form-group mb-4">
+          <label for="providers" class="form-label">Proveedores o Proveedor</label>
+          <div class="providers-input-container">
+            <div class="selected-providers" *ngIf="selectedProviders.length > 0">
+              <span 
+                class="provider-tag" 
+                *ngFor="let provider of selectedProviders; let i = index">
+                {{ provider }}
+                <button 
+                  type="button" 
+                  class="remove-provider" 
+                  (click)="removeProvider(i)">
+                  <i class="fas fa-times"></i>
+                </button>
+              </span>
+            </div>
+            <div class="input-with-dropdown">
+              <input 
+                type="text" 
+                id="providers"
+                name="providers"
+                class="form-control providers-input"
+                [(ngModel)]="providerInput"
+                (keyup.enter)="addProvider()"
+                (focus)="showDropdown = true"
+                placeholder="Seleccionar proveedores...">
+              <button 
+                type="button" 
+                class="dropdown-toggle"
+                (click)="toggleDropdown()">
+                <i class="fas fa-chevron-up" *ngIf="showDropdown"></i>
+                <i class="fas fa-chevron-down" *ngIf="!showDropdown"></i>
+              </button>
+            </div>
+            
+            <!-- Dropdown for provider selection -->
+            <div class="providers-dropdown" *ngIf="showDropdown">
+              <div class="dropdown-item" *ngFor="let provider of availableProviders" (click)="selectProvider(provider)">
+                {{ provider }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">
+        Cancelar
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        (click)="saveReference()"
+        [disabled]="!referenceForm.form.valid || selectedProviders.length === 0">
+        Guardar
+      </button>
+    </div>
+  </div>
+</div>

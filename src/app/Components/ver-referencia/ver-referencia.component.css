@@ -1,0 +1,230 @@
+/* Contenedor principal */
+.documentos-container {
+  padding: 20px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Header con botón volver y título */
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.btn-volver {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.btn-volver:hover {
+  background-color: #f5f5f5;
+  border-color: #d0d0d0;
+}
+
+.icon-arrow-left::before {
+  content: "←";
+  font-size: 16px;
+}
+
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+/* Barra de acciones */
+.acciones-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.btn-subir {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-subir:hover {
+  background-color: #333;
+}
+
+.buscador {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 0 16px;
+  min-width: 300px;
+}
+
+.icon-search::before {
+  content: "🔍";
+  margin-right: 8px;
+  color: #666;
+}
+
+.input-buscar {
+  border: none;
+  background: transparent;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  flex: 1;
+}
+
+.input-buscar::placeholder {
+  color: #999;
+}
+
+/* Contenedor de tabla */
+.tabla-container {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tabla de documentos */
+.tabla-documentos {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.tabla-documentos thead {
+  background-color: #f8f9fa;
+}
+
+.tabla-documentos th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+}
+
+.tabla-documentos td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  font-size: 14px;
+}
+
+.tabla-documentos tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.tabla-documentos tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Estados de documentos */
+.estado {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.estado.valido {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.estado.no-valido {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.estado.pendiente {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Botones de acción */
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-accion {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  color: #666;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-accion:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.icon-eye::before {
+  content: "👁";
+  font-size: 16px;
+}
+
+.icon-download::before {
+  content: "⬇";
+  font-size: 16px;
+}
+
+.icon-edit::before {
+  content: "✏";
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .acciones-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .buscador {
+    min-width: auto;
+  }
+  
+  .tabla-documentos {
+    font-size: 12px;
+  }
+  
+  .tabla-documentos th,
+  .tabla-documentos td {
+    padding: 12px 16px;
+  }
+}

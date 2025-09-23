@@ -1,0 +1,64 @@
+<div class="documentos-container">
+  <!-- Header con botón volver y título -->
+  <div class="header">
+    <button class="btn-volver" (click)="volver()">
+      <i class="icon-arrow-left"></i>
+      Volver
+    </button>
+    <h1 class="titulo">Documentos de Referencia: {{referenciaId}}</h1>
+  </div>
+
+  <!-- Barra de acciones -->
+  <div class="acciones-bar">
+    <button class="btn-subir" (click)="subirArchivos()">Subir Archivos</button>
+    <div class="buscador">
+      <i class="icon-search"></i>
+      <input 
+        type="text" 
+        placeholder="Buscar Documento ..." 
+        class="input-buscar"
+        [(ngModel)]="terminoBusqueda"
+        (input)="buscarDocumentos()">
+    </div>
+  </div>
+
+  <!-- Tabla de documentos -->
+  <div class="tabla-container">
+    <table class="tabla-documentos">
+      <thead>
+        <tr>
+          <th>Archivo</th>
+          <th>Estado</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let documento of documentosFiltrados">
+          <td>{{documento.nombre}}</td>
+          <td>
+            <span class="estado" [ngClass]="documento.estado">
+              {{documento.estado === 'valido' ? 'Valido' : 
+                documento.estado === 'no-valido' ? 'No valido' : 
+                'Pendiente por revisar'}}
+            </span>
+          </td>
+          <td>{{documento.cliente}}</td>
+          <td>{{documento.fecha}}</td>
+          <td class="acciones">
+            <button class="btn-accion" title="Ver" (click)="verDocumento(documento)">
+              <i class="icon-eye"></i>
+            </button>
+            <button class="btn-accion" title="Descargar" (click)="descargarDocumento(documento)">
+              <i class="icon-download"></i>
+            </button>
+            <button class="btn-accion" title="Editar" (click)="editarDocumento(documento)">
+              <i class="icon-edit"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="search-container">
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <div class="search-input-container">
+      <i class="search-icon">🔍</i>
+      <input 
+        type="text" 
+        placeholder="Buscar Referencias ..." 
+        class="search-input"
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+      />
+    </div>
+  </div>
+
+  <!-- Reference List -->
+  <div class="reference-list">
+    <div 
+      *ngFor="let reference of filteredReferences" 
+      class="reference-card"
+    >
+      <div class="reference-header">
+        <h3 class="reference-id">{{ reference.id }}</h3>
+      </div>
+      
+      <div class="reference-details">
+        <div class="detail-row">
+          <span class="detail-label">Fecha:</span>
+          <span class="detail-value">{{ reference.fecha }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Eta:</span>
+          <span class="detail-value">{{ reference.eta }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Cliente:</span>
+          <span class="detail-value">{{ reference.cliente }}</span>
+        </div>
+      </div>
+      
+      <div class="reference-actions">
+        <button class="view-button" (click)="viewReference(reference)">
+          Ver referencia
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

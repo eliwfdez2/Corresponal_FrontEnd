@@ -1,0 +1,88 @@
+<div class="historial-container">
+  <app-tool-bar 
+    (navigationChange)="onNavigationChange($event)"
+    (logoutRequest)="onLogout()">
+  </app-tool-bar>
+
+  <div class="main-content">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1 class="page-title">Panel de historial</h1>
+      <p class="page-subtitle">Movimientos de documentos subidos por proveedores y corresponsales</p>
+    </div>
+
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section">
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Buscar ultimos documentos ..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()">
+      </div>
+      
+      <div class="filter-container">
+        <button class="filter-button" (click)="toggleStatusFilter()">
+          <i class="fas fa-bars"></i>
+          Estados
+        </button>
+        
+        <div class="status-dropdown" [class.show]="showStatusDropdown">
+          <div class="dropdown-item" *ngFor="let status of statusOptions" 
+               (click)="selectStatus(status)">
+            <span class="status-indicator" [class]="'status-' + status.toLowerCase().replace(' ', '-')"></span>
+            {{ status }}
+          </div>
+        </div>
+      </div>
+      
+      <button class="search-button" (click)="performSearch()">
+        Buscar
+      </button>
+    </div>
+  </div>
+
+  <!-- Document History Table -->
+  <div class="table-container">
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Proveedor</th>
+          <th>Documento</th>
+          <th>Referencia</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let document of filteredDocuments; trackBy: trackByDocument">
+          <td>{{ document.fecha }}</td>
+          <td>{{ document.proveedor }}</td>
+          <td>{{ document.documento }}</td>
+          <td>{{ document.referencia }}</td>
+          <td>
+            <span class="status-badge" [class]="'status-' + document.estado.toLowerCase().replace(' ', '-')">
+              {{ document.estado }}
+            </span>
+          </td>
+          <td class="action-buttons">
+            <button class="action-btn view-btn" (click)="viewDocument(document)" title="Ver">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="action-btn download-btn" (click)="downloadDocument(document)" title="Descargar">
+              <i class="fas fa-download"></i>
+            </button>
+            <button class="action-btn edit-btn" (click)="editDocument(document)" title="Editar">
+              <i class="fas fa-edit"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>

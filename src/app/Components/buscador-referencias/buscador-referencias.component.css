@@ -1,0 +1,247 @@
+.search-container {
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Search Bar Styles */
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 16px;
+  color: #666;
+  z-index: 1;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 2px solid #4A90E2;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #357ABD;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+/* Reference List Styles */
+.reference-list {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.reference-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.reference-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.reference-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.reference-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Reference Card Styles */
+.reference-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.reference-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.reference-header {
+  margin-bottom: 12px;
+}
+
+.reference-id {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.reference-details {
+  margin-bottom: 16px;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #666;
+  min-width: 60px;
+  margin-right: 8px;
+}
+
+.detail-value {
+  color: #333;
+  font-weight: 400;
+}
+
+.reference-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.view-button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.view-button:hover {
+  background-color: #555;
+}
+
+.view-button:active {
+  background-color: #222;
+}
+
+/* Initial State Styles */
+.initial-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; /* Un padding más razonable */
+  background-color: #f8f9fa; /* Un fondo sutil para delimitar el área */
+  border: 1px dashed #dee2e6;
+  border-radius: 8px;
+  margin-top: 15px; /* Espacio para separarlo del buscador */
+}
+
+.initial-state-content {
+  text-align: center;
+  color: #666;
+}
+
+.initial-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.initial-state-content h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.initial-state-content p {
+  font-size: 16px;
+  margin: 0;
+  color: #666;
+}
+
+/* No Results Styles */
+.no-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  padding: 40px 20px;
+}
+
+.no-results-content {
+  text-align: center;
+  color: #666;
+}
+
+.no-results-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.no-results-content h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.no-results-content p {
+  font-size: 14px;
+  margin: 0;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .search-container {
+    padding: 16px;
+  }
+  
+  .reference-card {
+    padding: 12px;
+  }
+  
+  .reference-id {
+    font-size: 16px;
+  }
+  
+  .view-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .initial-state {
+    min-height: 250px;
+    padding: 30px 15px;
+  }
+  
+  .initial-state-icon {
+    font-size: 40px;
+  }
+  
+  .initial-state-content h3 {
+    font-size: 20px;
+  }
+  
+  .initial-state-content p {
+    font-size: 14px;
+  }
+}

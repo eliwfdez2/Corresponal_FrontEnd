@@ -1,0 +1,96 @@
+<div class="dashboard-container">
+  <app-tool-bar 
+    (navigationChange)="onNavigationChange($event)"
+    (logoutRequest)="onLogout()">
+  </app-tool-bar>
+
+  <div class="main-content">
+    <div class="row mb-4 align-items-center">
+      <div class="col-md-6">
+        <h1 class="fw-bold text-primary mb-0">Panel Administrativo</h1>
+      </div>
+      <div class="col-md-6">
+        <app-buscador-referencias></app-buscador-referencias>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card stat-card">
+          <div class="card-body text-center py-4">
+            <h2 class="card-title text-dark fw-bold mb-1">{{ dashboardStats.totalReferences }}</h2>
+            <p class="card-text text-muted mb-0">Total referencias</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card stat-card">
+          <div class="card-body text-center py-4">
+            <h2 class="card-title text-dark fw-bold mb-1">{{ dashboardStats.pendingReferences }}</h2>
+            <p class="card-text text-muted mb-0">Pendientes</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card stat-card">
+          <div class="card-body text-center py-4">
+            <h2 class="card-title text-dark fw-bold mb-1">{{ dashboardStats.totalProviders }}</h2>
+            <p class="card-text text-muted mb-0">Total de Proveedores</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="quick-actions-section">
+  <div class="actions-header p-3 mb-3">
+    <h4 class="fw-bold text-secondary mb-0">Acciones rápidas</h4>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <button class="btn btn-outline-primary w-100 quick-action-btn" type="button" (click)="onCreateReference()">
+        <div class="d-flex align-items-center p-2">
+          <i class="fas fa-file-alt fa-lg me-3"></i>
+          <span>Crear Referencia</span>
+        </div>
+      </button>
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-outline-secondary w-100 quick-action-btn" type="button" (click)="onOtherPlanned()">
+        <div class="d-flex align-items-center p-2">
+          <i class="fas fa-chart-line fa-lg me-3"></i>
+          <span>Otra cosa planeada ....</span>
+        </div>
+      </button>
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-outline-success w-100 quick-action-btn" type="button" (click)="onNewProvider()">
+        <div class="d-flex align-items-center p-2">
+          <i class="fas fa-user-plus fa-lg me-3"></i>
+          <span>Nuevo Proveedor / Corresponsal</span>
+        </div>
+      </button>
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-outline-info w-100 quick-action-btn" type="button" (click)="onValidateDocuments()">
+        <div class="d-flex align-items-center p-2">
+          <i class="fas fa-check-circle fa-lg me-3"></i>
+          <span>Validar Documentos</span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+  </div>
+
+  <app-crear-referencias 
+    [isOpen]="isCreateReferenceModalOpen"
+    (modalClosed)="onModalClosed()"
+    (referenceCreated)="onReferenceCreated($event)">
+  </app-crear-referencias>
+
+  <app-crear-corresponsal 
+    [isOpen]="isCreateCorresponsalModalOpen"
+    (modalClosed)="onCorresponsalModalClosed()"
+    (corresponsalCreated)="onCorresponsalCreated($event)">
+  </app-crear-corresponsal>
+</div>

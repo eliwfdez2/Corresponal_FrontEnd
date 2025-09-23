@@ -1,0 +1,60 @@
+<div class="perfil-container">
+  <app-tool-bar 
+    (navigationChange)="onNavigationChange($event)"
+    (logoutRequest)="onLogout()">
+  </app-tool-bar>
+
+  <div class="content-wrapper">
+    <h1 class="page-title">Mi perfil</h1>
+    
+    <!-- Sección de información del usuario -->
+    <div class="user-info-section">
+      <div class="user-avatar">
+        <div class="avatar-placeholder"></div>
+      </div>
+      <div class="user-details">
+        <h2 class="user-name">{{ userData.name }}</h2>
+        <p class="user-role">{{ userData.role }}</p>
+        <button class="btn-edit-profile" (click)="editProfile()">Editar perfil</button>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <!-- Información Personal -->
+      <div class="info-section">
+        <h3 class="section-title">Información Personal</h3>
+        <div class="info-item">
+          <i class="fas fa-envelope icon"></i>
+          <span>{{ userData.email }}</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-phone icon"></i>
+          <span>{{ userData.phone }}</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-building icon"></i>
+          <span>{{ userData.corresponsal }}</span>
+        </div>
+        <div class="registration-info">
+          <span class="registration-label">Registrado: {{ userData.registrationDate }}</span>
+        </div>
+        <button class="btn-update-info" (click)="updateInfo()">Actualizar Información</button>
+      </div>
+
+      <!-- Actividad -->
+      <div class="activity-section">
+        <h3 class="section-title">Actividad</h3>
+        <div class="activity-item" *ngFor="let activity of activities">
+          <i [class]="activity.icon + ' activity-icon'"></i>
+          <span>{{ activity.description }}</span>
+        </div>
+        
+        <!-- Finalizar sesión -->
+        <div class="session-section">
+          <h4 class="session-title">finalizar la sesión</h4>
+          <p class="last-login">Ultimo inicio: <span class="date">{{ userData.lastLogin }}</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
