@@ -93,7 +93,6 @@ export class CrearReferenciasComponent implements OnInit {
     this.showDropdown = !this.showDropdown;
   }
 
-  // Form submission
   onSubmit() {
     if (this.isFormValid()) {
       this.saveReference();
