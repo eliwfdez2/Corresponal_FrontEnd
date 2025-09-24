@@ -161,12 +161,17 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+  max-width: 1300px;     /* Un poco más ancho */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .history-table {
   width: 100%;
   border-collapse: collapse;
   color: white;
+  font-size: 0.85rem; /* Más pequeño */
 }
 
 .history-table thead {
@@ -191,8 +196,8 @@
 }
 
 .history-table td {
-  padding: 15px 20px;
-  font-size: 0.95rem;
+  padding: 8px 12px; /* Menos espacio */
+  font-size: 0.85rem; /* Más pequeño */
 }
 
 /* Status Badges */
@@ -233,8 +238,8 @@
 }
 
 .action-btn {
-  width: 35px;
-  height: 35px;
+  width: 28px;
+  height: 28px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -242,7 +247,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .view-btn {
