@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SubirArchivosComponent } from '../../Modals/subir-archivos/subir-archivos.component';
 
 interface Documento {
   id: number;
@@ -13,7 +14,7 @@ interface Documento {
 
 @Component({
   selector: 'app-ver-referencia',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SubirArchivosComponent],
   templateUrl: './ver-referencia.component.html',
   styleUrl: './ver-referencia.component.css'
 })
@@ -22,6 +23,7 @@ export class VerReferenciaComponent implements OnInit {
   documentosFiltrados: Documento[] = [];
   terminoBusqueda: string = '';
   referenciaId: string = '';
+  showModal: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -92,7 +94,7 @@ export class VerReferenciaComponent implements OnInit {
   subirArchivos() {
     // Lógica para subir archivos
     console.log('Subir archivos');
-    // Aquí se implementaría la lógica para abrir el selector de archivos
+    this.showModal = true;
   }
 
   verDocumento(documento: Documento) {
@@ -113,5 +115,9 @@ export class VerReferenciaComponent implements OnInit {
   volver() {
     // Navegar de vuelta al dashboard
     this.router.navigate(['/dashboard']);
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }

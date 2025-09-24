@@ -1,1 +1,19 @@
-<p>subir-archivos works!</p>
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Subir Archivos</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="drop-area" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+        <div class="drop-content">
+          <i class="upload-icon">📁</i>
+          <p>Arrastra y suelta archivos aquí</p>
+          <p>o</p>
+          <button class="select-btn" (click)="selectFiles(fileInput)">Seleccionar archivos</button>
+          <input type="file" #fileInput multiple style="display: none;" (change)="onFileSelected($event)">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -61,4 +61,7 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Modal para subir archivos -->
+  <app-subir-archivos *ngIf="showModal" (close)="closeModal()"></app-subir-archivos>
 </div>
