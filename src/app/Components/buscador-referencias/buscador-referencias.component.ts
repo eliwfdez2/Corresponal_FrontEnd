@@ -30,6 +30,7 @@ export class BuscadorReferenciasComponent implements OnInit {
   }
 
   onSearch(): void {
+    this.hasSearched = true;
     if (!this.searchTerm.trim()) {
       this.filteredReferences = [...this.allReferences];
       return;

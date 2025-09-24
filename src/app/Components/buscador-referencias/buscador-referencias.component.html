@@ -13,16 +13,34 @@
     </div>
   </div>
 
+  <!-- Initial State -->
+  <div *ngIf="!hasSearched" class="initial-state">
+    <div class="initial-state-content">
+      <i class="initial-state-icon">🔍</i>
+      <h3>Buscar Referencias</h3>
+      <p>Escribe en el campo de búsqueda para encontrar referencias específicas.</p>
+    </div>
+  </div>
+
+  <!-- No Results -->
+  <div *ngIf="hasSearched && filteredReferences.length === 0" class="no-results">
+    <div class="no-results-content">
+      <i class="no-results-icon">😞</i>
+      <h3>No se encontraron resultados</h3>
+      <p>Intenta con otros términos de búsqueda.</p>
+    </div>
+  </div>
+
   <!-- Reference List -->
-  <div class="reference-list">
-    <div 
-      *ngFor="let reference of filteredReferences" 
+  <div *ngIf="filteredReferences.length > 0" class="reference-list">
+    <div
+      *ngFor="let reference of filteredReferences"
       class="reference-card"
     >
       <div class="reference-header">
         <h3 class="reference-id">{{ reference.id }}</h3>
       </div>
-      
+
       <div class="reference-details">
         <div class="detail-row">
           <span class="detail-label">Fecha:</span>
@@ -37,7 +55,7 @@
           <span class="detail-value">{{ reference.cliente }}</span>
         </div>
       </div>
-      
+
       <div class="reference-actions">
         <button class="view-button" (click)="viewReference(reference)">
           Ver referencia

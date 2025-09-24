@@ -8,21 +8,21 @@
   margin-left: 280px;
   width: calc(100% - 280px);
   padding: 2.5rem;
-  background-color: #f8fafc;
+  background-color: #f5f5f7;
 }
 
 /* Statistics Cards */
 .stat-card {
   background: white;
-  border: 1px solid #eef0f2;
+  border: 1px solid #e5e5e7;
   border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .stat-card .card-body {
@@ -31,40 +31,46 @@
 
 .stat-card .card-title {
   font-size: 2.25rem;
+  color: #1d1d1f;
 }
 
 .stat-card .card-text {
   font-size: 0.875rem;
+  color: #86868b;
   letter-spacing: 0.05em;
 }
 
 /* Quick Actions Section Header */
 .actions-header {
-  background-color: #f1f5f9;
+  background-color: #f5f5f7;
   border-radius: 0.75rem;
+  color: #1d1d1f;
 }
 
 /* Quick Action Buttons */
 .quick-action-btn {
-  border: 1px solid #e2e8f0;
+  border: 1px solid #d1d1d6;
   background: white;
   border-radius: 0.75rem;
   transition: all 0.3s ease;
   font-weight: 600;
-  color: #374151;
-  text-align: left; /* Alinea el texto a la izquierda */
-  justify-content: flex-start !important; /* Alinea el contenido flex a la izquierda */
+  color: #1d1d1f;
+  text-align: left;
+  justify-content: flex-start !important;
+  min-height: 80px;
+  font-size: 1.1rem;
 }
 
 .quick-action-btn .d-flex {
   width: 100%;
+  padding: 1rem;
 }
 
 .quick-action-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-  border-color: #3b82f6;
-  color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #0071e3;
+  color: #0071e3;
 }
 
 /* Search Engine Integration */
