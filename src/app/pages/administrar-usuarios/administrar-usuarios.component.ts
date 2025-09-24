@@ -42,26 +42,14 @@ export class AdministrarUsuariosComponent implements OnInit {
     console.log('Cargando métricas de usuarios...');
   }
 
-  /**
-   * Navega a la página de monitoreo de usuarios
-   */
   irMonitorearUsuarios(): void {
     console.log('Navegando a monitorear usuarios');
-    // this.router.navigate(['/usuarios/monitorear']);
-    
-    // Por ahora solo muestra un mensaje
-    alert('Funcionalidad de monitoreo en desarrollo');
+    this.router.navigate(['/monitoreo-usuarios']); 
   }
 
-  /**
-   * Navega a la página de gestión de roles
-   */
   irGestionarRoles(): void {
     console.log('Navegando a gestionar roles');
-    // this.router.navigate(['/usuarios/roles']);
-    
-    // Por ahora solo muestra un mensaje
-    alert('Funcionalidad de gestión de roles en desarrollo');
+    this.router.navigate(['/gestionar-roles']); 
   }
 
   /**

@@ -1,1 +1,78 @@
-<p>monitorear-usuarios works!</p>
+<div class="container">
+  <!-- Botón Volver al inicio -->
+  <div class="back-section">
+    <button class="btn-back" (click)="volver()">
+      <i class="fas fa-arrow-left"></i> Volver
+    </button>
+  </div>
+
+  <div class="header">
+    <h2>Monitorear Usuarios</h2>
+    <div class="actions">
+      <button class="btn-export" (click)="exportarCSV()">
+        <i class="fas fa-file-export"></i> Exportar CSV
+      </button>
+      <button class="btn-refresh" (click)="refrescarDatos()">
+        <i class="fas fa-sync"></i> Refrescar
+      </button>
+    </div>
+  </div>
+
+  <div class="status-info">
+    <span class="last-update">Última actualización: {{ ultimaActualizacion }}</span>
+  </div>
+
+  <!-- Tabla de Usuarios Activos -->
+  <div class="table-container">
+    <h3>Usuarios Activos</h3>
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Rol</th>
+          <th>IP pública</th>
+          <th>Dispositivo/Navegador</th>
+          <th>Inicio de sesión</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuariosActivos">
+          <td>{{usuario.nombre}}</td>
+          <td>{{usuario.rol}}</td>
+          <td>{{usuario.ip}}</td>
+          <td>{{usuario.dispositivo}}</td>
+          <td>{{usuario.inicioSesion | date:'medium'}}</td>
+          <td>
+            <span [class]="'status ' + usuario.estado.toLowerCase()">
+              {{usuario.estado}}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bitácora de Actividades -->
+  <div class="log-container">
+    <h3>Bitácora de Actividades</h3>
+    <table class="log-table">
+      <thead>
+        <tr>
+          <th>Fecha/Hora</th>
+          <th>Usuario</th>
+          <th>Acción</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of registroActividades">
+          <td>{{log.fecha | date:'medium'}}</td>
+          <td>{{log.usuario}}</td>
+          <td>{{log.accion}}</td>
+          <td>{{log.detalle}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

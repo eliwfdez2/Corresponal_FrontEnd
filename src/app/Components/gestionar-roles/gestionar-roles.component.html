@@ -1,1 +1,44 @@
-<p>gestionar-roles works!</p>
+<div class="container">
+  <h2>Gestionar Roles</h2>
+
+    <button class="btn-volver" (click)="volver()">
+    <i class="fas fa-arrow-left"></i> Volver al inicio
+    </button>
+
+  <div class="role-section">
+    <h3>Crear Rol</h3>
+    <div class="form-group">
+      <label for="nombreRol">Nombre del rol</label>
+      <input type="text" id="nombreRol" [(ngModel)]="newRole.nombre" placeholder="Ej. Administrador">
+    </div>
+    <div class="form-group">
+      <label for="descripcionRol">Descripción del rol</label>
+      <input type="text" id="descripcionRol" [(ngModel)]="newRole.descripcion" placeholder="Descripción del rol">
+    </div>
+    <div class="buttons">
+      <button class="btn-cancelar">Cancelar</button>
+      <button class="btn-guardar" (click)="createRole()">Crear Rol</button>
+    </div>
+  </div>
+
+  <div class="roles-table-section">
+    <h3>Lista de Roles</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let role of roles">
+          <td>{{ role.id }}</td>
+          <td>{{ role.nombre }}</td>
+          <td>{{ role.descripcion }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

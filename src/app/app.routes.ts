@@ -7,6 +7,8 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AdministrarUsuariosComponent } from './pages/administrar-usuarios/administrar-usuarios.component';
 import { AjustesComponent } from './pages/ajustes/ajustes.component';
 import { AuthGuard } from './core/guards/auth.guard'; // 👈 corregido a minúsculas
+import { MonitorearUsuariosComponent } from './Components/monitorear-usuarios/monitorear-usuarios.component';
+import { GestionarRolesComponent } from './Components/gestionar-roles/gestionar-roles.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -21,6 +23,8 @@ export const routes: Routes = [
       { path: 'ver-referencia/:id', component: VerReferenciaComponent },
       { path: 'perfil', component: PerfilComponent },
       { path: 'administrar-usuarios', component: AdministrarUsuariosComponent },
+      { path: 'monitoreo-usuarios', component: MonitorearUsuariosComponent },
+      {path: 'gestionar-roles', component: GestionarRolesComponent},
       { path: 'ajustes', component: AjustesComponent }
     ]
   },
