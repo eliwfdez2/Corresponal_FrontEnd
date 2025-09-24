@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CambiarContrasenaComponent } from '../../Modals/cambiar-contrasena/cambiar-contrasena.component';
 import { ActualizarInformacionComponent } from '../../Modals/actualizar-informacion/actualizar-informacion.component';
 import { AuthService } from '../../core/services/auth.service';
+import { UserService, User } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-perfil',
@@ -19,25 +20,26 @@ export class PerfilComponent implements OnInit {
   showInfoModal = false;
 
   // Datos del usuario
-  userData = {
-    name: '',
-    role: '',
-    email: 'Correo@ejemplo.com',
-    phone: '123-456-7890',
-    corresponsal: 'Corresponsal Ejemplo',
-    registrationDate: 'Enero 2023',
-    lastLogin: '23/02/2023'
-  };
+  userData: User | null = null;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.loadUserData();
   }
 
   private loadUserData(): void {
-    this.userData.name = this.authService.getUserName() || 'Usuario';
-    this.userData.role = this.authService.getUserRole() || 'Rol';
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.userService.getUserById(userId).subscribe({
+        next: (user) => {
+          this.userData = user;
+        },
+        error: (err) => {
+          console.error('Error loading user data:', err);
+        }
+      });
+    }
   }
 
   // Actividades recientes
