@@ -37,7 +37,10 @@
         <div class="registration-info">
           <span class="registration-label">Registrado: {{ userData.registrationDate }}</span>
         </div>
-        <button class="btn-update-info" (click)="updateInfo()">Actualizar Información</button>
+        <div class="d-flex gap-2">
+          <button class="btn-update-info flex-fill" (click)="updateInfo()">Actualizar Información</button>
+          <button class="btn-update-info flex-fill" (click)="openPasswordModal()">Cambiar Contraseña</button>
+        </div>
       </div>
 
       <!-- Actividad -->
@@ -57,3 +60,9 @@
     </div>
   </div>
 </div>
+
+<!-- Modal para cambiar contraseña -->
+<app-cambiar-contrasena
+  *ngIf="showPasswordModal"
+  (closeModal)="closePasswordModal()">
+</app-cambiar-contrasena>
