@@ -6,13 +6,22 @@ import { Observable } from 'rxjs';
 export class CorresponsalService {
   private apiUrl = 'http://localhost:8080/usuarios';
 
+
   constructor(private http: HttpClient) {}
 
   crearCorresponsal(data: any): Observable<any> {
-    const token = localStorage.getItem('token'); // O como lo guardes
+    const token = localStorage.getItem('token'); 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
     return this.http.post(this.apiUrl, data, { headers });
+  }
+
+ getCorresponsalesActivos(): Observable<any[]> {
+    const token = localStorage.getItem('token'); // O usa tu método de auth
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.get<any[]>(this.apiUrl+'/corresponsales', { headers });
   }
 }

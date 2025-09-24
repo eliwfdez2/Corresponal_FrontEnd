@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { HttpClient } from '@angular/common/http';
+import { CorresponsalService } from '../../core/services/corresponsal.service';
 
 @Component({
   selector: 'app-crear-referencias',
@@ -21,7 +23,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     ])
   ]
 })
-export class CrearReferenciasComponent {
+export class CrearReferenciasComponent implements OnInit {
   @Input() isOpen: boolean = false;
   @Output() modalClosed = new EventEmitter<void>();
   @Output() referenceCreated = new EventEmitter<any>();
@@ -37,13 +39,27 @@ export class CrearReferenciasComponent {
   showDropdown: boolean = false;
 
   // Available providers (this could come from a service)
-  availableProviders: string[] = [
-    'Ejemplo proveedor',
-    'Proveedor ABC',
-    'Corresponsal XYZ',
-    'Proveedor 123',
-    'Empresa Demo'
-  ];
+  availableProviders: string[] = [];
+
+  constructor(private corresponsalService: CorresponsalService) {}
+
+  ngOnInit() {
+    this.fetchProviders();
+  }
+
+  fetchProviders() {
+    this.corresponsalService.getCorresponsalesActivos().subscribe({
+      next: (data) => {
+        console.log('Proveedores recibidos:', data); // <-- Verifica datos
+        this.availableProviders = data
+          .filter(u => u.activo)
+          .map(u => u.nombre_usuario);
+      },
+      error: () => {
+        this.availableProviders = [];
+      }
+    });
+  }
 
   // Modal control methods
   closeModal() {
