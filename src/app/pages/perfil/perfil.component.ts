@@ -3,18 +3,20 @@ import { CommonModule } from '@angular/common';
 import { ToolBarComponent } from "../../Components/tool-bar/tool-bar.component";
 import { Router, RouterModule } from '@angular/router';
 import { CambiarContrasenaComponent } from '../../Modals/cambiar-contrasena/cambiar-contrasena.component';
+import { ActualizarInformacionComponent } from '../../Modals/actualizar-informacion/actualizar-informacion.component';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, ToolBarComponent, RouterModule, CambiarContrasenaComponent],
+  imports: [CommonModule, ToolBarComponent, RouterModule, CambiarContrasenaComponent, ActualizarInformacionComponent],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
 export class PerfilComponent implements OnInit {
 
   showPasswordModal = false;
+  showInfoModal = false;
 
   // Datos del usuario
   userData = {
@@ -50,8 +52,7 @@ export class PerfilComponent implements OnInit {
 
   // Método para actualizar información
   updateInfo(): void {
-    console.log('Actualizar información clickeado');
-    // Aquí implementarías la lógica para actualizar la información del usuario
+    this.showInfoModal = true;
   }
 
   openPasswordModal(): void {
@@ -60,6 +61,15 @@ export class PerfilComponent implements OnInit {
 
   closePasswordModal(): void {
     this.showPasswordModal = false;
+  }
+
+  closeInfoModal(): void {
+    this.showInfoModal = false;
+  }
+
+  onInfoUpdated(): void {
+    this.loadUserData();
+    this.closeInfoModal();
   }
 
   // Navigation methods for toolbar integration

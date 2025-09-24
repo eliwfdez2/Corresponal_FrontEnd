@@ -1,1 +1,42 @@
-<p>actualizar-informacion works!</p>
+<div class="modal fade show d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Información</h5>
+        <button type="button" class="btn-close" (click)="onClose()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userInfoForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="nombre_completo" class="form-label">Nombre Completo</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre_completo"
+              formControlName="nombre_completo"
+              placeholder="Ingrese su nombre completo">
+          </div>
+          <div class="mb-3">
+            <label for="nombre_usuario" class="form-label">Nombre de Usuario</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre_usuario"
+              formControlName="nombre_usuario"
+              placeholder="Ingrese su nombre de usuario">
+          </div>
+          <div *ngIf="message" class="alert" [ngClass]="{'alert-success': messageType === 'success', 'alert-danger': messageType === 'error'}">
+            {{ message }}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onClose()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading || userInfoForm.invalid">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Actualizar Información
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

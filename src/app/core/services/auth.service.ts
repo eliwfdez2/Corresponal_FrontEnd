@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 
@@ -91,5 +91,21 @@ export class AuthService {
       console.error('Error decoding token:', error);
       return null;
     }
+  }
+
+  updateUserInfo(userInfo: { nombre_completo: string; nombre_usuario: string }): Observable<any> {
+    const userId = this.getUserId();
+    if (!userId) {
+      throw new Error('No user ID available');
+    }
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.put(`http://localhost:8080/usuarios/${userId}/informacion`, userInfo, { headers });
   }
 }
