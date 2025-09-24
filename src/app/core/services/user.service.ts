@@ -29,4 +29,14 @@ export class UserService {
 
     return this.http.get<User>(`${this.apiUrl}/${id}`, { headers });
   }
+
+  getAllUsers(): Observable<User[]> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'accept': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<User[]>(this.apiUrl, { headers });
+  }
 }

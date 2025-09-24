@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService, User } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-monitorear-usuarios',
@@ -13,8 +14,9 @@ export class MonitorearUsuariosComponent implements OnInit {
   ultimaActualizacion: string = new Date().toLocaleString();
   usuariosActivos: any[] = [];
   registroActividades: any[] = [];
+  usuarios: User[] = [];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userService: UserService) { }
 
   ngOnInit(): void {
     this.cargarDatos();
@@ -23,6 +25,14 @@ export class MonitorearUsuariosComponent implements OnInit {
   cargarDatos() {
     // Aquí implementar la lógica para cargar los datos de usuarios y actividades
     // desde el servicio correspondiente
+    this.userService.getAllUsers().subscribe({
+      next: (users) => {
+        this.usuarios = users;
+      },
+      error: (err) => {
+        console.error('Error al cargar usuarios:', err);
+      }
+    });
   }
 
   refrescarDatos() {

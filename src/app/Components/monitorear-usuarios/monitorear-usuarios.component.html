@@ -53,6 +53,37 @@
     </table>
   </div>
 
+  <!-- Tabla de Todos los Usuarios -->
+  <div class="table-container">
+    <h3>Lista de Usuarios</h3>
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre Completo</th>
+          <th>Nombre Usuario</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Creado En</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios">
+          <td>{{usuario.id}}</td>
+          <td>{{usuario.nombre_completo}}</td>
+          <td>{{usuario.nombre_usuario}}</td>
+          <td>{{usuario.rol_nombre}}</td>
+          <td>
+            <span [class]="'status ' + (usuario.activo ? 'activo' : 'inactivo')">
+              {{usuario.activo ? 'Activo' : 'Inactivo'}}
+            </span>
+          </td>
+          <td>{{usuario.creado_en | date:'medium'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <!-- Bitácora de Actividades -->
   <div class="log-container">
     <h3>Bitácora de Actividades</h3>
