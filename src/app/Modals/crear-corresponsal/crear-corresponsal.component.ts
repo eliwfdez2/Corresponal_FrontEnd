@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { CorresponsalService } from '../../core/services/corresponsal.service';
 
 @Component({
   selector: 'app-crear-corresponsal',
@@ -26,21 +27,23 @@ export class CrearCorresponsalComponent {
   @Output() modalClosed = new EventEmitter<void>();
   @Output() corresponsalCreated = new EventEmitter<any>();
 
-  // Form data
   corresponsalData = {
-    name: '',
-    email: '',
-    phone: ''
+    nombre_completo: '',
+    nombre_usuario: '',
+    password: '',
+    rol_nombre: 'Corresponsal'
   };
 
-  // Modal control methods
+  successMessage: string = '';
+
+  constructor(private corresponsalService: CorresponsalService) {}
+
   closeModal() {
     this.isOpen = false;
     this.modalClosed.emit();
     this.resetForm();
   }
 
-  // Form submission
   onSubmit() {
     if (this.isFormValid()) {
       this.saveCorresponsal();
@@ -49,29 +52,41 @@ export class CrearCorresponsalComponent {
 
   saveCorresponsal() {
     if (this.isFormValid()) {
-      const corresponsalData = {
-        name: this.corresponsalData.name,
-        email: this.corresponsalData.email,
-        phone: this.corresponsalData.phone,
-        createdAt: new Date()
+      const payload = {
+        nombre_completo: this.corresponsalData.nombre_completo,
+        nombre_usuario: this.corresponsalData.nombre_usuario,
+        password: this.corresponsalData.password,
+        rol_nombre: 'Corresponsal'
       };
 
-      this.corresponsalCreated.emit(corresponsalData);
-      this.closeModal();
+      this.corresponsalService.crearCorresponsal(payload).subscribe({
+        next: (response) => {
+          this.successMessage = '¡Corresponsal creado correctamente!';
+          this.corresponsalCreated.emit(response);
+          setTimeout(() => {
+            this.successMessage = '';
+            this.closeModal();
+          }, 2000); // Oculta el mensaje después de 2 segundos
+        },
+        error: (err) => {
+          console.error('Error creando corresponsal:', err);
+        }
+      });
     }
   }
 
   private isFormValid(): boolean {
-    return this.corresponsalData.name.trim() !== '' && 
-           this.corresponsalData.email.trim() !== '' && 
-           this.corresponsalData.phone.trim() !== '';
+    return this.corresponsalData.nombre_completo.trim() !== '' &&
+           this.corresponsalData.nombre_usuario.trim() !== '' &&
+           this.corresponsalData.password.trim() !== '';
   }
 
   private resetForm() {
     this.corresponsalData = {
-      name: '',
-      email: '',
-      phone: ''
+      nombre_completo: '',
+      nombre_usuario: '',
+      password: '',
+      rol_nombre: 'Corresponsal'
     };
   }
 }
