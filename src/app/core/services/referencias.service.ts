@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { urlApiViviendo } from '../api-url';
 
 export interface Referencia {
   consideracion_pago_en: string;
@@ -30,7 +31,7 @@ export interface ReferenciaDetalle extends Referencia {
 })
 export class ReferenciasService {
 
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = urlApiViviendo;
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

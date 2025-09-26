@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
+import { urlApiViviendo } from '../api-url';
 
 interface LoginResponse {
   token: string;
@@ -12,7 +13,7 @@ interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/auth';
+  private apiUrl = urlApiViviendo + '/auth';
 
   constructor(
     private http: HttpClient,
@@ -106,6 +107,6 @@ export class AuthService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.put(`http://localhost:8080/usuarios/${userId}/informacion`, userInfo, { headers });
+    return this.http.put(`${urlApiViviendo}/usuarios/${userId}/informacion`, userInfo, { headers });
   }
 }
