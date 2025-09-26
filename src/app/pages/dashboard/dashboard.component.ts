@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToolBarComponent } from '../../Components/tool-bar/tool-bar.component';
 import { CrearReferenciasComponent } from '../../Modals/crear-referencias/crear-referencias.component';
 import { CrearCorresponsalComponent } from '../../Modals/crear-corresponsal/crear-corresponsal.component';
 import { BuscadorReferenciasComponent } from "../../Components/buscador-referencias/buscador-referencias.component";
+import { ReferenciasService } from '../../core/services/referencias.service';
+import { CorresponsalService } from '../../core/services/corresponsal.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,12 +15,11 @@ import { BuscadorReferenciasComponent } from "../../Components/buscador-referenc
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   // Dashboard statistics data
   dashboardStats = {
-    totalReferences: 12,
-    pendingReferences: 3,
-    totalProviders: 12
+    totalReferences: 0,
+    totalProviders: 0
   };
 
   // Search functionality
@@ -28,7 +29,21 @@ export class DashboardComponent {
   isCreateReferenceModalOpen: boolean = false;
   isCreateCorresponsalModalOpen: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private referenciasService: ReferenciasService, private corresponsalService: CorresponsalService) {}
+
+  ngOnInit(): void {
+    this.loadDashboardStats();
+  }
+
+  loadDashboardStats(): void {
+    this.referenciasService.getReferencias().subscribe(references => {
+      this.dashboardStats.totalReferences = references.length;
+    });
+
+    this.corresponsalService.getCorresponsalesActivos().subscribe(corresponsales => {
+      this.dashboardStats.totalProviders = corresponsales.length;
+    });
+  }
 
   onNavigationChange(route: string) {
     console.log('Navigation changed to:', route);
@@ -83,7 +98,7 @@ export class DashboardComponent {
     // Here you can add logic to update the dashboard stats or refresh data
     // For example, increment the total references count
     this.dashboardStats.totalReferences++;
-    
+
     // You could also add the new reference to a list or refresh data from a service
     this.isCreateReferenceModalOpen = false;
   }
@@ -98,7 +113,7 @@ export class DashboardComponent {
     // Here you can add logic to update the dashboard stats or refresh data
     // For example, increment the total providers count
     this.dashboardStats.totalProviders++;
-    
+
     // You could also add the new corresponsal to a list or refresh data from a service
     this.isCreateCorresponsalModalOpen = false;
   }
