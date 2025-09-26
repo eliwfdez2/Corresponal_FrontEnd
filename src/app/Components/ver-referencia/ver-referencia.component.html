@@ -5,12 +5,13 @@
       <i class="icon-arrow-left"></i>
       Volver
     </button>
-    <h1 class="titulo">Documentos de Referencia: {{referenciaId}}</h1>
+    <h1 class="titulo">Documentos de Referencia: {{referenciaData?.referencia || referenciaId}}</h1>
   </div>
 
   <!-- Barra de acciones -->
   <div class="acciones-bar">
     <button class="btn-subir" (click)="subirArchivos()">Subir Archivos</button>
+    <button class="btn-subir" (click)="descargarTodosDocumentos()">Descargar Todos</button>
     <div class="buscador">
       <i class="icon-search"></i>
       <input 

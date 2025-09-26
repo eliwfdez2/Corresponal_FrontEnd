@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubirArchivosComponent } from '../../Modals/subir-archivos/subir-archivos.component';
+import { ReferenciaDetalle, ReferenciasService } from '../../core/services/referencias.service';
 
 interface Documento {
   id: number;
@@ -16,68 +17,39 @@ interface Documento {
   selector: 'app-ver-referencia',
   imports: [CommonModule, FormsModule, SubirArchivosComponent],
   templateUrl: './ver-referencia.component.html',
-  styleUrl: './ver-referencia.component.css'
+  styleUrl: './ver-referencia.component.css',
+  providers: [ReferenciasService]
 })
 export class VerReferenciaComponent implements OnInit {
   documentos: Documento[] = [];
   documentosFiltrados: Documento[] = [];
   terminoBusqueda: string = '';
   referenciaId: string = '';
+  referenciaData: ReferenciaDetalle | null = null;
   showModal: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private referenciasService: ReferenciasService
   ) {}
 
   ngOnInit() {
-    // Obtener el ID de la referencia desde la URL
+    // Obtener la referencia desde la URL
     this.route.params.subscribe(params => {
-      this.referenciaId = params['id'] || 'VER22-000000';
-      this.cargarDocumentos();
+      this.referenciaId = params['id'];
+      this.referenciasService.getReferencia(this.referenciaId).subscribe(data => {
+        this.referenciaData = data;
+        this.documentos = data.documents.map((doc: any) => ({
+          id: doc.id,
+          nombre: doc.nombre_documento,
+          estado: doc.estado,
+          cliente: doc.cliente,
+          fecha: doc.fecha
+        }));
+        this.documentosFiltrados = [...this.documentos];
+      });
     });
-  }
-
-  cargarDocumentos() {
-    // Datos de ejemplo basados en la imagen
-    this.documentos = [
-      {
-        id: 1,
-        nombre: 'Factura de ejemplo',
-        estado: 'valido',
-        cliente: 'Cliente Ejemplo',
-        fecha: '24/08/2020'
-      },
-      {
-        id: 2,
-        nombre: 'Documento importante',
-        estado: 'no-valido',
-        cliente: 'Cliente Ejemplo',
-        fecha: '24/08/2020'
-      },
-      {
-        id: 3,
-        nombre: 'Factura movimiento',
-        estado: 'pendiente',
-        cliente: 'Cliente Ejemplo',
-        fecha: '24/08/2020'
-      },
-      {
-        id: 4,
-        nombre: 'Comprobante de recibo',
-        estado: 'valido',
-        cliente: 'Cliente Ejemplo',
-        fecha: '24/08/2020'
-      },
-      {
-        id: 5,
-        nombre: 'Comprobante 2',
-        estado: 'no-valido',
-        cliente: 'Cliente Ejemplo',
-        fecha: '24/08/2020'
-      }
-    ];
-    this.documentosFiltrados = [...this.documentos];
   }
 
   buscarDocumentos() {
@@ -103,8 +75,25 @@ export class VerReferenciaComponent implements OnInit {
   }
 
   descargarDocumento(documento: Documento) {
-    console.log('Descargar documento:', documento);
-    // Lógica para descargar el documento
+    this.referenciasService.downloadDocumento(documento.nombre, this.referenciaId).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = documento.nombre;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
+
+  descargarTodosDocumentos() {
+    this.referenciasService.downloadTodosDocumentos(this.referenciaId).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${this.referenciaId}_documentos.zip`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
   }
 
   editarDocumento(documento: Documento) {
