@@ -65,4 +65,12 @@
 
   <!-- Modal para subir archivos -->
   <app-subir-archivos *ngIf="showModal" (close)="closeModal()"></app-subir-archivos>
+
+  <!-- Modal para ver documento -->
+  <app-ver-documento
+    [isOpen]="showViewModal"
+    [documentBlob]="viewDocumentBlob"
+    [documentName]="viewDocumentName"
+    (modalClosed)="closeViewModal()">
+  </app-ver-documento>
 </div>

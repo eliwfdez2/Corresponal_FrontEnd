@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubirArchivosComponent } from '../../Modals/subir-archivos/subir-archivos.component';
+import { VerDocumentoComponent } from '../../Modals/ver-documento/ver-documento.component';
 import { ReferenciaDetalle, ReferenciasService } from '../../core/services/referencias.service';
 
 interface Documento {
@@ -15,7 +16,7 @@ interface Documento {
 
 @Component({
   selector: 'app-ver-referencia',
-  imports: [CommonModule, FormsModule, SubirArchivosComponent],
+  imports: [CommonModule, FormsModule, SubirArchivosComponent, VerDocumentoComponent],
   templateUrl: './ver-referencia.component.html',
   styleUrl: './ver-referencia.component.css',
   providers: [ReferenciasService]
@@ -27,6 +28,9 @@ export class VerReferenciaComponent implements OnInit {
   referenciaId: string = '';
   referenciaData: ReferenciaDetalle | null = null;
   showModal: boolean = false;
+  showViewModal: boolean = false;
+  viewDocumentBlob: Blob | null = null;
+  viewDocumentName: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -71,7 +75,11 @@ export class VerReferenciaComponent implements OnInit {
 
   verDocumento(documento: Documento) {
     console.log('Ver documento:', documento);
-    // Lógica para ver el documento
+    this.referenciasService.viewDocumento(this.referenciaId, documento.nombre).subscribe(blob => {
+      this.viewDocumentBlob = blob;
+      this.viewDocumentName = documento.nombre;
+      this.showViewModal = true;
+    });
   }
 
   descargarDocumento(documento: Documento) {
@@ -108,5 +116,11 @@ export class VerReferenciaComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+  }
+
+  closeViewModal() {
+    this.showViewModal = false;
+    this.viewDocumentBlob = null;
+    this.viewDocumentName = '';
   }
 }

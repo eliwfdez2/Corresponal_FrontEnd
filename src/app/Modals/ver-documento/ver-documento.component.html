@@ -1,0 +1,14 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ documentName }}</h5>
+      <button type="button" class="btn-close" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <iframe [src]="documentUrl" class="document-iframe" *ngIf="documentUrl; else loading"></iframe>
+      <ng-template #loading>
+        <p>Cargando documento...</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -75,4 +75,11 @@ export class ReferenciasService {
       responseType: 'blob'
     });
   }
+
+  viewDocumento(codigo: string, nombre: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/documento/${codigo}/${nombre}`, {
+      headers: this.getHeaders(),
+      responseType: 'blob'
+    });
+  }
 }
