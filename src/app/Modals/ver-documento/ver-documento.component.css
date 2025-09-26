@@ -15,9 +15,9 @@
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  width: 90%;
-  max-width: 800px;
-  max-height: 90vh;
+  width: 95%;
+  max-width: 1200px;
+  max-height: 95vh;
   display: flex;
   flex-direction: column;
 }
@@ -57,6 +57,6 @@
 .document-iframe {
   width: 100%;
   height: 100%;
-  min-height: 500px;
+  min-height: 700px;
   border: none;
 }

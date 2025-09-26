@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-ver-documento',
@@ -14,13 +15,17 @@ export class VerDocumentoComponent implements OnChanges {
   @Input() documentName: string = '';
   @Output() modalClosed = new EventEmitter<void>();
 
-  documentUrl: string = '';
+  documentUrl: SafeResourceUrl | null = null;
+  private originalUrl: string = '';
+
+  constructor(private sanitizer: DomSanitizer) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['documentBlob'] && this.documentBlob) {
       const type = this.getMimeType(this.documentName);
       const blobWithType = new Blob([this.documentBlob], { type });
-      this.documentUrl = URL.createObjectURL(blobWithType);
+      this.originalUrl = URL.createObjectURL(blobWithType);
+      this.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.originalUrl);
     }
   }
 
@@ -40,9 +45,10 @@ export class VerDocumentoComponent implements OnChanges {
   }
 
   closeModal() {
-    if (this.documentUrl) {
-      URL.revokeObjectURL(this.documentUrl);
-      this.documentUrl = '';
+    if (this.originalUrl) {
+      URL.revokeObjectURL(this.originalUrl);
+      this.originalUrl = '';
+      this.documentUrl = null;
     }
     this.modalClosed.emit();
   }
