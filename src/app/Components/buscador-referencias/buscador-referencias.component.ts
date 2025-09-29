@@ -49,10 +49,10 @@ export class BuscadorReferenciasComponent implements OnInit, OnDestroy {
 
     const searchLower = term.toLowerCase();
     this.filteredReferences = this.allReferences.filter(reference =>
-      reference.referencia.toLowerCase().includes(searchLower) ||
-      reference.fecha_creacion.toLowerCase().includes(searchLower) ||
-      reference.creador_nombre.toLowerCase().includes(searchLower) ||
-      reference.estatus_nombre.toLowerCase().includes(searchLower)
+      (typeof reference.referencia === 'string' && reference.referencia.toLowerCase().includes(searchLower)) ||
+      (typeof reference.fecha_creacion === 'string' && reference.fecha_creacion.toLowerCase().includes(searchLower)) ||
+      (typeof reference.creador_nombre === 'string' && reference.creador_nombre.toLowerCase().includes(searchLower)) ||
+      (typeof reference.estatus_nombre === 'string' && reference.estatus_nombre.toLowerCase().includes(searchLower))
     );
   }
 
@@ -67,3 +67,4 @@ export class BuscadorReferenciasComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
+
