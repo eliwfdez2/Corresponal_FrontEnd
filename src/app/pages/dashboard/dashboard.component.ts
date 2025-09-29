@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToolBarComponent } from '../../Components/tool-bar/tool-bar.component';
-import { CrearReferenciasComponent } from '../../Modals/crear-referencias/crear-referencias.component';
 import { CrearCorresponsalComponent } from '../../Modals/crear-corresponsal/crear-corresponsal.component';
 import { CrearEjecutivasComponent } from '../../Modals/crear-ejecutivas/crear-ejecutivas.component';
 import { BuscadorReferenciasComponent } from "../../Components/buscador-referencias/buscador-referencias.component";
 import { ReferenciasService } from '../../core/services/referencias.service';
 import { CorresponsalService } from '../../core/services/corresponsal.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ToolBarComponent, CrearReferenciasComponent, CrearCorresponsalComponent, CrearEjecutivasComponent, BuscadorReferenciasComponent],
+  imports: [CommonModule, ToolBarComponent, CrearCorresponsalComponent, CrearEjecutivasComponent, BuscadorReferenciasComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -31,20 +31,26 @@ export class DashboardComponent implements OnInit {
   isCreateCorresponsalModalOpen: boolean = false;
   isCreateEjecutivaModalOpen: boolean = false;
 
-  constructor(private router: Router, private referenciasService: ReferenciasService, private corresponsalService: CorresponsalService) {}
+  // User role
+  userRole: string | null = null;
+
+  constructor(private router: Router, private referenciasService: ReferenciasService, private corresponsalService: CorresponsalService, private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.userRole = this.authService.getUserRole();
     this.loadDashboardStats();
   }
 
   loadDashboardStats(): void {
-    this.referenciasService.getReferencias().subscribe(references => {
-      this.dashboardStats.totalReferences = references.length;
-    });
+    if (this.isAdmin()) {
+      this.referenciasService.getReferencias().subscribe(references => {
+        this.dashboardStats.totalReferences = references.length;
+      });
 
-    this.corresponsalService.getCorresponsalesActivos().subscribe(corresponsales => {
-      this.dashboardStats.totalProviders = corresponsales.length;
-    });
+      this.corresponsalService.getCorresponsalesActivos().subscribe(corresponsales => {
+        this.dashboardStats.totalProviders = corresponsales.length;
+      });
+    }
   }
 
   onNavigationChange(route: string) {
@@ -60,21 +66,25 @@ export class DashboardComponent implements OnInit {
 
   // Quick action methods
   onCreateReference() {
+    if (!this.canCreateReference()) return;
     console.log('Create Reference clicked');
     this.isCreateReferenceModalOpen = true;
   }
 
   onNewEjecutiva() {
+    if (!this.canCreateEjecutiva()) return;
     console.log('New Ejecutiva clicked');
     this.isCreateEjecutivaModalOpen = true;
   }
 
   onNewProvider() {
+    if (!this.canCreateProvider()) return;
     console.log('New Provider clicked');
     this.isCreateCorresponsalModalOpen = true;
   }
 
   onValidateDocuments() {
+    if (!this.canValidateDocuments()) return;
     console.log('Validate Documents clicked');
     // Navigate to document validation page
     // this.router.navigate(['/validate-documents']);
@@ -133,5 +143,30 @@ export class DashboardComponent implements OnInit {
 
     // You could also add the new ejecutiva to a list or refresh data from a service
     this.isCreateEjecutivaModalOpen = false;
+  }
+
+  // Role-based access control methods
+  isAdmin(): boolean {
+    return this.userRole === 'Administrador';
+  }
+
+  isCorresponsal(): boolean {
+    return this.userRole === 'Corresponsal';
+  }
+
+  canCreateReference(): boolean {
+    return this.isAdmin();
+  }
+
+  canCreateEjecutiva(): boolean {
+    return this.isAdmin();
+  }
+
+  canCreateProvider(): boolean {
+    return this.isAdmin();
+  }
+
+  canValidateDocuments(): boolean {
+    return this.isAdmin() || this.isCorresponsal();
   }
 }
