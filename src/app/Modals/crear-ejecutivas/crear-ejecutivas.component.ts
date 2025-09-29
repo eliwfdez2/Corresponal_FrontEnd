@@ -1,15 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CorresponsalService } from '../../core/services/corresponsal.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { CorresponsalService } from '../../core/services/corresponsal.service';
 
 @Component({
-  selector: 'app-crear-corresponsal',
-  standalone: true,
+  selector: 'app-crear-ejecutivas',
   imports: [CommonModule, FormsModule],
-  templateUrl: './crear-corresponsal.component.html',
-  styleUrl: './crear-corresponsal.component.css',
+  templateUrl: './crear-ejecutivas.component.html',
+  styleUrl: './crear-ejecutivas.component.css',
   animations: [
     trigger('slideIn', [
       transition(':enter', [
@@ -22,16 +21,16 @@ import { CorresponsalService } from '../../core/services/corresponsal.service';
     ])
   ]
 })
-export class CrearCorresponsalComponent {
+export class CrearEjecutivasComponent {
   @Input() isOpen: boolean = false;
   @Output() modalClosed = new EventEmitter<void>();
   @Output() corresponsalCreated = new EventEmitter<any>();
 
-  corresponsalData = {
+  EjecutivaData = {
     nombre_completo: '',
     nombre_usuario: '',
     password: '',
-    rol_nombre: 'Corresponsal'
+    rol_nombre: 'Ejecutiva Cuenta'
   };
 
   successMessage: string = '';
@@ -53,15 +52,15 @@ export class CrearCorresponsalComponent {
   saveCorresponsal() {
     if (this.isFormValid()) {
       const payload = {
-        nombre_completo: this.corresponsalData.nombre_completo,
-        nombre_usuario: this.corresponsalData.nombre_usuario,
-        password: this.corresponsalData.password,
-        rol_nombre: 'Corresponsal'
+        nombre_completo: this.EjecutivaData.nombre_completo,
+        nombre_usuario: this.EjecutivaData.nombre_usuario,
+        password: this.EjecutivaData.password,
+        rol_nombre: 'Ejecutiva Cuenta'
       };
 
       this.corresponsalService.crearUsuarios(payload).subscribe({
         next: (response: any) => {
-          this.successMessage = '¡Corresponsal creado correctamente!';
+          this.successMessage = '¡Ejecutiva creada correctamente!';
           this.corresponsalCreated.emit(response);
           setTimeout(() => {
             this.successMessage = '';
@@ -69,24 +68,24 @@ export class CrearCorresponsalComponent {
           }, 2000); // Oculta el mensaje después de 2 segundos
         },
         error: (err: any) => {
-          console.error('Error creando corresponsal:', err);
+          console.error('Error creando ejecutiva:', err);
         }
       });
     }
   }
 
   private isFormValid(): boolean {
-    return this.corresponsalData.nombre_completo.trim() !== '' &&
-           this.corresponsalData.nombre_usuario.trim() !== '' &&
-           this.corresponsalData.password.trim() !== '';
+    return this.EjecutivaData.nombre_completo.trim() !== '' &&
+           this.EjecutivaData.nombre_usuario.trim() !== '' &&
+           this.EjecutivaData.password.trim() !== '';
   }
 
   private resetForm() {
-    this.corresponsalData = {
+    this.EjecutivaData = {
       nombre_completo: '',
       nombre_usuario: '',
       password: '',
-      rol_nombre: 'Corresponsal'
+      rol_nombre: 'Ejecutiva Cuenta'
     };
   }
 }

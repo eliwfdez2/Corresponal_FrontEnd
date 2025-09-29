@@ -46,10 +46,10 @@
       </button>
     </div>
     <div class="col-md-6">
-      <button class="btn btn-outline-secondary w-100 quick-action-btn" type="button" (click)="onOtherPlanned()">
+      <button class="btn btn-outline-secondary w-100 quick-action-btn" type="button" (click)="onNewEjecutiva()">
         <div class="d-flex align-items-center p-2">
           <i class="fas fa-chart-line fa-lg me-3"></i>
-          <span>Otra cosa planeada ....</span>
+          <span>Nuevo Ejecutiva</span>
         </div>
       </button>
     </div>
@@ -79,9 +79,15 @@
     (referenceCreated)="onReferenceCreated($event)">
   </app-crear-referencias>
 
-  <app-crear-corresponsal 
+  <app-crear-corresponsal
     [isOpen]="isCreateCorresponsalModalOpen"
     (modalClosed)="onCorresponsalModalClosed()"
     (corresponsalCreated)="onCorresponsalCreated($event)">
   </app-crear-corresponsal>
+
+  <app-crear-ejecutivas
+    [isOpen]="isCreateEjecutivaModalOpen"
+    (modalClosed)="onEjecutivaModalClosed()"
+    (corresponsalCreated)="onEjecutivaCreated($event)">
+  </app-crear-ejecutivas>
 </div>

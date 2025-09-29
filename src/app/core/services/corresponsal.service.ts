@@ -10,7 +10,7 @@ export class CorresponsalService {
 
   constructor(private http: HttpClient) {}
 
-  crearCorresponsal(data: any): Observable<any> {
+  crearUsuarios(data: any): Observable<any> {
     const token = localStorage.getItem('token'); 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`

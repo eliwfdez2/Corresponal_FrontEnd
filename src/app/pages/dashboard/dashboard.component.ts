@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToolBarComponent } from '../../Components/tool-bar/tool-bar.component';
 import { CrearReferenciasComponent } from '../../Modals/crear-referencias/crear-referencias.component';
 import { CrearCorresponsalComponent } from '../../Modals/crear-corresponsal/crear-corresponsal.component';
+import { CrearEjecutivasComponent } from '../../Modals/crear-ejecutivas/crear-ejecutivas.component';
 import { BuscadorReferenciasComponent } from "../../Components/buscador-referencias/buscador-referencias.component";
 import { ReferenciasService } from '../../core/services/referencias.service';
 import { CorresponsalService } from '../../core/services/corresponsal.service';
@@ -11,7 +12,7 @@ import { CorresponsalService } from '../../core/services/corresponsal.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ToolBarComponent, CrearReferenciasComponent, CrearCorresponsalComponent, BuscadorReferenciasComponent],
+  imports: [CommonModule, ToolBarComponent, CrearReferenciasComponent, CrearCorresponsalComponent, CrearEjecutivasComponent, BuscadorReferenciasComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnInit {
   // Modal state
   isCreateReferenceModalOpen: boolean = false;
   isCreateCorresponsalModalOpen: boolean = false;
+  isCreateEjecutivaModalOpen: boolean = false;
 
   constructor(private router: Router, private referenciasService: ReferenciasService, private corresponsalService: CorresponsalService) {}
 
@@ -62,9 +64,9 @@ export class DashboardComponent implements OnInit {
     this.isCreateReferenceModalOpen = true;
   }
 
-  onOtherPlanned() {
-    console.log('Other planned action clicked');
-    // Handle other planned functionality
+  onNewEjecutiva() {
+    console.log('New Ejecutiva clicked');
+    this.isCreateEjecutivaModalOpen = true;
   }
 
   onNewProvider() {
@@ -116,5 +118,20 @@ export class DashboardComponent implements OnInit {
 
     // You could also add the new corresponsal to a list or refresh data from a service
     this.isCreateCorresponsalModalOpen = false;
+  }
+
+  // Ejecutiva modal event handlers
+  onEjecutivaModalClosed() {
+    this.isCreateEjecutivaModalOpen = false;
+  }
+
+  onEjecutivaCreated(ejecutivaData: any) {
+    console.log('New ejecutiva created:', ejecutivaData);
+    // Here you can add logic to update the dashboard stats or refresh data
+    // For example, increment the total providers count
+    this.dashboardStats.totalProviders++;
+
+    // You could also add the new ejecutiva to a list or refresh data from a service
+    this.isCreateEjecutivaModalOpen = false;
   }
 }

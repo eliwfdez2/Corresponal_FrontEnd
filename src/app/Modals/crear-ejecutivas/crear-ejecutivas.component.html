@@ -1,0 +1,77 @@
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" *ngIf="isOpen" (click)="closeModal()"></div>
+
+<!-- Modal Dialog -->
+<div class="modal-dialog" *ngIf="isOpen" [@slideIn]>
+  <div class="modal-content"> 
+     <!-- Agrega esto arriba del formulario o donde prefieras -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h5 class="modal-title">Nuevo Proveedor o corresponsal</h5>
+      <button type="button" class="btn-close" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()" #corresponsalForm="ngForm">
+        <!-- Name Field -->
+        <div class="form-group mb-4">
+          <label for="name" class="form-label">Nombre completo</label>
+          <input 
+            type="text" 
+            id="nombre completo"
+            name="nombre completo"
+            class="form-control"
+            [(ngModel)]="EjecutivaData.nombre_completo"
+            placeholder="Nombre Completo"
+            required>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group mb-4">
+          <label for="nombre de usuario" class="form-label">Nombre de usuario</label>
+          <input 
+            type="Nombre de usuario" 
+            id="Nombre de usuario"
+            name="nombre de usuario"
+            class="form-control"
+            [(ngModel)]="EjecutivaData.nombre_usuario"
+            placeholder="Fulanito Ejecutiva"
+            required>
+        </div>
+
+        <!-- Phone Field -->
+        <div class="form-group mb-4">
+          <label for="Contraseña" class="form-label">Contraseña</label>
+          <input 
+            type="Contraseña" 
+            id="Contraseña"
+            name="Contraseña"
+            class="form-control"
+            [(ngModel)]="EjecutivaData.password"
+            placeholder="Contraseña"
+            required>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">
+        Cancelar
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-primary" 
+        (click)="saveCorresponsal()"
+        [disabled]="!corresponsalForm.form.valid">
+        Guardar
+      </button>
+    </div>
+  </div>
+</div>
