@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-actualizar-informacion',
@@ -21,23 +22,32 @@ export class ActualizarInformacionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {
     this.userInfoForm = this.fb.group({
       nombre_completo: ['', [Validators.required]],
-      nombre_usuario: ['', [Validators.required]]
+      nombre_usuario: ['', [Validators.required]],
+      correo_electronico: ['', [Validators.required, Validators.email]]
     });
   }
 
   ngOnInit(): void {
-    // Pre-fill with current values from token
-    const currentName = this.authService.getUserName() || '';
-    const currentRole = this.authService.getUserRole() || '';
-    // Assuming nombre_completo might be stored elsewhere, for now use nombre_usuario
-    this.userInfoForm.patchValue({
-      nombre_completo: currentName,
-      nombre_usuario: currentName
-    });
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.userService.getUserById(userId).subscribe({
+        next: (user) => {
+          this.userInfoForm.patchValue({
+            nombre_completo: user.nombre_completo,
+            nombre_usuario: user.nombre_usuario,
+            correo_electronico: user.correo_electronico
+          });
+        },
+        error: (err) => {
+          console.error('Error loading user data for update:', err);
+        }
+      });
+    }
   }
 
   onSubmit() {

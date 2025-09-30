@@ -7,6 +7,7 @@ export interface User {
   id: number;
   nombre_usuario: string;
   nombre_completo: string;
+  correo_electronico: string;
   rol_id: number;
   rol_nombre: string;
   activo: boolean;

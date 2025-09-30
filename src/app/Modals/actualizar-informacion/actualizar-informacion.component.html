@@ -25,6 +25,15 @@
               formControlName="nombre_usuario"
               placeholder="Ingrese su nombre de usuario">
           </div>
+          <div class="mb-3">
+            <label for="correo_electronico" class="form-label">Correo Electrónico</label>
+            <input
+              type="email"
+              class="form-control"
+              id="correo_electronico"
+              formControlName="correo_electronico"
+              placeholder="Ingrese su correo electrónico">
+          </div>
           <div *ngIf="message" class="alert" [ngClass]="{'alert-success': messageType === 'success', 'alert-danger': messageType === 'error'}">
             {{ message }}
           </div>

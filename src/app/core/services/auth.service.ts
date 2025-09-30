@@ -94,7 +94,7 @@ export class AuthService {
     }
   }
 
-  updateUserInfo(userInfo: { nombre_completo: string; nombre_usuario: string }): Observable<any> {
+  updateUserInfo(userInfo: { nombre_completo: string; nombre_usuario: string; correo_electronico: string }): Observable<any> {
     const userId = this.getUserId();
     if (!userId) {
       throw new Error('No user ID available');
