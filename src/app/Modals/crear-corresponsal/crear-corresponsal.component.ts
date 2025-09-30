@@ -31,6 +31,7 @@ export class CrearCorresponsalComponent {
     nombre_completo: '',
     nombre_usuario: '',
     password: '',
+    correo_electronico: '',
     rol_nombre: 'Corresponsal'
   };
 
@@ -56,6 +57,7 @@ export class CrearCorresponsalComponent {
         nombre_completo: this.corresponsalData.nombre_completo,
         nombre_usuario: this.corresponsalData.nombre_usuario,
         password: this.corresponsalData.password,
+        correo_electronico: this.corresponsalData.correo_electronico,
         rol_nombre: 'Corresponsal'
       };
 
@@ -78,7 +80,8 @@ export class CrearCorresponsalComponent {
   private isFormValid(): boolean {
     return this.corresponsalData.nombre_completo.trim() !== '' &&
            this.corresponsalData.nombre_usuario.trim() !== '' &&
-           this.corresponsalData.password.trim() !== '';
+           this.corresponsalData.password.trim() !== '' &&
+           this.corresponsalData.correo_electronico.trim() !== '';
   }
 
   private resetForm() {
@@ -86,6 +89,7 @@ export class CrearCorresponsalComponent {
       nombre_completo: '',
       nombre_usuario: '',
       password: '',
+      correo_electronico: '',
       rol_nombre: 'Corresponsal'
     };
   }

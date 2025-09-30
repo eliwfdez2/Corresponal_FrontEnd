@@ -30,6 +30,7 @@ export class CrearEjecutivasComponent {
     nombre_completo: '',
     nombre_usuario: '',
     password: '',
+    correo_electronico: '',
     rol_nombre: 'Ejecutiva Cuenta'
   };
 
@@ -55,6 +56,7 @@ export class CrearEjecutivasComponent {
         nombre_completo: this.EjecutivaData.nombre_completo,
         nombre_usuario: this.EjecutivaData.nombre_usuario,
         password: this.EjecutivaData.password,
+        correo_electronico: this.EjecutivaData.correo_electronico,
         rol_nombre: 'Ejecutiva Cuenta'
       };
 
@@ -77,7 +79,8 @@ export class CrearEjecutivasComponent {
   private isFormValid(): boolean {
     return this.EjecutivaData.nombre_completo.trim() !== '' &&
            this.EjecutivaData.nombre_usuario.trim() !== '' &&
-           this.EjecutivaData.password.trim() !== '';
+           this.EjecutivaData.password.trim() !== '' &&
+           this.EjecutivaData.correo_electronico.trim() !== '';
   }
 
   private resetForm() {
@@ -85,6 +88,7 @@ export class CrearEjecutivasComponent {
       nombre_completo: '',
       nombre_usuario: '',
       password: '',
+      correo_electronico: '',
       rol_nombre: 'Ejecutiva Cuenta'
     };
   }

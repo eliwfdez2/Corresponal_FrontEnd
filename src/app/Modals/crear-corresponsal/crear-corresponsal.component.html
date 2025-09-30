@@ -48,13 +48,26 @@
         <!-- Phone Field -->
         <div class="form-group mb-4">
           <label for="Contraseña" class="form-label">Contraseña</label>
-          <input 
-            type="Contraseña" 
+          <input
+            type="Contraseña"
             id="Contraseña"
             name="Contraseña"
             class="form-control"
             [(ngModel)]="corresponsalData.password"
             placeholder="Contraseña"
+            required>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group mb-4">
+          <label for="correo_electronico" class="form-label">Correo Electrónico</label>
+          <input
+            type="email"
+            id="correo_electronico"
+            name="correo_electronico"
+            class="form-control"
+            [(ngModel)]="corresponsalData.correo_electronico"
+            placeholder="correo@ejemplo.com"
             required>
         </div>
       </form>
