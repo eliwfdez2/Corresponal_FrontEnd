@@ -14,6 +14,38 @@
           <input type="file" #fileInput multiple style="display: none;" (change)="onFileSelected($event)">
         </div>
       </div>
+      <div *ngIf="uploadedFiles.length > 0" class="uploaded-files-list">
+        <h3>Archivos Subidos</h3>
+        <ul>
+          <li *ngFor="let file of uploadedFiles; let i = index">
+            <span>{{ file.name }} ({{ formatFileSize(file.size) }})</span>
+            <select class="file-select">
+              <option value="">Categoría</option>
+              <option value="cat1">Categoría 1</option>
+              <option value="cat2">Categoría 2</option>
+            </select>
+            <select class="file-select">
+              <option value="">Etiqueta</option>
+              <option value="tagA">Etiqueta A</option>
+              <option value="tagB">Etiqueta B</option>
+            </select>
+            <button class="delete-btn" (click)="removeFile(i)">🗑️</button>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="closeModal()">Cancelar</button>
+        <button class="upload-btn" (click)="uploadFiles()" *ngIf="uploadedFiles.length > 0">Subir {{ uploadedFiles.length }} Archivos</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showConfirmation" class="confirmation-overlay">
+    <div class="confirmation-modal">
+      <p>¿Estás seguro de subir estos archivos?</p>
+      <div class="confirmation-buttons">
+        <button class="confirm-btn" (click)="confirmUpload()">Sí</button>
+        <button class="cancel-confirm-btn" (click)="cancelConfirmation()">No</button>
+      </div>
     </div>
   </div>
 </div>
