@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ExtensionesArchivosService } from '../../core/services/extensiones-archivos.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-nuevo-tipo-archivo',
@@ -22,20 +23,27 @@ import { ExtensionesArchivosService } from '../../core/services/extensiones-arch
     ])
   ]
 })
-export class NuevoTipoArchivoComponent {
+export class NuevoTipoArchivoComponent implements OnInit {
   @Input() isOpen: boolean = false;
   @Output() modalClosed = new EventEmitter<void>();
   @Output() tipoArchivoCreated = new EventEmitter<any>();
 
   tipoArchivo = {
     extension_archivo: '',
-    activo: 0,
-    creador_por: 0
+    activo: 1,
+    creado_por: 0
   };
 
   successMessage: string = '';
 
-  constructor(private extensionesArchivosService: ExtensionesArchivosService) {}
+  constructor(private extensionesArchivosService: ExtensionesArchivosService, private authService: AuthService) {}
+
+  ngOnInit() {
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.tipoArchivo.creado_por = userId;
+    }
+  }
 
   closeModal() {
     this.isOpen = false;
@@ -73,10 +81,11 @@ export class NuevoTipoArchivoComponent {
   }
 
   private resetForm() {
+    const userId = this.authService.getUserId();
     this.tipoArchivo = {
       extension_archivo: '',
-      activo: 0,
-      creador_por: 0
+      activo: 1,
+      creado_por: userId || 0
     };
   }
 }

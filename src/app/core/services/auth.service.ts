@@ -59,7 +59,7 @@ export class AuthService {
     try {
       const payload = token.split('.')[1];
       const decodedPayload = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
-      return decodedPayload.id;
+      return decodedPayload.sub || decodedPayload.id;
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;

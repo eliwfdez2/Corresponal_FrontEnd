@@ -29,7 +29,7 @@ export class NuevoConceptoComponent {
 
   concepto = {
     clave: '',
-    activo: true
+    activo: 1
   };
 
   successMessage: string = '';
@@ -74,7 +74,7 @@ export class NuevoConceptoComponent {
   private resetForm() {
     this.concepto = {
       clave: '',
-      activo: true
+      activo: 1
     };
   }
 }
