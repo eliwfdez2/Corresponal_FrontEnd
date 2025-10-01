@@ -52,10 +52,18 @@
       </button>
     </div>
     <div class="col-md-6" *ngIf="canValidateDocuments()">
-      <button class="btn btn-outline-info w-100 quick-action-btn" type="button" (click)="onValidateDocuments()">
+      <button class="btn btn-outline-info w-100 quick-action-btn" type="button" (click)="onNuevoTipoArchivo()">
         <div class="d-flex align-items-center p-2">
-          <i class="fas fa-check-circle fa-lg me-3"></i>
-          <span>Validar Documentos</span>
+          <i class="fas fa-file-alt fa-lg me-3"></i>
+          <span>Nuevo Tipo de Archivo</span>
+        </div>
+      </button>
+    </div>
+    <div class="col-md-6" *ngIf="canValidateDocuments()">
+      <button class="btn btn-outline-info w-100 quick-action-btn" type="button" (click)="onNuevoConcepto()">
+        <div class="d-flex align-items-center p-2">
+          <i class="fas fa-lightbulb fa-lg me-3"></i>
+          <span>Nuevo Concepto</span>
         </div>
       </button>
     </div>
@@ -74,4 +82,14 @@
     (modalClosed)="onEjecutivaModalClosed()"
     (corresponsalCreated)="onEjecutivaCreated($event)">
   </app-crear-ejecutivas>
+  <app-nuevo-tipo-archivo
+    [isOpen]="isNuevoTipoArchivoModalOpen"
+    (modalClosed)="onNuevoTipoArchivoModalClosed()"
+    (tipoArchivoCreated)="onTipoArchivoCreated($event)">
+  </app-nuevo-tipo-archivo>
+  <app-nuevo-concepto
+    [isOpen]="isNuevoConceptoModalOpen"
+    (modalClosed)="onNuevoConceptoModalClosed()"
+    (conceptoCreated)="onConceptoCreated($event)">
+  </app-nuevo-concepto>
 </div>

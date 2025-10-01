@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { ToolBarComponent } from '../../Components/tool-bar/tool-bar.component';
 import { CrearCorresponsalComponent } from '../../Modals/crear-corresponsal/crear-corresponsal.component';
 import { CrearEjecutivasComponent } from '../../Modals/crear-ejecutivas/crear-ejecutivas.component';
+import { NuevoTipoArchivoComponent } from '../../Modals/nuevo-tipo-archivo/nuevo-tipo-archivo.component';
+import { NuevoConceptoComponent } from '../../Modals/nuevo-concepto/nuevo-concepto.component';
 import { BuscadorReferenciasComponent } from "../../Components/buscador-referencias/buscador-referencias.component";
 import { ReferenciasService } from '../../core/services/referencias.service';
 import { CorresponsalService } from '../../core/services/corresponsal.service';
@@ -12,7 +14,7 @@ import { AuthService } from '../../core/services/auth.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ToolBarComponent, CrearCorresponsalComponent, CrearEjecutivasComponent, BuscadorReferenciasComponent],
+  imports: [CommonModule, ToolBarComponent, CrearCorresponsalComponent, CrearEjecutivasComponent, NuevoTipoArchivoComponent, NuevoConceptoComponent, BuscadorReferenciasComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -30,6 +32,8 @@ export class DashboardComponent implements OnInit {
   isCreateReferenceModalOpen: boolean = false;
   isCreateCorresponsalModalOpen: boolean = false;
   isCreateEjecutivaModalOpen: boolean = false;
+  isNuevoTipoArchivoModalOpen: boolean = false;
+  isNuevoConceptoModalOpen: boolean = false;
 
   // User role
   userRole: string | null = null;
@@ -83,11 +87,16 @@ export class DashboardComponent implements OnInit {
     this.isCreateCorresponsalModalOpen = true;
   }
 
-  onValidateDocuments() {
+  onNuevoTipoArchivo() {
     if (!this.canValidateDocuments()) return;
-    console.log('Validate Documents clicked');
-    // Navigate to document validation page
-    // this.router.navigate(['/validate-documents']);
+    console.log('Nuevo Tipo Archivo clicked');
+    this.isNuevoTipoArchivoModalOpen = true;
+  }
+
+  onNuevoConcepto() {
+    if (!this.canValidateDocuments()) return;
+    console.log('Nuevo Concepto clicked');
+    this.isNuevoConceptoModalOpen = true;
   }
 
   // Search functionality
@@ -134,15 +143,35 @@ export class DashboardComponent implements OnInit {
   onEjecutivaModalClosed() {
     this.isCreateEjecutivaModalOpen = false;
   }
-
+  
   onEjecutivaCreated(ejecutivaData: any) {
     console.log('New ejecutiva created:', ejecutivaData);
     // Here you can add logic to update the dashboard stats or refresh data
     // For example, increment the total providers count
     this.dashboardStats.totalProviders++;
-
+    
     // You could also add the new ejecutiva to a list or refresh data from a service
     this.isCreateEjecutivaModalOpen = false;
+  }
+  
+  // Nuevo Tipo Archivo modal event handlers
+  onNuevoTipoArchivoModalClosed() {
+    this.isNuevoTipoArchivoModalOpen = false;
+  }
+  
+  onTipoArchivoCreated(tipoArchivoData: any) {
+    console.log('New tipo archivo created:', tipoArchivoData);
+    this.isNuevoTipoArchivoModalOpen = false;
+  }
+  
+  // Nuevo Concepto modal event handlers
+  onNuevoConceptoModalClosed() {
+    this.isNuevoConceptoModalOpen = false;
+  }
+  
+  onConceptoCreated(conceptoData: any) {
+    console.log('New concepto created:', conceptoData);
+    this.isNuevoConceptoModalOpen = false;
   }
 
   // Role-based access control methods

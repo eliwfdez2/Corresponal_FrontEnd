@@ -1,0 +1,64 @@
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" *ngIf="isOpen" (click)="closeModal()"></div>
+
+<!-- Modal Dialog -->
+<div class="modal-dialog" *ngIf="isOpen" [@slideIn]>
+  <div class="modal-content">
+    <!-- Agrega esto arriba del formulario o donde prefieras -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h5 class="modal-title">Nuevo Concepto</h5>
+      <button type="button" class="btn-close" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()" #conceptoForm="ngForm">
+        <!-- Clave Field -->
+        <div class="form-group mb-4">
+          <label for="claveConcepto" class="form-label">Clave del Concepto</label>
+          <input
+            type="text"
+            id="claveConcepto"
+            name="claveConcepto"
+            class="form-control"
+            [(ngModel)]="concepto.clave"
+            placeholder="Clave del Concepto"
+            required>
+        </div>
+
+        <!-- Activo Field -->
+        <div class="form-group mb-4">
+          <label for="activo" class="form-label">Activo</label>
+          <select
+            id="activo"
+            name="activo"
+            class="form-control"
+            [(ngModel)]="concepto.activo">
+            <option [value]="true">Sí</option>
+            <option [value]="false">No</option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="saveConcepto()"
+        [disabled]="!conceptoForm.form.valid">
+        Guardar
+      </button>
+    </div>
+  </div>
+</div>
