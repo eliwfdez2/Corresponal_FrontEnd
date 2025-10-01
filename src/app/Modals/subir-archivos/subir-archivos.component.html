@@ -17,17 +17,15 @@
       <div *ngIf="uploadedFiles.length > 0" class="uploaded-files-list">
         <h3>Archivos Subidos</h3>
         <ul>
-          <li *ngFor="let file of uploadedFiles; let i = index">
-            <span>{{ file.name }} ({{ formatFileSize(file.size) }})</span>
-            <select class="file-select">
-              <option value="">Categoría</option>
-              <option value="cat1">Categoría 1</option>
-              <option value="cat2">Categoría 2</option>
+          <li *ngFor="let fileObj of uploadedFiles; let i = index">
+            <span>{{ fileObj.file.name }} ({{ formatFileSize(fileObj.file.size) }})</span>
+            <select class="file-select" [(ngModel)]="fileObj.selectedConcept">
+              <option value="" disabled>Tipo de documento</option>
+              <option *ngFor="let concepto of conceptos" [value]="concepto">{{ concepto }}</option>
             </select>
-            <select class="file-select">
-              <option value="">Etiqueta</option>
-              <option value="tagA">Etiqueta A</option>
-              <option value="tagB">Etiqueta B</option>
+            <select class="file-select" [(ngModel)]="fileObj.selectedExtension">
+              <option value="" disabled>Extension</option>
+              <option *ngFor="let extension of extensiones" [value]="extension">{{ extension }}</option>
             </select>
             <button class="delete-btn" (click)="removeFile(i)">🗑️</button>
           </li>
