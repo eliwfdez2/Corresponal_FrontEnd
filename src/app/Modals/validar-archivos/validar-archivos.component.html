@@ -1,0 +1,28 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Validar Archivo</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p><strong>Archivo:</strong> {{ documento?.nombre }}</p>
+      <p><strong>Estado actual:</strong> {{ documento?.estado }}</p>
+      <div>
+        <label for="status-select">Nuevo Estado:</label>
+        <select id="status-select" [(ngModel)]="selectedStatus" class="status-select">
+          <option value="valido">Valido</option>
+          <option value="no-valido">No valido</option>
+          <option value="pendiente">Pendiente por revisar</option>
+        </select>
+      </div>
+      <div>
+        <label for="observaciones">Observaciones:</label>
+        <textarea id="observaciones" [(ngModel)]="observaciones" class="observaciones-textarea" placeholder="Ingrese observaciones..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeModal()">Cancelar</button>
+      <button class="save-btn" (click)="saveStatus()">Guardar</button>
+    </div>
+  </div>
+</div>

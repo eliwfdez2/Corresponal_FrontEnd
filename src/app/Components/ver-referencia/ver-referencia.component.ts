@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubirArchivosComponent } from '../../Modals/subir-archivos/subir-archivos.component';
 import { VerDocumentoComponent } from '../../Modals/ver-documento/ver-documento.component';
+import { ValidarArchivosComponent } from '../../Modals/validar-archivos/validar-archivos.component';
 import { ReferenciaDetalle, ReferenciasService } from '../../core/services/referencias.service';
+import { UserService, User } from '../../core/services/user.service';
 
 interface Documento {
   id: number;
@@ -16,7 +18,7 @@ interface Documento {
 
 @Component({
   selector: 'app-ver-referencia',
-  imports: [CommonModule, FormsModule, SubirArchivosComponent, VerDocumentoComponent],
+  imports: [CommonModule, FormsModule, SubirArchivosComponent, VerDocumentoComponent, ValidarArchivosComponent],
   templateUrl: './ver-referencia.component.html',
   styleUrl: './ver-referencia.component.css',
   providers: [ReferenciasService]
@@ -29,29 +31,41 @@ export class VerReferenciaComponent implements OnInit {
   referenciaData: ReferenciaDetalle | null = null;
   showModal: boolean = false;
   showViewModal: boolean = false;
+  showValidateModal: boolean = false;
+  selectedDocumento: Documento | null = null;
   viewDocumentBlob: Blob | null = null;
   viewDocumentName: string = '';
+  userMap: { [key: number]: string } = {};
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private referenciasService: ReferenciasService
+    private referenciasService: ReferenciasService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    // Obtener la referencia desde la URL
-    this.route.params.subscribe(params => {
-      this.referenciaId = params['id'];
-      this.referenciasService.getReferencia(this.referenciaId).subscribe(data => {
-        this.referenciaData = data;
-        this.documentos = data.documents.map((doc: any) => ({
-          id: doc.id,
-          nombre: doc.nombre_documento,
-          estado: doc.estado,
-          cliente: doc.cliente,
-          fecha: doc.fecha
-        })).filter((doc, index, self) => self.findIndex(d => d.id === doc.id) === index);
-        this.documentosFiltrados = [...this.documentos];
+    // Obtener todos los usuarios para mapear nombres
+    this.userService.getAllUsers().subscribe(users => {
+      this.userMap = users.reduce((map, user) => {
+        map[user.id] = user.nombre_completo;
+        return map;
+      }, {} as { [key: number]: string });
+
+      // Obtener la referencia desde la URL
+      this.route.params.subscribe(params => {
+        this.referenciaId = params['id'];
+        this.referenciasService.getReferencia(this.referenciaId).subscribe(data => {
+          this.referenciaData = data;
+          this.documentos = data.documents.map((doc: any) => ({
+            id: doc.id,
+            nombre: doc.nombre_documento,
+            estado: doc.estado,
+            cliente: this.userMap[doc.usuario_id] || 'Desconocido',
+            fecha: doc.subido_en
+          })).filter((doc, index, self) => self.findIndex(d => d.id === doc.id) === index);
+          this.documentosFiltrados = [...this.documentos];
+        });
       });
     });
   }
@@ -106,7 +120,8 @@ export class VerReferenciaComponent implements OnInit {
 
   editarDocumento(documento: Documento) {
     console.log('Editar documento:', documento);
-    // Lógica para editar el documento
+    this.selectedDocumento = documento;
+    this.showValidateModal = true;
   }
 
   volver() {
@@ -136,8 +151,8 @@ export class VerReferenciaComponent implements OnInit {
             id: doc.id,
             nombre: doc.nombre_documento,
             estado: doc.estado,
-            cliente: doc.cliente,
-            fecha: doc.fecha
+            cliente: this.userMap[doc.usuario_id] || 'Desconocido',
+            fecha: doc.subido_en
           })).filter((doc, index, self) => self.findIndex(d => d.id === doc.id) === index);
           this.documentosFiltrados = [...this.documentos];
         });
@@ -152,5 +167,31 @@ export class VerReferenciaComponent implements OnInit {
     this.showViewModal = false;
     this.viewDocumentBlob = null;
     this.viewDocumentName = '';
+  }
+
+  closeValidateModal() {
+    this.showValidateModal = false;
+    this.selectedDocumento = null;
+  }
+
+  onUpdateStatus(event: {documento: Documento, newStatus: string, observaciones: string}) {
+    this.referenciasService.updateDocumentoStatus(this.referenciaId, event.documento.id, event.newStatus, event.documento.nombre, event.observaciones).subscribe({
+      next: () => {
+        // Update local data
+        const doc = this.documentos.find(d => d.id === event.documento.id);
+        if (doc) {
+          doc.estado = event.newStatus as 'valido' | 'no-valido' | 'pendiente';
+          this.documentosFiltrados = [...this.documentos];
+        }
+        this.closeValidateModal();
+      },
+      error: (err) => {
+        console.error('Error updating status:', err);
+      }
+    });
+  }
+
+  isZip(filename: string): boolean {
+    return filename.toLowerCase().endsWith('.zip');
   }
 }

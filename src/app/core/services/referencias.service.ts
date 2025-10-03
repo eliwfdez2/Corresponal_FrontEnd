@@ -95,4 +95,19 @@ export class ReferenciasService {
 
     return this.http.post(`${this.apiUrl}/documentos`, formData, { headers });
   }
+
+  updateDocumentoStatus(referenciaId: string, documentoId: number, status: string, nombreDocumento: string, observaciones: string): Observable<any> {
+    const estadoMap: { [key: string]: string } = {
+      'valido': 'Valido',
+      'no-valido': 'No valido',
+      'pendiente': 'Pendiente por revisar'
+    };
+    const payload = {
+      autorizado: true,
+      estado: estadoMap[status] || status,
+      nombre_documento: nombreDocumento,
+      observaciones: observaciones
+    };
+    return this.http.post(`${this.apiUrl}/documentos/validar`, payload, { headers: this.getHeaders() });
+  }
 }

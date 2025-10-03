@@ -30,7 +30,7 @@
         <tr>
           <th>Archivo</th>
           <th>Estado</th>
-          <th>Cliente</th>
+          <th>Usuario</th>
           <th>Fecha</th>
           <th>Acciones</th>
         </tr>
@@ -48,7 +48,7 @@
           <td>{{documento.cliente}}</td>
           <td>{{documento.fecha}}</td>
           <td class="acciones">
-            <button class="btn-accion" title="Ver" (click)="verDocumento(documento)">
+            <button *ngIf="!isZip(documento.nombre)" class="btn-accion" title="Ver" (click)="verDocumento(documento)">
               <i class="icon-eye"></i>
             </button>
             <button class="btn-accion" title="Descargar" (click)="descargarDocumento(documento)">
@@ -73,4 +73,12 @@
     [documentName]="viewDocumentName"
     (modalClosed)="closeViewModal()">
   </app-ver-documento>
+
+  <!-- Modal para validar archivo -->
+  <app-validar-archivos
+    [isOpen]="showValidateModal"
+    [documento]="selectedDocumento"
+    (close)="closeValidateModal()"
+    (updateStatus)="onUpdateStatus($event)">
+  </app-validar-archivos>
 </div>
