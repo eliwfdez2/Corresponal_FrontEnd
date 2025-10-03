@@ -83,4 +83,16 @@ export class ReferenciasService {
       responseType: 'blob'
     });
   }
+
+  uploadDocumentos(codigo: string, files: File[]): Observable<any> {
+    const formData = new FormData();
+    formData.append('codigo', codigo);
+    files.forEach(file => formData.append('files', file, file.name));
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return this.http.post(`${this.apiUrl}/documentos`, formData, { headers });
+  }
 }

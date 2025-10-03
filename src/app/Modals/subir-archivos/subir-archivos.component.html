@@ -41,7 +41,7 @@
     <div class="confirmation-modal">
       <p>¿Estás seguro de subir estos archivos?</p>
       <div class="confirmation-buttons">
-        <button class="confirm-btn" (click)="confirmUpload()">Sí</button>
+        <button class="confirm-btn" (click)="confirmUpload()" [disabled]="uploading">Sí</button>
         <button class="cancel-confirm-btn" (click)="cancelConfirmation()">No</button>
       </div>
     </div>

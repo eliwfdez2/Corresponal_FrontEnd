@@ -50,7 +50,7 @@ export class VerReferenciaComponent implements OnInit {
           estado: doc.estado,
           cliente: doc.cliente,
           fecha: doc.fecha
-        }));
+        })).filter((doc, index, self) => self.findIndex(d => d.id === doc.id) === index);
         this.documentosFiltrados = [...this.documentos];
       });
     });
@@ -116,6 +116,36 @@ export class VerReferenciaComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+  }
+
+  onUpload(files: {file: File, selectedConcept: string, selectedExtension: string}[]) {
+    const newFiles: File[] = files.map(fileObj => {
+      const originalName = fileObj.file.name;
+      const baseName = originalName.substring(0, originalName.lastIndexOf('.'));
+      const newName = baseName + fileObj.selectedConcept + '.' + fileObj.selectedExtension;
+      return new File([fileObj.file], newName, { type: fileObj.file.type });
+    });
+
+    this.referenciasService.uploadDocumentos(this.referenciaId, newFiles).subscribe({
+      next: (response: any) => {
+        console.log('Uploaded:', response);
+        // Refresh the list
+        this.referenciasService.getReferencia(this.referenciaId).subscribe(data => {
+          this.referenciaData = data;
+          this.documentos = data.documents.map((doc: any) => ({
+            id: doc.id,
+            nombre: doc.nombre_documento,
+            estado: doc.estado,
+            cliente: doc.cliente,
+            fecha: doc.fecha
+          })).filter((doc, index, self) => self.findIndex(d => d.id === doc.id) === index);
+          this.documentosFiltrados = [...this.documentos];
+        });
+      },
+      error: (err: any) => {
+        console.error('Upload error:', err);
+      }
+    });
   }
 
   closeViewModal() {

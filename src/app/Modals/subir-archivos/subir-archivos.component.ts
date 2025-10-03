@@ -19,6 +19,7 @@ export class SubirArchivosComponent implements OnInit {
   confirmationStep: number = 0; // 0: none, 1: first confirm, 2: second confirm
   conceptos: string[] = [];
   extensiones: string[] = [];
+  uploading: boolean = false;
 
   constructor(
     private conceptosService: ConceptosService,
@@ -90,7 +91,8 @@ export class SubirArchivosComponent implements OnInit {
   confirmUpload() {
     if (this.confirmationStep === 1) {
       this.confirmationStep = 2;
-    } else if (this.confirmationStep === 2) {
+    } else if (this.confirmationStep === 2 && !this.uploading) {
+      this.uploading = true;
       this.upload.emit(this.uploadedFiles);
       this.close.emit();
     }
