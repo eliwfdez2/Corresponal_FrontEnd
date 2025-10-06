@@ -5,8 +5,13 @@ import { HistorialComponent } from './pages/historial/historial.component';
 import { VerReferenciaComponent } from './Components/ver-referencia/ver-referencia.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AdministrarUsuariosComponent } from './pages/administrar-usuarios/administrar-usuarios.component';
-import { AjustesComponent } from './pages/ajustes/ajustes.component';
-import { AuthGuard } from './core/guards/auth.guard'; // 👈 corregido a minúsculas
+import { AjustesComponent } from './pages/Administrar-sistema/Administrar-sistema.component';
+import { ConceptosComponent } from './pages/Administrar-sistema/conceptos/conceptos.component';
+import { DocumentosComponent } from './pages/Administrar-sistema/documentos/documentos.component';
+import { EstatusComponent } from './pages/Administrar-sistema/estatus/estatus.component';
+import { ExtensionesArchivosComponent } from './pages/Administrar-sistema/extensiones-archivos/extensiones-archivos.component';
+import { ReferenciasComponent } from './pages/Administrar-sistema/referencias/referencias.component';
+import { AuthGuard } from './core/guards/auth.guard';
 import { MonitorearUsuariosComponent } from './Components/monitorear-usuarios/monitorear-usuarios.component';
 import { GestionarRolesComponent } from './Components/gestionar-roles/gestionar-roles.component';
 
@@ -25,7 +30,14 @@ export const routes: Routes = [
       { path: 'administrar-usuarios', component: AdministrarUsuariosComponent },
       { path: 'monitoreo-usuarios', component: MonitorearUsuariosComponent },
       {path: 'gestionar-roles', component: GestionarRolesComponent},
-      { path: 'ajustes', component: AjustesComponent }
+      { path: 'administrar-sistema', component: AjustesComponent, children: [
+        { path: 'conceptos', component: ConceptosComponent },
+        { path: 'documentos', component: DocumentosComponent },
+        { path: 'estatus', component: EstatusComponent },
+        { path: 'extensiones-archivos', component: ExtensionesArchivosComponent },
+        { path: 'referencias', component: ReferenciasComponent },
+        { path: '', redirectTo: 'conceptos', pathMatch: 'full' }
+      ] }
     ]
   },
 

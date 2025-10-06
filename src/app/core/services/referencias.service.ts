@@ -44,7 +44,7 @@ export class ReferenciasService {
   }
 
   getReferencias(): Observable<Referencia[]> {
-    return this.http.get<Referencia[]>(`${this.apiUrl}/referencias`, { headers: this.getHeaders() });
+    return this.http.get<Referencia[]>(`${this.apiUrl}/referencias/asignadas`, { headers: this.getHeaders() });
   }
 
   getReferencia(id: string): Observable<ReferenciaDetalle> {

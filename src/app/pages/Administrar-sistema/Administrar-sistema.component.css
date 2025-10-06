@@ -1,0 +1,180 @@
+/* usuarios.component.css */
+
+.usuarios-container {
+  margin-left: 280px; /* Espacio para el sidebar */
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 0;
+}
+
+.content-wrapper {
+  padding: 2rem;
+  max-width: 1200px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 2rem;
+}
+
+/* Tarjetas de métricas */
+.metric-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background-color: #e9ecef;
+  transition: transform 0.2s ease-in-out;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.metric-card .card-body {
+  padding: 2rem 1.5rem;
+}
+
+.metric-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.metric-label {
+  font-size: 1rem;
+  color: #495057;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+/* Título de sección */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #212529;
+  background-color: #e9ecef;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0;
+}
+
+/* Tarjetas de acciones */
+.action-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background-color: #e9ecef;
+  transition: transform 0.2s ease-in-out;
+}
+
+.action-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.action-card .card-body {
+  padding: 2rem;
+}
+
+.action-card .card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 1.5rem;
+}
+
+/* Lista de características */
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.feature-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #495057;
+  font-weight: 500;
+}
+
+.feature-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #6c757d;
+  font-weight: bold;
+}
+
+/* Botón de acción */
+.btn-action {
+  background-color: #212529;
+  border-color: #212529;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action:hover {
+  background-color: #495057;
+  border-color: #495057;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.btn-action:focus {
+  box-shadow: 0 0 0 0.2rem rgba(33, 37, 41, 0.25);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .action-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .metric-number {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .usuarios-container {
+    margin-left: 0;
+  }
+  
+  .content-wrapper {
+    padding: 1rem;
+  }
+  
+  .page-title {
+    font-size: 1.75rem;
+  }
+  
+  .metric-number {
+    font-size: 2rem;
+  }
+  
+  .action-card .card-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .metric-card .card-body {
+    padding: 1.5rem 1rem;
+  }
+  
+  .action-card .card-body {
+    padding: 1.25rem;
+  }
+}

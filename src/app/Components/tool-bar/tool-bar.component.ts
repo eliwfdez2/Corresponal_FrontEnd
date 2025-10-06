@@ -40,8 +40,8 @@ export class ToolBarComponent implements OnInit {
       this.currentActiveItem = 'perfil';
     } else if (url.includes('/administrar-usuarios')) {
       this.currentActiveItem = 'administrar-usuarios';
-    } else if (url.includes('/ajustes')) {
-      this.currentActiveItem = 'ajustes';
+    } else if (url.includes('/administrar-sistema')) {
+      this.currentActiveItem = 'administrar-sistema';
     }
   }
 

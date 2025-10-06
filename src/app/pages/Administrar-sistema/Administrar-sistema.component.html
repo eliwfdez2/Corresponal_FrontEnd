@@ -1,0 +1,132 @@
+<div class="usuarios-container">
+  <app-tool-bar
+    (navigationChange)="onNavigationChange($event)"
+    (logoutRequest)="onLogout()">
+  </app-tool-bar>
+
+  <div class="content-wrapper">
+    <h1 class="page-title">Panel de Administración del Sistema</h1>
+
+    <!-- Métricas principales -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="card metric-card text-center">
+          <div class="card-body">
+            <h2 class="metric-number">{{ metricas.totalConceptos }}</h2>
+            <p class="metric-label">Total Conceptos</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card metric-card text-center">
+          <div class="card-body">
+            <h2 class="metric-number">{{ metricas.totalReferencias }}</h2>
+            <p class="metric-label">Total Referencias</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card metric-card text-center">
+          <div class="card-body">
+            <h2 class="metric-number">{{ metricas.totalDocumentos }}</h2>
+            <p class="metric-label">Total Documentos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones Disponibles -->
+    <div class="mb-4">
+      <h3 class="section-title">Recursos del Sistema</h3>
+    </div>
+
+    <div class="row g-4">
+      <!-- Conceptos -->
+      <div class="col-lg-6 col-xl-4">
+        <div class="card action-card h-100">
+          <div class="card-body d-flex flex-column">
+            <h4 class="card-title">Conceptos</h4>
+            <ul class="feature-list flex-grow-1">
+              <li>Lista de conceptos</li>
+              <li>Crear nuevos conceptos</li>
+              <li>Editar y eliminar</li>
+            </ul>
+            <button class="btn btn-action w-100" (click)="irConceptos()">
+              Gestionar <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documentos -->
+      <div class="col-lg-6 col-xl-4">
+        <div class="card action-card h-100">
+          <div class="card-body d-flex flex-column">
+            <h4 class="card-title">Documentos</h4>
+            <ul class="feature-list flex-grow-1">
+              <li>Subir documentos</li>
+              <li>Validar documentos</li>
+              <li>Descargar archivos</li>
+            </ul>
+            <button class="btn btn-action w-100" (click)="irDocumentos()">
+              Gestionar <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estatus -->
+      <div class="col-lg-6 col-xl-4">
+        <div class="card action-card h-100">
+          <div class="card-body d-flex flex-column">
+            <h4 class="card-title">Estatus</h4>
+            <ul class="feature-list flex-grow-1">
+              <li>Lista de estatus</li>
+              <li>Crear nuevos estatus</li>
+              <li>Actualizar estados</li>
+            </ul>
+            <button class="btn btn-action w-100" (click)="irEstatus()">
+              Gestionar <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extensiones de Archivos -->
+      <div class="col-lg-6 col-xl-4">
+        <div class="card action-card h-100">
+          <div class="card-body d-flex flex-column">
+            <h4 class="card-title">Extensiones de Archivos</h4>
+            <ul class="feature-list flex-grow-1">
+              <li>Lista de extensiones</li>
+              <li>Agregar nuevas extensiones</li>
+              <li>Configurar tipos</li>
+            </ul>
+            <button class="btn btn-action w-100" (click)="irExtensionesArchivos()">
+              Gestionar <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Referencias -->
+      <div class="col-lg-6 col-xl-4">
+        <div class="card action-card h-100">
+          <div class="card-body d-flex flex-column">
+            <h4 class="card-title">Referencias</h4>
+            <ul class="feature-list flex-grow-1">
+              <li>Lista de referencias</li>
+              <li>Asignar referencias</li>
+              <li>Actualizar estatus</li>
+            </ul>
+            <button class="btn btn-action w-100" (click)="irReferencias()">
+              Gestionar <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>
