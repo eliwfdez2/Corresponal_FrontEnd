@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -22,10 +22,12 @@ import { ConceptosService } from '../../core/services/conceptos.service';
     ])
   ]
 })
-export class NuevoConceptoComponent {
+export class NuevoConceptoComponent implements OnInit, OnChanges {
   @Input() isOpen: boolean = false;
+  @Input() selectedConcepto: any = null;
   @Output() modalClosed = new EventEmitter<void>();
   @Output() conceptoCreated = new EventEmitter<any>();
+  @Output() conceptoUpdated = new EventEmitter<any>();
 
   concepto = {
     clave: '',
@@ -33,8 +35,27 @@ export class NuevoConceptoComponent {
   };
 
   successMessage: string = '';
+  isEditing: boolean = false;
 
   constructor(private conceptosService: ConceptosService) {}
+
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedConcepto']) {
+      this.updateForm();
+    }
+  }
+
+  private updateForm(): void {
+    if (this.selectedConcepto) {
+      this.isEditing = true;
+      this.concepto = { ...this.selectedConcepto };
+    } else {
+      this.isEditing = false;
+      this.resetForm();
+    }
+  }
 
   closeModal() {
     this.isOpen = false;
@@ -50,20 +71,35 @@ export class NuevoConceptoComponent {
 
   saveConcepto() {
     if (this.isFormValid()) {
-      this.conceptosService.createConcepto(this.concepto).subscribe({
-        next: (response) => {
-          this.successMessage = '¡Concepto creado correctamente!';
-          this.conceptoCreated.emit(response);
-          setTimeout(() => {
-            this.successMessage = '';
-            this.closeModal();
-          }, 2000); // Oculta el mensaje después de 2 segundos
-        },
-        error: (error) => {
-          console.error('Error creating concepto:', error);
-          // Handle error appropriately, e.g., show error message to user
-        }
-      });
+      if (this.isEditing) {
+        this.conceptosService.updateConcepto(this.selectedConcepto.id, this.concepto).subscribe({
+          next: (response) => {
+            this.successMessage = '¡Concepto actualizado correctamente!';
+            this.conceptoUpdated.emit(response);
+            setTimeout(() => {
+              this.successMessage = '';
+              this.closeModal();
+            }, 2000);
+          },
+          error: (error) => {
+            console.error('Error updating concepto:', error);
+          }
+        });
+      } else {
+        this.conceptosService.createConcepto(this.concepto).subscribe({
+          next: (response) => {
+            this.successMessage = '¡Concepto creado correctamente!';
+            this.conceptoCreated.emit(response);
+            setTimeout(() => {
+              this.successMessage = '';
+              this.closeModal();
+            }, 2000);
+          },
+          error: (error) => {
+            console.error('Error creating concepto:', error);
+          }
+        });
+      }
     }
   }
 

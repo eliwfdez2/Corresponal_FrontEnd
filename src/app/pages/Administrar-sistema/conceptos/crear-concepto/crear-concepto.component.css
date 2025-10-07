@@ -1,0 +1,103 @@
+.usuarios-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.content-wrapper {
+  padding: 2rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}
+
+.btn-back {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+  border-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+  color: #495057;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control-lg {
+  padding: 1rem 1.25rem;
+  font-size: 1.1rem;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+  border-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border: none;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.btn-save:disabled {
+  background: #6c757d;
+  box-shadow: none;
+  transform: none;
+}
+
+.text-danger {
+  font-size: 0.9rem;
+}

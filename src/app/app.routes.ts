@@ -7,6 +7,8 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AdministrarUsuariosComponent } from './pages/administrar-usuarios/administrar-usuarios.component';
 import { AjustesComponent } from './pages/Administrar-sistema/Administrar-sistema.component';
 import { ConceptosComponent } from './pages/Administrar-sistema/conceptos/conceptos.component';
+import { CrearConceptoComponent } from './pages/Administrar-sistema/conceptos/crear-concepto/crear-concepto.component';
+import { EditarConceptoComponent } from './pages/Administrar-sistema/conceptos/editar-concepto/editar-concepto.component';
 import { DocumentosComponent } from './pages/Administrar-sistema/documentos/documentos.component';
 import { EstatusComponent } from './pages/Administrar-sistema/estatus/estatus.component';
 import { ExtensionesArchivosComponent } from './pages/Administrar-sistema/extensiones-archivos/extensiones-archivos.component';
@@ -30,14 +32,12 @@ export const routes: Routes = [
       { path: 'administrar-usuarios', component: AdministrarUsuariosComponent },
       { path: 'monitoreo-usuarios', component: MonitorearUsuariosComponent },
       {path: 'gestionar-roles', component: GestionarRolesComponent},
-      { path: 'administrar-sistema', component: AjustesComponent, children: [
-        { path: 'conceptos', component: ConceptosComponent },
-        { path: 'documentos', component: DocumentosComponent },
-        { path: 'estatus', component: EstatusComponent },
-        { path: 'extensiones-archivos', component: ExtensionesArchivosComponent },
-        { path: 'referencias', component: ReferenciasComponent },
-        { path: '', redirectTo: 'conceptos', pathMatch: 'full' }
-      ] }
+      { path: 'administrar-sistema', component: AjustesComponent },
+      { path: 'administrar-sistema/conceptos', component: ConceptosComponent },
+      { path: 'administrar-sistema/documentos', component: DocumentosComponent },
+      { path: 'administrar-sistema/estatus', component: EstatusComponent },
+      { path: 'administrar-sistema/extensiones-archivos', component: ExtensionesArchivosComponent },
+      { path: 'administrar-sistema/referencias', component: ReferenciasComponent }
     ]
   },
 

@@ -28,6 +28,10 @@ export class ConceptosService {
     return this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders() });
   }
 
+  getConcepto(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+  }
+
   updateConcepto(id: number, concepto: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, concepto, { headers: this.getHeaders() });
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToolBarComponent } from "../../Components/tool-bar/tool-bar.component";
 
 interface SistemaMetricas {
@@ -11,13 +11,13 @@ interface SistemaMetricas {
 
 @Component({
   selector: 'app-ajustes',
-  imports: [CommonModule, RouterOutlet, ToolBarComponent],
+  imports: [CommonModule, ToolBarComponent],
   templateUrl: './Administrar-sistema.component.html',
   styleUrl: './Administrar-sistema.component.css'
 })
 export class AjustesComponent implements OnInit {
 
-  // Métricas del sistema
+  // métricas del sistema
   metricas: SistemaMetricas = {
     totalConceptos: 0,
     totalReferencias: 0,

@@ -1,6 +1,65 @@
-<h2>Administrar Conceptos</h2>
-<ul>
-  <li *ngFor="let concepto of conceptos">
-    {{ concepto.nombre || concepto }}
-  </li>
-</ul>
+<div class="conceptos-container">
+  <div class="container">
+    <!-- Botón Volver al inicio -->
+    <div class="back-section">
+      <button class="btn-volver" (click)="volver()">
+        <i class="icon-arrow-left"></i>
+        Volver
+      </button>
+    </div>
+
+    <div class="header">
+      <h2>Conceptos del Sistema</h2>
+      <div class="actions">
+        <button class="btn-create" (click)="goToCreate()">
+          <i class="fas fa-plus-circle"></i> Crear Nuevo Concepto
+        </button>
+      </div>
+    </div>
+
+    <div class="status-info">
+      <span class="last-update">Última actualización: {{ ultimaActualizacion }}</span>
+    </div>
+
+    <!-- Tabla de Conceptos -->
+    <div class="table-container">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Clave</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let concepto of conceptos">
+            <td>{{ concepto.id }}</td>
+            <td>{{ concepto.clave }}</td>
+            <td>
+              <span class="status" [class]="concepto.activo ? 'activo' : 'inactivo'">
+                {{ concepto.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="goToEdit(concepto.id)" title="Editar">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteConcepto(concepto.id)" title="Eliminar">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="conceptos.length === 0">
+            <td colspan="4" class="text-center py-5 text-muted">
+              <i class="fas fa-inbox fa-3x mb-3"></i>
+              <p class="mb-0">No hay conceptos registrados</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
