@@ -11,7 +11,7 @@
     <div class="header">
       <h2>Conceptos del Sistema</h2>
       <div class="actions">
-        <button class="btn-create" (click)="goToCreate()">
+        <button class="btn-create" (click)="openCreateModal()">
           <i class="fas fa-plus-circle"></i> Crear Nuevo Concepto
         </button>
       </div>
@@ -42,11 +42,11 @@
               </span>
             </td>
             <td>
-              <button class="btn btn-sm btn-outline-primary me-2" (click)="goToEdit(concepto.id)" title="Editar">
-                <i class="fas fa-edit"></i>
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="openEditModal(concepto)" title="Editar">
+                <i class="fas fa-edit me-1"></i>Editar
               </button>
-              <button class="btn btn-sm btn-outline-danger" (click)="deleteConcepto(concepto.id)" title="Eliminar">
-                <i class="fas fa-trash"></i>
+              <button class="btn btn-sm btn-outline-danger" (click)="openDeleteModal(concepto)" title="Eliminar">
+                <i class="fas fa-trash me-1"></i>Eliminar
               </button>
             </td>
           </tr>
@@ -61,5 +61,105 @@
     </div>
   </div>
 </div>
+
+<!-- Create Modal -->
+<div class="modal fade" [class.show]="isCreateModalOpen" [style.display]="isCreateModalOpen ? 'block' : 'none'" *ngIf="isCreateModalOpen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Crear Nuevo Concepto</h5>
+        <button type="button" class="btn-close" (click)="closeCreateModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="createForm" (ngSubmit)="onCreateSubmit()">
+          <div class="mb-3">
+            <label for="create-clave" class="form-label">Clave del Concepto</label>
+            <input
+              type="text"
+              class="form-control"
+              id="create-clave"
+              formControlName="clave"
+              placeholder="Ingrese una clave única">
+            <div *ngIf="createForm.get('clave')?.invalid && createForm.get('clave')?.touched" class="text-danger mt-1">
+              La clave es requerida.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="create-activo" class="form-label">Estado</label>
+            <select class="form-control" id="create-activo" formControlName="activo">
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeCreateModal()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="onCreateSubmit()" [disabled]="createForm.invalid">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" [class.show]="isEditModalOpen" [style.display]="isEditModalOpen ? 'block' : 'none'" *ngIf="isEditModalOpen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Concepto</h5>
+        <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="conceptoForm" (ngSubmit)="onEditSubmit()">
+          <div class="mb-3">
+            <label for="clave" class="form-label">Clave del Concepto</label>
+            <input
+              type="text"
+              class="form-control"
+              id="clave"
+              formControlName="clave"
+              placeholder="Ingrese una clave única">
+            <div *ngIf="conceptoForm.get('clave')?.invalid && conceptoForm.get('clave')?.touched" class="text-danger mt-1">
+              La clave es requerida.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="activo" class="form-label">Estado</label>
+            <select class="form-control" id="activo" formControlName="activo">
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="onEditSubmit()" [disabled]="conceptoForm.invalid">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" [class.show]="isDeleteModalOpen" [style.display]="isDeleteModalOpen ? 'block' : 'none'" *ngIf="isDeleteModalOpen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar Eliminación</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro de que desea eliminar el concepto "<strong>{{ selectedConcepto?.clave }}</strong>"?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="isCreateModalOpen || isEditModalOpen || isDeleteModalOpen"></div>
 
 
