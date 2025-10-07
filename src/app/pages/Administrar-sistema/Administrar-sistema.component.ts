@@ -48,11 +48,6 @@ export class AjustesComponent implements OnInit {
     this.router.navigate(['/administrar-sistema/conceptos']);
   }
 
-  irDocumentos(): void {
-    console.log('Navegando a documentos');
-    this.router.navigate(['/administrar-sistema/documentos']);
-  }
-
   irEstatus(): void {
     console.log('Navegando a estatus');
     this.router.navigate(['/administrar-sistema/estatus']);

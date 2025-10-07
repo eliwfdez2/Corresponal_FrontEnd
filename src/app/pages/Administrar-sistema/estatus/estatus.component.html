@@ -1,1 +1,169 @@
-<p>estatus works!</p>
+<div class="conceptos-container">
+  <div class="container">
+    <!-- Botón Volver al inicio -->
+    <div class="back-section">
+      <button class="btn-volver" (click)="volver()">
+        <i class="icon-arrow-left"></i>
+        Volver
+      </button>
+    </div>
+
+    <div class="header">
+      <h2>Estatus del Sistema</h2>
+      <div class="actions">
+        <button class="btn-create" (click)="openCreateModal()">
+          <i class="fas fa-plus-circle"></i> Crear Nuevo Estatus
+        </button>
+      </div>
+    </div>
+
+    <div class="status-info">
+      <span class="last-update">Última actualización: {{ ultimaActualizacion }}</span>
+    </div>
+
+    <!-- Tabla de Estatus -->
+    <div class="table-container">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Creado por</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let estatusItem of estatus">
+            <td>{{ estatusItem.id }}</td>
+            <td>{{ estatusItem.nombre }}</td>
+            <td>{{ estatusItem.creado_por }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="openEditModal(estatusItem)" title="Editar">
+                <i class="fas fa-edit me-1"></i>Editar
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="openDeleteModal(estatusItem)" title="Eliminar">
+                <i class="fas fa-trash me-1"></i>Eliminar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="estatus.length === 0">
+            <td colspan="4" class="text-center py-5 text-muted">
+              <i class="fas fa-inbox fa-3x mb-3"></i>
+              <p class="mb-0">No hay estatus registrados</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" [class.show]="isCreateModalOpen" [style.display]="isCreateModalOpen ? 'block' : 'none'" *ngIf="isCreateModalOpen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Crear Nuevo Estatus</h5>
+        <button type="button" class="btn-close" (click)="closeCreateModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="createForm" (ngSubmit)="onCreateSubmit()">
+          <div class="mb-3">
+            <label for="create-nombre" class="form-label">Nombre del Estatus</label>
+            <input
+              type="text"
+              class="form-control"
+              id="create-nombre"
+              formControlName="nombre"
+              placeholder="Ingrese el nombre del estatus">
+            <div *ngIf="createForm.get('nombre')?.invalid && createForm.get('nombre')?.touched" class="text-danger mt-1">
+              El nombre es requerido.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="create-creado_por" class="form-label">Creado por</label>
+            <input
+              type="number"
+              class="form-control"
+              id="create-creado_por"
+              formControlName="creado_por"
+              placeholder="ID del creador">
+            <div *ngIf="createForm.get('creado_por')?.invalid && createForm.get('creado_por')?.touched" class="text-danger mt-1">
+              El ID del creador es requerido.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeCreateModal()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="onCreateSubmit()" [disabled]="createForm.invalid">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" [class.show]="isEditModalOpen" [style.display]="isEditModalOpen ? 'block' : 'none'" *ngIf="isEditModalOpen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Estatus</h5>
+        <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="estatusForm" (ngSubmit)="onEditSubmit()">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del Estatus</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre"
+              formControlName="nombre"
+              placeholder="Ingrese el nombre del estatus">
+            <div *ngIf="estatusForm.get('nombre')?.invalid && estatusForm.get('nombre')?.touched" class="text-danger mt-1">
+              El nombre es requerido.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="creado_por" class="form-label">Creado por</label>
+            <input
+              type="number"
+              class="form-control"
+              id="creado_por"
+              formControlName="creado_por"
+              placeholder="ID del creador">
+            <div *ngIf="estatusForm.get('creado_por')?.invalid && estatusForm.get('creado_por')?.touched" class="text-danger mt-1">
+              El ID del creador es requerido.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="onEditSubmit()" [disabled]="estatusForm.invalid">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" [class.show]="isDeleteModalOpen" [style.display]="isDeleteModalOpen ? 'block' : 'none'" *ngIf="isDeleteModalOpen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar Eliminación</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro de que desea eliminar el estatus "<strong>{{ selectedEstatus?.nombre }}</strong>"?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="isCreateModalOpen || isEditModalOpen || isDeleteModalOpen"></div>

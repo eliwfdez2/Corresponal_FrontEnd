@@ -11,13 +11,16 @@ export class ExtensionesArchivosService {
 
   constructor(private http: HttpClient) {}
 
-  private getHeaders(): HttpHeaders {
+  private getHeaders(includeContentType: boolean = true): HttpHeaders {
     const token = localStorage.getItem('token');
-    return new HttpHeaders({
+    let headers: any = {
       'accept': 'application/json',
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
+      'Authorization': `Bearer ${token}`
+    };
+    if (includeContentType) {
+      headers['Content-Type'] = 'application/json';
+    }
+    return new HttpHeaders(headers);
   }
 
   createExtensionArchivo(extensionArchivo: any): Observable<any> {
@@ -25,7 +28,7 @@ export class ExtensionesArchivosService {
   }
 
   getExtensionesArchivos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders() });
+    return this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders(false) });
   }
 
   updateExtensionArchivo(id: number, extensionArchivo: any): Observable<any> {
@@ -33,6 +36,6 @@ export class ExtensionesArchivosService {
   }
 
   deleteExtensionArchivo(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders(false) });
   }
 }

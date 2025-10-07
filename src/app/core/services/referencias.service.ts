@@ -110,4 +110,23 @@ export class ReferenciasService {
     };
     return this.http.post(`${this.apiUrl}/documentos/validar`, payload, { headers: this.getHeaders() });
   }
+
+  createReferencia(referencia: { referencia: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/referencias`, referencia, { headers: this.getHeaders() });
+  }
+
+  assignReferencia(referencia: string, usuario_id: number): Observable<any> {
+    const payload = { referencia, usuario_id };
+    return this.http.post(`${this.apiUrl}/referencias/asignar`, payload, { headers: this.getHeaders() });
+  }
+
+  unassignReferencia(referencia: string, usuario_id: number): Observable<any> {
+    const payload = { referencia, usuario_id };
+    return this.http.post(`${this.apiUrl}/referencias/desasignar`, payload, { headers: this.getHeaders() });
+  }
+
+  getUsuariosAsignados(referencia: string): Observable<any[]> {
+    const params = new HttpParams().set('referencia', referencia);
+    return this.http.get<any[]>(`${this.apiUrl}/referencias/usuarios`, { headers: this.getHeaders(), params });
+  }
 }

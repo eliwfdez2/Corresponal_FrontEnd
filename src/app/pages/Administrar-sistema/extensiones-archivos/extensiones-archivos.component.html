@@ -1,1 +1,132 @@
-<p>extensiones-archivos works!</p>
+<div class="conceptos-container">
+  <div class="container">
+    <!-- Botón Volver al inicio -->
+    <div class="back-section">
+      <button class="btn-volver" (click)="volver()">
+        <i class="icon-arrow-left"></i>
+        Volver
+      </button>
+    </div>
+
+    <div class="header">
+      <h2>Extensiones de Archivos</h2>
+      <div class="actions">
+        <button class="btn-create" (click)="openCreateModal()">
+          <i class="fas fa-plus-circle"></i> Crear Nueva Extensión
+        </button>
+      </div>
+    </div>
+
+    <div class="status-info">
+      <span class="last-update">Última actualización: {{ ultimaActualizacion }}</span>
+    </div>
+
+    <!-- Tabla de Extensiones -->
+    <div class="table-container">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Extensión</th>
+            <th>Creado por</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let extension of extensiones">
+            <td>{{ extension.id }}</td>
+            <td>{{ extension.extension_archivo }}</td>
+            <td>{{ extension.creado_por }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="openEditModal(extension)" title="Editar">
+                <i class="fas fa-edit me-1"></i>Editar
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="openDeleteModal(extension)" title="Eliminar">
+                <i class="fas fa-trash me-1"></i>Eliminar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="extensiones.length === 0">
+            <td colspan="4" class="text-center py-5 text-muted">
+              <i class="fas fa-inbox fa-3x mb-3"></i>
+              <p class="mb-0">No hay extensiones registradas</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Create Modal -->
+<app-nuevo-tipo-archivo
+  [isOpen]="isCreateModalOpen"
+  (modalClosed)="closeCreateModal()"
+  (tipoArchivoCreated)="onTipoArchivoCreated()">
+</app-nuevo-tipo-archivo>
+
+<!-- Edit Modal -->
+<div class="modal fade" [class.show]="isEditModalOpen" [style.display]="isEditModalOpen ? 'block' : 'none'" *ngIf="isEditModalOpen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Extensión</h5>
+        <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="extensionForm" (ngSubmit)="onEditSubmit()">
+          <div class="mb-3">
+            <label for="edit-extension_archivo" class="form-label">Extensión de Archivo</label>
+            <input
+              type="text"
+              class="form-control"
+              id="edit-extension_archivo"
+              formControlName="extension_archivo"
+              placeholder="Ingrese la extensión del archivo">
+            <div *ngIf="extensionForm.get('extension_archivo')?.invalid && extensionForm.get('extension_archivo')?.touched" class="text-danger mt-1">
+              La extensión es requerida.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="edit-creado_por" class="form-label">Creado por</label>
+            <input
+              type="number"
+              class="form-control"
+              id="edit-creado_por"
+              formControlName="creado_por"
+              placeholder="ID del creador">
+            <div *ngIf="extensionForm.get('creado_por')?.invalid && extensionForm.get('creado_por')?.touched" class="text-danger mt-1">
+              El ID del creador es requerido.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="onEditSubmit()" [disabled]="extensionForm.invalid">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" [class.show]="isDeleteModalOpen" [style.display]="isDeleteModalOpen ? 'block' : 'none'" *ngIf="isDeleteModalOpen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar Eliminación</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro de que desea eliminar la extensión "<strong>{{ selectedExtension?.extension_archivo }}</strong>"?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="isEditModalOpen || isDeleteModalOpen"></div>
