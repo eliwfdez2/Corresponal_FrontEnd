@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { Router } from '@angular/router';
 import { ReferenciasService, Referencia } from '../../../core/services/referencias.service';
 import { UserService, User } from '../../../core/services/user.service';
+import { CorresponsalService, Corresponsal } from '../../../core/services/corresponsal.service';
 
 @Component({
   selector: 'app-referencias',
@@ -15,6 +16,7 @@ export class ReferenciasComponent implements OnInit {
   referencias: Referencia[] = [];
   paginatedReferencias: Referencia[] = [];
   users: User[] = [];
+  corresponsales: Corresponsal[] = [];
   assignedUsers: any[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 10;
@@ -24,15 +26,20 @@ export class ReferenciasComponent implements OnInit {
   isAssignModalOpen: boolean = false;
   isUnassignModalOpen: boolean = false;
   isViewUsersModalOpen: boolean = false;
+  isAssignCorresponsalModalOpen: boolean = false;
+  isUnassignCorresponsalModalOpen: boolean = false;
   selectedReferencia: Referencia | null = null;
 
   createForm: FormGroup;
   assignForm: FormGroup;
   unassignForm: FormGroup;
+  assignCorresponsalForm: FormGroup;
+  unassignCorresponsalForm: FormGroup;
 
   constructor(
     private referenciasService: ReferenciasService,
     private userService: UserService,
+    private corresponsalService: CorresponsalService,
     private router: Router,
     private fb: FormBuilder
   ) {
@@ -45,11 +52,18 @@ export class ReferenciasComponent implements OnInit {
     this.unassignForm = this.fb.group({
       usuario_id: ['', Validators.required]
     });
+    this.assignCorresponsalForm = this.fb.group({
+      corresponsal_id: ['', Validators.required]
+    });
+    this.unassignCorresponsalForm = this.fb.group({
+      corresponsal_id: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
     this.loadReferencias();
     this.loadUsers();
+    this.loadCorresponsales();
   }
 
   loadReferencias(): void {
@@ -72,6 +86,17 @@ export class ReferenciasComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error loading users', err);
+      }
+    });
+  }
+
+  loadCorresponsales(): void {
+    this.corresponsalService.getCorresponsales().subscribe({
+      next: (data) => {
+        this.corresponsales = data;
+      },
+      error: (err) => {
+        console.error('Error loading corresponsales', err);
       }
     });
   }
@@ -177,6 +202,60 @@ export class ReferenciasComponent implements OnInit {
     this.isViewUsersModalOpen = false;
     this.selectedReferencia = null;
     this.assignedUsers = [];
+  }
+
+  openAssignCorresponsalModal(referencia: Referencia): void {
+    this.selectedReferencia = referencia;
+    this.assignCorresponsalForm.reset();
+    this.isAssignCorresponsalModalOpen = true;
+  }
+
+  closeAssignCorresponsalModal(): void {
+    this.isAssignCorresponsalModalOpen = false;
+    this.selectedReferencia = null;
+  }
+
+  onAssignCorresponsalSubmit(): void {
+    if (this.assignCorresponsalForm.valid && this.selectedReferencia) {
+      const selectedCorresponsal = this.corresponsales.find(c => c.id === +this.assignCorresponsalForm.value.corresponsal_id);
+      if (selectedCorresponsal) {
+        this.referenciasService.assignCorresponsal(selectedCorresponsal.numero, this.selectedReferencia.referencia).subscribe({
+          next: () => {
+            this.closeAssignCorresponsalModal();
+          },
+          error: (err) => {
+            console.error('Error assigning corresponsal', err);
+          }
+        });
+      }
+    }
+  }
+
+  openUnassignCorresponsalModal(referencia: Referencia): void {
+    this.selectedReferencia = referencia;
+    this.unassignCorresponsalForm.reset();
+    this.isUnassignCorresponsalModalOpen = true;
+  }
+
+  closeUnassignCorresponsalModal(): void {
+    this.isUnassignCorresponsalModalOpen = false;
+    this.selectedReferencia = null;
+  }
+
+  onUnassignCorresponsalSubmit(): void {
+    if (this.unassignCorresponsalForm.valid && this.selectedReferencia) {
+      const selectedCorresponsal = this.corresponsales.find(c => c.id === +this.unassignCorresponsalForm.value.corresponsal_id);
+      if (selectedCorresponsal) {
+        this.referenciasService.unassignCorresponsal(selectedCorresponsal.numero, this.selectedReferencia.referencia).subscribe({
+          next: () => {
+            this.closeUnassignCorresponsalModal();
+          },
+          error: (err) => {
+            console.error('Error unassigning corresponsal', err);
+          }
+        });
+      }
+    }
   }
 
   volver(): void {

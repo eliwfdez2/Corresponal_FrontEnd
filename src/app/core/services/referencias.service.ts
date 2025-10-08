@@ -121,4 +121,14 @@ export class ReferenciasService {
     const params = new HttpParams().set('referencia', referencia);
     return this.http.get<any[]>(`${this.apiUrl}/referencias/usuarios`, { headers: this.getHeaders(), params });
   }
+
+  assignCorresponsal(corresponsalNumero: number, referencia: string): Observable<any> {
+    const payload = { corresponsal_numero: corresponsalNumero, referencia };
+    return this.http.post(`${this.apiUrl}/referencias/asignar-corresponsal`, payload, { headers: this.getHeaders() });
+  }
+
+  unassignCorresponsal(corresponsalNumero: number, referencia: string): Observable<any> {
+    const payload = { corresponsal_numero: corresponsalNumero, referencia };
+    return this.http.post(`${this.apiUrl}/referencias/desasignar-corresponsal`, payload, { headers: this.getHeaders() });
+  }
 }

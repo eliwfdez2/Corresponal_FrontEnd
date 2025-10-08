@@ -42,37 +42,6 @@
     </div>
   </div>
 
-  <!-- Tabla de Usuarios Activos -->
-  <div class="table-container">
-    <h3>Usuarios Activos</h3>
-    <table class="users-table">
-      <thead>
-        <tr>
-          <th>Usuario</th>
-          <th>Rol</th>
-          <th>IP pública</th>
-          <th>Dispositivo/Navegador</th>
-          <th>Inicio de sesión</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let usuario of usuariosActivos">
-          <td>{{usuario.nombre}}</td>
-          <td>{{usuario.rol}}</td>
-          <td>{{usuario.ip}}</td>
-          <td>{{usuario.dispositivo}}</td>
-          <td>{{usuario.inicioSesion | date:'medium'}}</td>
-          <td>
-            <span [class]="'status ' + usuario.estado.toLowerCase()">
-              {{usuario.estado}}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
   <!-- Tabla de Todos los Usuarios -->
   <div class="table-container">
     <h3>Lista de Usuarios</h3>
@@ -99,6 +68,37 @@
             </span>
           </td>
           <td>{{usuario.creado_en | date:'medium'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+    <!-- Tabla de Usuarios Activos -->
+  <div class="table-container">
+    <h3>Usuarios Activos</h3>
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Rol</th>
+          <th>IP pública</th>
+          <th>Dispositivo/Navegador</th>
+          <th>Inicio de sesión</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuariosActivos">
+          <td>{{usuario.nombre}}</td>
+          <td>{{usuario.rol}}</td>
+          <td>{{usuario.ip}}</td>
+          <td>{{usuario.dispositivo}}</td>
+          <td>{{usuario.inicioSesion | date:'medium'}}</td>
+          <td>
+            <span [class]="'status ' + usuario.estado.toLowerCase()">
+              {{usuario.estado}}
+            </span>
+          </td>
         </tr>
       </tbody>
     </table>
