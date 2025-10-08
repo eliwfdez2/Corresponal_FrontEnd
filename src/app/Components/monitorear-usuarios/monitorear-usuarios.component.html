@@ -23,6 +23,25 @@
     <span class="last-update">Última actualización: {{ ultimaActualizacion }}</span>
   </div>
 
+  <!-- Acciones Disponibles -->
+  <div class="mb-4">
+    <h3 class="section-title">Acciones Disponibles</h3>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <!-- Crear Usuario -->
+    <div class="col-lg-12">
+      <div class="card action-card h-100">
+        <div class="card-body d-flex flex-column">
+          <h4 class="card-title">Crear Usuario</h4>
+          <button class="btn btn-action w-100" (click)="openCreateUserModal()">
+            Crear <i class="fas fa-plus ms-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Tabla de Usuarios Activos -->
   <div class="table-container">
     <h3>Usuarios Activos</h3>
@@ -107,4 +126,11 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Create User Modal -->
+  <app-crear-usuario
+    *ngIf="showCreateUserModal"
+    (close)="closeCreateUserModal()"
+    (userCreated)="onUserCreated()">
+  </app-crear-usuario>
 </div>

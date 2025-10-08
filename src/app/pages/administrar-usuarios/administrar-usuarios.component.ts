@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToolBarComponent } from "../../Components/tool-bar/tool-bar.component";
 
@@ -25,7 +26,7 @@ export class AdministrarUsuariosComponent implements OnInit {
     administradores: 12
   };
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.cargarMetricas();
@@ -37,7 +38,7 @@ export class AdministrarUsuariosComponent implements OnInit {
   private cargarMetricas(): void {
     // Aquí normalmente harías una llamada a un servicio
     // this.usuarioService.getMetricas().subscribe(data => this.metricas = data);
-    
+
     // Simulación de carga de datos
     console.log('Cargando métricas de usuarios...');
   }
@@ -71,4 +72,5 @@ export class AdministrarUsuariosComponent implements OnInit {
     // Handle logout logic here
     this.router.navigate(['/login']);
   }
+
 }

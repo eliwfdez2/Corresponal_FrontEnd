@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, User } from '../../core/services/user.service';
+import { CrearUsuarioComponent } from '../../Modals/crear-usuario/crear-usuario.component';
 
 @Component({
   selector: 'app-monitorear-usuarios',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CrearUsuarioComponent],
   templateUrl: './monitorear-usuarios.component.html',
   styleUrls: ['./monitorear-usuarios.component.css']
 })
@@ -15,6 +16,7 @@ export class MonitorearUsuariosComponent implements OnInit {
   usuariosActivos: any[] = [];
   registroActividades: any[] = [];
   usuarios: User[] = [];
+  showCreateUserModal: boolean = false;
 
   constructor(private router: Router, private userService: UserService) { }
 
@@ -42,6 +44,19 @@ export class MonitorearUsuariosComponent implements OnInit {
 
   exportarCSV() {
     // Implementar la lógica para exportar los datos a CSV
+  }
+
+  openCreateUserModal() {
+    this.showCreateUserModal = true;
+  }
+
+  closeCreateUserModal() {
+    this.showCreateUserModal = false;
+  }
+
+  onUserCreated() {
+    this.closeCreateUserModal();
+    this.refrescarDatos();
   }
 
   volver() {

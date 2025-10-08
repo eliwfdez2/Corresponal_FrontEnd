@@ -41,4 +41,14 @@ export class UserService {
 
     return this.http.get<User[]>(this.apiUrl, { headers });
   }
+
+  createUser(userData: { correo_electronico: string; nombre_completo: string; nombre_usuario: string; password: string; rol_nombre: string }): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'accept': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post(this.apiUrl, userData, { headers });
+  }
 }

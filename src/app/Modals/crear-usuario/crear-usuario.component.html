@@ -1,0 +1,82 @@
+<div class="modal fade show" style="display: block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Crear Nuevo Usuario</h5>
+        <button type="button" class="btn-close" (click)="onClose()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="nombre_completo" class="form-label">Nombre Completo</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre_completo"
+              formControlName="nombre_completo"
+              placeholder="Ingrese el nombre completo">
+            <div *ngIf="createUserForm.get('nombre_completo')?.invalid && createUserForm.get('nombre_completo')?.touched" class="text-danger mt-1">
+              El nombre completo es requerido.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="nombre_usuario" class="form-label">Nombre de Usuario</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre_usuario"
+              formControlName="nombre_usuario"
+              placeholder="Ingrese el nombre de usuario">
+            <div *ngIf="createUserForm.get('nombre_usuario')?.invalid && createUserForm.get('nombre_usuario')?.touched" class="text-danger mt-1">
+              El nombre de usuario es requerido.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="correo_electronico" class="form-label">Correo Electrónico</label>
+            <input
+              type="email"
+              class="form-control"
+              id="correo_electronico"
+              formControlName="correo_electronico"
+              placeholder="Ingrese el correo electrónico">
+            <div *ngIf="createUserForm.get('correo_electronico')?.invalid && createUserForm.get('correo_electronico')?.touched" class="text-danger mt-1">
+              Ingrese un correo electrónico válido.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              formControlName="password"
+              placeholder="Ingrese la contraseña">
+            <div *ngIf="createUserForm.get('password')?.invalid && createUserForm.get('password')?.touched" class="text-danger mt-1">
+              La contraseña es requerida.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="rol_nombre" class="form-label">Rol</label>
+            <select class="form-control" id="rol_nombre" formControlName="rol_nombre">
+              <option value="">Seleccione un rol</option>
+              <option *ngFor="let role of roles" [value]="role.nombre">{{ role.nombre }}</option>
+            </select>
+            <div *ngIf="createUserForm.get('rol_nombre')?.invalid && createUserForm.get('rol_nombre')?.touched" class="text-danger mt-1">
+              Debe seleccionar un rol.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onClose()" [disabled]="isLoading">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="createUserForm.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          {{ isLoading ? 'Creando...' : 'Crear Usuario' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show"></div>

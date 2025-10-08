@@ -5,21 +5,13 @@ import { AuthService } from './auth.service';
 import { urlApiViviendo } from '../api-url';
 
 export interface Referencia {
-  consideracion_pago_en: string;
+  id: number;
+  referencia: string;
   creador_id: number;
   creador_nombre: string;
-  ejecutiva_id: number;
-  ejecutiva_nombre: string;
   estatus_id: number;
   estatus_nombre: string;
   fecha_creacion: string;
-  fecha_finalizacion: string;
-  id: number;
-  referencia: string;
-  remesa_cantidad: number;
-  remesa_moneda: string;
-  solicitud_pago_id: number;
-  tiene_remesa: boolean;
 }
 
 export interface ReferenciaDetalle extends Referencia {
