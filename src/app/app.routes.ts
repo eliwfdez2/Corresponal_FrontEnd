@@ -9,10 +9,10 @@ import { AjustesComponent } from './pages/Administrar-sistema/Administrar-sistem
 import { ConceptosComponent } from './pages/Administrar-sistema/conceptos/conceptos.component';
 import { EstatusComponent } from './pages/Administrar-sistema/estatus/estatus.component';
 import { ExtensionesArchivosComponent } from './pages/Administrar-sistema/extensiones-archivos/extensiones-archivos.component';
-import { ReferenciasComponent } from './pages/Administrar-sistema/referencias/referencias.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { MonitorearUsuariosComponent } from './Components/monitorear-usuarios/monitorear-usuarios.component';
 import { GestionarRolesComponent } from './Components/gestionar-roles/gestionar-roles.component';
+import { ReferenciasComponent } from './Components/gestionar-referencias/gestionar-referencias.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,11 +29,11 @@ export const routes: Routes = [
       { path: 'administrar-usuarios', component: AdministrarUsuariosComponent },
       { path: 'monitoreo-usuarios', component: MonitorearUsuariosComponent },
       {path: 'gestionar-roles', component: GestionarRolesComponent},
+      {path: 'gestionar-referencias', component: ReferenciasComponent},
       { path: 'administrar-sistema', component: AjustesComponent },
       { path: 'administrar-sistema/conceptos', component: ConceptosComponent },
       { path: 'administrar-sistema/estatus', component: EstatusComponent },
       { path: 'administrar-sistema/extensiones-archivos', component: ExtensionesArchivosComponent },
-      { path: 'administrar-sistema/referencias', component: ReferenciasComponent }
     ]
   },
 

@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReferenciasService, Referencia } from '../../../core/services/referencias.service';
-import { UserService, User } from '../../../core/services/user.service';
-import { CorresponsalService, Corresponsal } from '../../../core/services/corresponsal.service';
+import { Referencia, ReferenciasService } from '../../core/services/referencias.service';
+import { Corresponsal, CorresponsalService } from '../../core/services/corresponsal.service';
+import { User, UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-referencias',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './referencias.component.html',
-  styleUrl: './referencias.component.css'
+  templateUrl: './gestionar-referencias.component.html',
+  styleUrl: './gestionar-referencias.component.css'
 })
 export class ReferenciasComponent implements OnInit {
   referencias: Referencia[] = [];

@@ -44,7 +44,7 @@ export class AdministrarUsuariosComponent implements OnInit {
   }
 
   irMonitorearUsuarios(): void {
-    console.log('Navegando a monitorear usuarios');
+    console.log('Navegando a Gestionar usuarios');
     this.router.navigate(['/monitoreo-usuarios']); 
   }
 
@@ -53,6 +53,10 @@ export class AdministrarUsuariosComponent implements OnInit {
     this.router.navigate(['/gestionar-roles']); 
   }
 
+  irGestionarReferencias(): void {
+    console.log('Navegando a gestionar referencias');
+    this.router.navigate(['/gestionar-referencias']);
+  }
   /**
    * Actualiza las métricas en tiempo real
    */

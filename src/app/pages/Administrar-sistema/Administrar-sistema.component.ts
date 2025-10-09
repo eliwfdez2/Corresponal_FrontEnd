@@ -58,11 +58,6 @@ export class AjustesComponent implements OnInit {
     this.router.navigate(['/administrar-sistema/extensiones-archivos']);
   }
 
-  irReferencias(): void {
-    console.log('Navegando a referencias');
-    this.router.navigate(['/administrar-sistema/referencias']);
-  }
-
   // Navigation methods for toolbar integration
   onNavigationChange(route: string) {
     console.log('Navigation changed to:', route);
