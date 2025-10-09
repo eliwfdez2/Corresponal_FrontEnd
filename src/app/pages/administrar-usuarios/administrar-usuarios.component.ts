@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToolBarComponent } from "../../Components/tool-bar/tool-bar.component";
+import { UserService } from '../../core/services/user.service';
 
 interface UsuarioMetricas {
   totalUsuarios: number;
@@ -21,25 +22,27 @@ export class AdministrarUsuariosComponent implements OnInit {
 
   // Métricas de usuarios
   metricas: UsuarioMetricas = {
-    totalUsuarios: 12,
-    conectados: 3,
-    administradores: 12
+    totalUsuarios: 0,
+    conectados: 0,
+    administradores: 0
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit(): void {
     this.cargarMetricas();
   }
 
   /**
-   * Carga las métricas desde el servicio (simulado)
+   * Carga las métricas desde el servicio
    */
   private cargarMetricas(): void {
-    // Aquí normalmente harías una llamada a un servicio
-    // this.usuarioService.getMetricas().subscribe(data => this.metricas = data);
+    this.userService.getAllUsers().subscribe(users => {
+      this.metricas.totalUsuarios = users.length;
+      this.metricas.conectados = users.filter(u => u.activo).length;
+      this.metricas.administradores = users.filter(u => u.rol_nombre === 'Administrador').length;
+    });
 
-    // Simulación de carga de datos
     console.log('Cargando métricas de usuarios...');
   }
 

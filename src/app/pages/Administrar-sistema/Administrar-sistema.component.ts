@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToolBarComponent } from "../../Components/tool-bar/tool-bar.component";
+import { ConceptosService } from '../../core/services/conceptos.service';
+import { ReferenciasService } from '../../core/services/referencias.service';
 
 interface SistemaMetricas {
   totalConceptos: number;
@@ -24,7 +26,7 @@ export class AjustesComponent implements OnInit {
     totalDocumentos: 0
   };
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private conceptosService: ConceptosService, private referenciasService: ReferenciasService) { }
 
   ngOnInit(): void {
     this.cargarMetricas();
@@ -34,12 +36,10 @@ export class AjustesComponent implements OnInit {
    * Carga las métricas desde los servicios
    */
   private cargarMetricas(): void {
-    // Aquí normalmente harías llamadas a los servicios
-    // this.conceptosService.getConceptos().subscribe(data => this.metricas.totalConceptos = data.length);
-    // this.referenciasService.getReferencias().subscribe(data => this.metricas.totalReferencias = data.length);
+    this.conceptosService.getConceptos().subscribe(data => this.metricas.totalConceptos = data.length);
+    this.referenciasService.getReferencias().subscribe(data => this.metricas.totalReferencias = data.length);
     // this.documentosService.getDocumentos().subscribe(data => this.metricas.totalDocumentos = data.length);
 
-    // Simulación de carga de datos
     console.log('Cargando métricas del sistema...');
   }
 

@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-tool-bar',
@@ -17,16 +18,21 @@ export class ToolBarComponent implements OnInit {
   // This property will determine which link has the .active class
   currentActiveItem: string = 'dashboard';
 
-  constructor(private router: Router) {}
+  // User role
+  userRole: string | null = null;
+
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
+    this.userRole = this.authService.getUserRole();
+
     // Listen to route changes to update active item
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.updateActiveItem(event.url);
       });
-    
+
     // Set initial active item based on current route
     this.updateActiveItem(this.router.url);
   }
@@ -55,5 +61,10 @@ export class ToolBarComponent implements OnInit {
   logout(event: Event) {
     event.preventDefault();
     this.logoutRequest.emit();
+  }
+
+  // Role-based access control methods
+  isAdmin(): boolean {
+    return this.userRole === 'Administrador';
   }
 }

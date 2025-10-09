@@ -47,7 +47,7 @@ export class VerReferenciaComponent implements OnInit {
   ngOnInit() {
     // Obtener todos los usuarios para mapear nombres
     this.userService.getAllUsers().subscribe(users => {
-      this.userMap = users.reduce((map, user) => {
+      this.userMap = (users || []).reduce((map, user) => {
         map[user.id] = user.nombre_completo;
         return map;
       }, {} as { [key: number]: string });
@@ -55,15 +55,19 @@ export class VerReferenciaComponent implements OnInit {
       // Obtener la referencia desde la URL
       this.route.params.subscribe(params => {
         this.referenciaId = params['id'];
+        // Get referencia data
         this.referenciasService.getReferencia(this.referenciaId).subscribe(data => {
           this.referenciaData = data;
-          this.documentos = data.documents.map((doc: any) => ({
-            id: doc.id,
+        });
+        // Get documentos
+        this.referenciasService.getDocumentos(this.referenciaId).subscribe(docs => {
+          this.documentos = (docs || []).map((doc: any, index: number) => ({
+            id: index, // Use index as unique id since API returns id: 0 for all
             nombre: doc.nombre_documento,
-            estado: doc.estado,
+            estado: 'pendiente' as 'valido' | 'no-valido' | 'pendiente',
             cliente: this.userMap[doc.usuario_id] || 'Desconocido',
             fecha: doc.subido_en
-          })).filter((doc, index, self) => self.findIndex(d => d.id === doc.id) === index);
+          }));
           this.documentosFiltrados = [...this.documentos];
         });
       });
@@ -145,15 +149,14 @@ export class VerReferenciaComponent implements OnInit {
       next: (response: any) => {
         console.log('Uploaded:', response);
         // Refresh the list
-        this.referenciasService.getReferencia(this.referenciaId).subscribe(data => {
-          this.referenciaData = data;
-          this.documentos = data.documents.map((doc: any) => ({
-            id: doc.id,
+        this.referenciasService.getDocumentos(this.referenciaId).subscribe(docs => {
+          this.documentos = (docs || []).map((doc: any, index: number) => ({
+            id: index, // Use index as unique id
             nombre: doc.nombre_documento,
-            estado: doc.estado,
+            estado: 'pendiente' as 'valido' | 'no-valido' | 'pendiente',
             cliente: this.userMap[doc.usuario_id] || 'Desconocido',
             fecha: doc.subido_en
-          })).filter((doc, index, self) => self.findIndex(d => d.id === doc.id) === index);
+          }));
           this.documentosFiltrados = [...this.documentos];
         });
       },

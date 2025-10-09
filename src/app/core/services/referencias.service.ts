@@ -54,6 +54,10 @@ export class ReferenciasService {
     return this.http.get<ReferenciaDetalle>(`${this.apiUrl}/referencias/${id}`, { headers: this.getHeaders() });
   }
 
+  getDocumentos(referencia: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/documentos/${referencia}`, { headers: this.getHeaders() });
+  }
+
   downloadDocumento(nombre: string, referencia: string): Observable<Blob> {
     const headers = new HttpHeaders({
       'accept': 'application/octet-stream',
