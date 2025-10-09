@@ -165,12 +165,6 @@ export class HistorialComponent implements OnInit {
     // Implementar lógica para editar documento
   }
 
-  // Navigation methods for toolbar integration
-  onNavigationChange(route: string) {
-    console.log('Navigation changed to:', route);
-    // Navigation is now handled by the toolbar component itself
-  }
-
   onLogout() {
     console.log('Logout requested');
     // Handle logout logic here

@@ -74,12 +74,6 @@ export class PerfilComponent implements OnInit {
     this.closeInfoModal();
   }
 
-  // Navigation methods for toolbar integration
-  onNavigationChange(route: string) {
-    console.log('Navigation changed to:', route);
-    // Navigation is now handled by the toolbar component itself
-  }
-
   onLogout() {
     console.log('Logout requested');
     // Handle logout logic here

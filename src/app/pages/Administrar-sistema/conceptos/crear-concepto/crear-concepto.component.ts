@@ -42,11 +42,6 @@ export class CrearConceptoComponent {
     this.router.navigate(['/administrar-sistema/conceptos']);
   }
 
-  onNavigationChange(route: string) {
-    console.log('Navigation changed to:', route);
-    // Navigation is now handled by the toolbar component itself
-  }
-
   onLogout() {
     console.log('Logout requested');
     // Handle logout logic here
