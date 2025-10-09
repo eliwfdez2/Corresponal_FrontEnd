@@ -1,8 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { urlApiViviendo } from '../api-url';
+
+// Custom validator for combined form: exactly one of usuario_id or corresponsal_id must be selected
+export function exactlyOneSelected(control: AbstractControl): ValidationErrors | null {
+  const usuarioId = control.get('usuario_id')?.value;
+  const corresponsalId = control.get('corresponsal_id')?.value;
+  if ((usuarioId && corresponsalId) || (!usuarioId && !corresponsalId)) {
+    return { exactlyOneRequired: true };
+  }
+  return null;
+}
 
 export interface Referencia {
   id: number;
@@ -120,6 +131,11 @@ export class ReferenciasService {
   getUsuariosAsignados(referencia: string): Observable<any[]> {
     const params = new HttpParams().set('referencia', referencia);
     return this.http.get<any[]>(`${this.apiUrl}/referencias/usuarios`, { headers: this.getHeaders(), params });
+  }
+
+  getCorresponsalesAsignados(referencia: string): Observable<any[]> {
+    const params = new HttpParams().set('referencia', referencia);
+    return this.http.get<any[]>(`${this.apiUrl}/referencias/corresponsales`, { headers: this.getHeaders(), params });
   }
 
   assignCorresponsal(corresponsalNumero: number, referencia: string): Observable<any> {

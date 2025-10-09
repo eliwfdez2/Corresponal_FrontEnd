@@ -4,9 +4,8 @@ import { Observable } from 'rxjs';
 import { urlApiViviendo } from '../api-url';
 
 export interface Corresponsal {
-  id: number;
-  numero: number;
-  nombre: string;
+  numero: string;  // the name
+  nombre: string;  // the numero
 }
 
 @Injectable({ providedIn: 'root' })

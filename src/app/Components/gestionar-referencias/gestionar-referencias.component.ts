@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Referencia, ReferenciasService } from '../../core/services/referencias.service';
+import { Referencia, ReferenciasService, exactlyOneSelected } from '../../core/services/referencias.service';
 import { Corresponsal, CorresponsalService } from '../../core/services/corresponsal.service';
 import { User, UserService } from '../../core/services/user.service';
 
@@ -12,29 +12,25 @@ import { User, UserService } from '../../core/services/user.service';
   templateUrl: './gestionar-referencias.component.html',
   styleUrl: './gestionar-referencias.component.css'
 })
+
 export class ReferenciasComponent implements OnInit {
   referencias: Referencia[] = [];
   paginatedReferencias: Referencia[] = [];
   users: User[] = [];
   corresponsales: Corresponsal[] = [];
   assignedUsers: any[] = [];
+  assignedCorresponsales: any[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalPages: number = 0;
 
   isCreateModalOpen: boolean = false;
-  isAssignModalOpen: boolean = false;
   isUnassignModalOpen: boolean = false;
-  isViewUsersModalOpen: boolean = false;
-  isAssignCorresponsalModalOpen: boolean = false;
-  isUnassignCorresponsalModalOpen: boolean = false;
+  isAssignCombinedModalOpen: boolean = false;
   selectedReferencia: Referencia | null = null;
 
   createForm: FormGroup;
-  assignForm: FormGroup;
-  unassignForm: FormGroup;
-  assignCorresponsalForm: FormGroup;
-  unassignCorresponsalForm: FormGroup;
+  assignCombinedForm: FormGroup;
 
   constructor(
     private referenciasService: ReferenciasService,
@@ -46,18 +42,10 @@ export class ReferenciasComponent implements OnInit {
     this.createForm = this.fb.group({
       referencia: ['', Validators.required]
     });
-    this.assignForm = this.fb.group({
-      usuario_id: ['', Validators.required]
-    });
-    this.unassignForm = this.fb.group({
-      usuario_id: ['', Validators.required]
-    });
-    this.assignCorresponsalForm = this.fb.group({
-      corresponsal_id: ['', Validators.required]
-    });
-    this.unassignCorresponsalForm = this.fb.group({
-      corresponsal_id: ['', Validators.required]
-    });
+    this.assignCombinedForm = this.fb.group({
+      usuario_id: [''],
+      corresponsal_id: ['']
+    }, { validators: exactlyOneSelected });
   }
 
   ngOnInit(): void {
@@ -82,10 +70,11 @@ export class ReferenciasComponent implements OnInit {
   loadUsers(): void {
     this.userService.getAllUsers().subscribe({
       next: (data) => {
-        this.users = data;
+        this.users = data || [];
       },
       error: (err) => {
         console.error('Error loading users', err);
+        this.users = [];
       }
     });
   }
@@ -93,10 +82,11 @@ export class ReferenciasComponent implements OnInit {
   loadCorresponsales(): void {
     this.corresponsalService.getCorresponsales().subscribe({
       next: (data) => {
-        this.corresponsales = data;
+        this.corresponsales = data || [];
       },
       error: (err) => {
         console.error('Error loading corresponsales', err);
+        this.corresponsales = [];
       }
     });
   }
@@ -137,121 +127,126 @@ export class ReferenciasComponent implements OnInit {
     }
   }
 
-  openAssignModal(referencia: Referencia): void {
-    this.selectedReferencia = referencia;
-    this.assignForm.reset();
-    this.isAssignModalOpen = true;
-  }
-
-  closeAssignModal(): void {
-    this.isAssignModalOpen = false;
-    this.selectedReferencia = null;
-  }
-
-  onAssignSubmit(): void {
-    if (this.assignForm.valid && this.selectedReferencia) {
-      this.referenciasService.assignReferencia(this.selectedReferencia.referencia, this.assignForm.value.usuario_id).subscribe({
-        next: () => {
-          this.closeAssignModal();
-        },
-        error: (err) => {
-          console.error('Error assigning referencia', err);
-        }
-      });
-    }
-  }
 
   openUnassignModal(referencia: Referencia): void {
     this.selectedReferencia = referencia;
-    this.unassignForm.reset();
-    this.isUnassignModalOpen = true;
+    this.assignedUsers = [];
+    this.assignedCorresponsales = [];
+    // Fetch assigned users
+    this.referenciasService.getUsuariosAsignados(referencia.referencia).subscribe({
+      next: (users) => {
+        this.assignedUsers = users || [];
+      },
+      error: (err) => {
+        console.error('Error loading assigned users', err);
+        this.assignedUsers = [];
+      }
+    });
+    // Fetch assigned corresponsales
+    this.referenciasService.getCorresponsalesAsignados(referencia.referencia).subscribe({
+      next: (corresponsales) => {
+        this.assignedCorresponsales = corresponsales || [];
+        this.isUnassignModalOpen = true;
+      },
+      error: (err) => {
+        console.error('Error loading assigned corresponsales', err);
+        this.assignedCorresponsales = [];
+        this.isUnassignModalOpen = true; // Open modal even if one fails
+      }
+    });
   }
 
   closeUnassignModal(): void {
     this.isUnassignModalOpen = false;
     this.selectedReferencia = null;
+    this.assignedUsers = [];
+    this.assignedCorresponsales = [];
   }
 
-  onUnassignSubmit(): void {
-    if (this.unassignForm.valid && this.selectedReferencia) {
-      this.referenciasService.unassignReferencia(this.selectedReferencia.referencia, this.unassignForm.value.usuario_id).subscribe({
+  unassignUser(userId: number): void {
+    if (this.selectedReferencia) {
+      this.referenciasService.unassignReferencia(this.selectedReferencia.referencia, userId).subscribe({
         next: () => {
-          this.closeUnassignModal();
+          // Remove from list
+          this.assignedUsers = this.assignedUsers.filter(u => u.id !== userId);
         },
         error: (err) => {
-          console.error('Error unassigning referencia', err);
+          console.error('Error unassigning user', err);
         }
       });
     }
   }
 
-  openViewUsersModal(referencia: Referencia): void {
-    this.selectedReferencia = referencia;
-    this.referenciasService.getUsuariosAsignados(referencia.referencia).subscribe({
-      next: (data) => {
-        this.assignedUsers = data;
-        this.isViewUsersModalOpen = true;
-      },
-      error: (err) => {
-        console.error('Error loading assigned users', err);
-      }
-    });
-  }
-
-  closeViewUsersModal(): void {
-    this.isViewUsersModalOpen = false;
-    this.selectedReferencia = null;
-    this.assignedUsers = [];
-  }
-
-  openAssignCorresponsalModal(referencia: Referencia): void {
-    this.selectedReferencia = referencia;
-    this.assignCorresponsalForm.reset();
-    this.isAssignCorresponsalModalOpen = true;
-  }
-
-  closeAssignCorresponsalModal(): void {
-    this.isAssignCorresponsalModalOpen = false;
-    this.selectedReferencia = null;
-  }
-
-  onAssignCorresponsalSubmit(): void {
-    if (this.assignCorresponsalForm.valid && this.selectedReferencia) {
-      const selectedCorresponsal = this.corresponsales.find(c => c.id === +this.assignCorresponsalForm.value.corresponsal_id);
-      if (selectedCorresponsal) {
-        this.referenciasService.assignCorresponsal(selectedCorresponsal.numero, this.selectedReferencia.referencia).subscribe({
-          next: () => {
-            this.closeAssignCorresponsalModal();
-          },
-          error: (err) => {
-            console.error('Error assigning corresponsal', err);
-          }
-        });
-      }
+  unassignCorresponsal(corresponsalNumero: any): void {
+    if (this.selectedReferencia) {
+      console.log('Unassigning corresponsal numero:', +corresponsalNumero);
+      console.log('Referencia:', this.selectedReferencia.referencia);
+      this.referenciasService.unassignCorresponsal(+corresponsalNumero, this.selectedReferencia.referencia).subscribe({
+        next: () => {
+          // Remove from list
+          this.assignedCorresponsales = this.assignedCorresponsales.filter(c => c.numero !== corresponsalNumero);
+        },
+        error: (err) => {
+          console.error('Error unassigning corresponsal', err);
+        }
+      });
     }
   }
 
-  openUnassignCorresponsalModal(referencia: Referencia): void {
+
+
+  openAssignCombinedModal(referencia: Referencia): void {
     this.selectedReferencia = referencia;
-    this.unassignCorresponsalForm.reset();
-    this.isUnassignCorresponsalModalOpen = true;
+    this.assignCombinedForm.reset();
+    this.isAssignCombinedModalOpen = true;
   }
 
-  closeUnassignCorresponsalModal(): void {
-    this.isUnassignCorresponsalModalOpen = false;
+  closeAssignCombinedModal(): void {
+    this.isAssignCombinedModalOpen = false;
     this.selectedReferencia = null;
   }
 
-  onUnassignCorresponsalSubmit(): void {
-    if (this.unassignCorresponsalForm.valid && this.selectedReferencia) {
-      const selectedCorresponsal = this.corresponsales.find(c => c.id === +this.unassignCorresponsalForm.value.corresponsal_id);
-      if (selectedCorresponsal) {
-        this.referenciasService.unassignCorresponsal(selectedCorresponsal.numero, this.selectedReferencia.referencia).subscribe({
+  onUsuarioChange(): void {
+    if (this.assignCombinedForm.get('usuario_id')?.value) {
+      this.assignCombinedForm.get('corresponsal_id')?.setValue('');
+    }
+  }
+
+  onCorresponsalChange(): void {
+    if (this.assignCombinedForm.get('corresponsal_id')?.value) {
+      this.assignCombinedForm.get('usuario_id')?.setValue('');
+    }
+  }
+
+  onAssignCombinedSubmit(): void {
+    if (this.assignCombinedForm.valid && this.selectedReferencia) {
+      const formValue = this.assignCombinedForm.value;
+      const referencia = this.selectedReferencia.referencia;
+
+      // Assign user if selected
+      if (formValue.usuario_id) {
+        this.referenciasService.assignReferencia(referencia, +formValue.usuario_id).subscribe({
           next: () => {
-            this.closeUnassignCorresponsalModal();
+            this.closeAssignCombinedModal();
+            alert('Usuario asignado exitosamente.');
           },
           error: (err) => {
-            console.error('Error unassigning corresponsal', err);
+            console.error('Error assigning user', err);
+            alert('Error al asignar usuario: ' + (err.error?.message || 'Error desconocido'));
+          }
+        });
+      }
+
+      // Assign corresponsal if selected
+      if (formValue.corresponsal_id) {
+        this.referenciasService.assignCorresponsal(+formValue.corresponsal_id, referencia).subscribe({
+          next: () => {
+            this.closeAssignCombinedModal();
+            alert('Corresponsal asignado exitosamente.');
+          },
+          error: (err) => {
+            console.error('Error assigning corresponsal', err);
+            alert('Error al asignar corresponsal: ' + (err.error?.message || 'Error desconocido'));
           }
         });
       }

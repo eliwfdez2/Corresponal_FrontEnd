@@ -1,4 +1,4 @@
-<div class="referencias-container">
+ <div class="referencias-container">
   <div class="container">
     <!-- Botón Volver al inicio -->
     <div class="back-section">
@@ -42,20 +42,11 @@
             </td>
             <td>{{ ref.fecha_creacion | date:'short' }}</td>
             <td>
-              <button class="btn btn-sm btn-outline-primary me-2" (click)="openAssignModal(ref)" title="Asignar Usuario">
-                <i class="fas fa-user-plus"></i> Asignar Usuario
+              <button class="btn btn-sm btn-outline-info me-2" (click)="openAssignCombinedModal(ref)" title="Asignar Usuario y Corresponsal">
+                <i class="fas fa-users-cog"></i> Asignar
               </button>
-              <button class="btn btn-sm btn-outline-warning me-2" (click)="openUnassignModal(ref)" title="Desasignar Usuario">
-                <i class="fas fa-user-minus"></i> Desasignar Usuario
-              </button>
-              <button class="btn btn-sm btn-outline-success me-2" (click)="openAssignCorresponsalModal(ref)" title="Asignar Corresponsal">
-                <i class="fas fa-handshake"></i> Asignar Corresponsal
-              </button>
-              <button class="btn btn-sm btn-outline-danger me-2" (click)="openUnassignCorresponsalModal(ref)" title="Desasignar Corresponsal">
-                <i class="fas fa-handshake-slash"></i> Desasignar Corresponsal
-              </button>
-              <button class="btn btn-sm btn-outline-info" (click)="openViewUsersModal(ref)" title="Ver Usuarios">
-                <i class="fas fa-users"></i> Ver Usuarios
+              <button class="btn btn-sm btn-outline-warning me-2" (click)="openUnassignModal(ref)" title="Desasignar">
+                <i class="fas fa-user-minus"></i> Desasignar
               </button>
             </td>
           </tr>
@@ -118,32 +109,42 @@
   </div>
 </div>
 
-<!-- Assign Modal -->
-<div class="modal fade" [class.show]="isAssignModalOpen" [style.display]="isAssignModalOpen ? 'block' : 'none'" *ngIf="isAssignModalOpen">
+
+<!-- Assign Combined Modal -->
+<div class="modal fade" [class.show]="isAssignCombinedModalOpen" [style.display]="isAssignCombinedModalOpen ? 'block' : 'none'" *ngIf="isAssignCombinedModalOpen">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Asignar Referencia a Usuario</h5>
-        <button type="button" class="btn-close" (click)="closeAssignModal()"></button>
+        <h5 class="modal-title">Asignar Usuario y Corresponsal a Referencia</h5>
+        <button type="button" class="btn-close" (click)="closeAssignCombinedModal()"></button>
       </div>
       <div class="modal-body">
-        <p>Asignando referencia: <strong>{{ selectedReferencia?.referencia }}</strong></p>
-        <form [formGroup]="assignForm" (ngSubmit)="onAssignSubmit()">
+        <p>Asignando a referencia: <strong>{{ selectedReferencia?.referencia }}</strong></p>
+        <form [formGroup]="assignCombinedForm" (ngSubmit)="onAssignCombinedSubmit()">
+          <div *ngIf="assignCombinedForm.errors?.['exactlyOneRequired'] && assignCombinedForm.touched" class="alert alert-danger">
+            Debe seleccionar exactamente un usuario o un corresponsal.
+          </div>
           <div class="mb-3">
-            <label for="assign-usuario" class="form-label">Usuario</label>
-            <select class="form-control" id="assign-usuario" formControlName="usuario_id">
+            <label for="combined-usuario" class="form-label">Usuario</label>
+            <select class="form-control" id="combined-usuario" formControlName="usuario_id" (change)="onUsuarioChange()">
               <option value="">Seleccione un usuario</option>
               <option *ngFor="let user of users" [value]="user.id">{{ user.nombre_completo }}</option>
             </select>
-            <div *ngIf="assignForm.get('usuario_id')?.invalid && assignForm.get('usuario_id')?.touched" class="text-danger mt-1">
-              Debe seleccionar un usuario.
-            </div>
+          </div>
+          <div class="mb-3">
+            <label for="combined-corresponsal" class="form-label">Corresponsal</label>
+            <select class="form-control" id="combined-corresponsal" formControlName="corresponsal_id" (change)="onCorresponsalChange()">
+              <option value="">Seleccione un corresponsal</option>
+              <option *ngFor="let corresponsal of corresponsales" [value]="corresponsal.nombre">
+                {{ corresponsal.numero }}
+              </option>
+            </select>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeAssignModal()">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="onAssignSubmit()" [disabled]="assignForm.invalid">Asignar</button>
+        <button type="button" class="btn btn-secondary" (click)="closeAssignCombinedModal()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="onAssignCombinedSubmit()" [disabled]="assignCombinedForm.invalid">Asignar</button>
       </div>
     </div>
   </div>
@@ -151,125 +152,43 @@
 
 <!-- Unassign Modal -->
 <div class="modal fade" [class.show]="isUnassignModalOpen" [style.display]="isUnassignModalOpen ? 'block' : 'none'" *ngIf="isUnassignModalOpen">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Desasignar Referencia de Usuario</h5>
-        <button type="button" class="btn-close" (click)="closeUnassignModal()"></button>
-      </div>
-      <div class="modal-body">
-        <p>Desasignando referencia: <strong>{{ selectedReferencia?.referencia }}</strong></p>
-        <form [formGroup]="unassignForm" (ngSubmit)="onUnassignSubmit()">
-          <div class="mb-3">
-            <label for="unassign-usuario" class="form-label">Usuario</label>
-            <select class="form-control" id="unassign-usuario" formControlName="usuario_id">
-              <option value="">Seleccione un usuario</option>
-              <option *ngFor="let user of users" [value]="user.id">{{ user.nombre_completo }}</option>
-            </select>
-            <div *ngIf="unassignForm.get('usuario_id')?.invalid && unassignForm.get('usuario_id')?.touched" class="text-danger mt-1">
-              Debe seleccionar un usuario.
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeUnassignModal()">Cancelar</button>
-        <button type="button" class="btn btn-warning" (click)="onUnassignSubmit()" [disabled]="unassignForm.invalid">Desasignar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- View Users Modal -->
-<div class="modal fade" [class.show]="isViewUsersModalOpen" [style.display]="isViewUsersModalOpen ? 'block' : 'none'" *ngIf="isViewUsersModalOpen">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Usuarios Asignados a {{ selectedReferencia?.referencia }}</h5>
-        <button type="button" class="btn-close" (click)="closeViewUsersModal()"></button>
+        <h5 class="modal-title">Desasignar de Referencia: {{ selectedReferencia?.referencia }}</h5>
+        <button type="button" class="btn-close" (click)="closeUnassignModal()"></button>
       </div>
       <div class="modal-body">
-        <ul class="list-group">
-          <li *ngFor="let user of assignedUsers" class="list-group-item">
+        <h6>Usuarios Asignados:</h6>
+        <ul class="list-group mb-3">
+          <li *ngFor="let user of assignedUsers" class="list-group-item d-flex justify-content-between align-items-center">
             {{ user.nombre_completo }} ({{ user.nombre_usuario }})
+            <button class="btn btn-sm btn-outline-danger" (click)="unassignUser(user.id)">Desasignar</button>
           </li>
           <li *ngIf="assignedUsers.length === 0" class="list-group-item text-muted">
-            No hay usuarios asignados a esta referencia.
+            No hay usuarios asignados.
+          </li>
+        </ul>
+        <h6>Corresponsales Asignados:</h6>
+        <ul class="list-group">
+          <li *ngFor="let corresponsal of assignedCorresponsales" class="list-group-item d-flex justify-content-between align-items-center">
+            {{ corresponsal.numero }} - {{ corresponsal.nombre }}
+            <button class="btn btn-sm btn-outline-danger" (click)="unassignCorresponsal(corresponsal.numero)">Desasignar</button>
+          </li>
+          <li *ngIf="assignedCorresponsales.length === 0" class="list-group-item text-muted">
+            No hay corresponsales asignados.
           </li>
         </ul>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeViewUsersModal()">Cerrar</button>
+        <button type="button" class="btn btn-secondary" (click)="closeUnassignModal()">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Assign Corresponsal Modal -->
-<div class="modal fade" [class.show]="isAssignCorresponsalModalOpen" [style.display]="isAssignCorresponsalModalOpen ? 'block' : 'none'" *ngIf="isAssignCorresponsalModalOpen">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Asignar Corresponsal a Referencia</h5>
-        <button type="button" class="btn-close" (click)="closeAssignCorresponsalModal()"></button>
-      </div>
-      <div class="modal-body">
-        <p>Asignando corresponsal a referencia: <strong>{{ selectedReferencia?.referencia }}</strong></p>
-        <form [formGroup]="assignCorresponsalForm" (ngSubmit)="onAssignCorresponsalSubmit()">
-          <div class="mb-3">
-            <label for="assign-corresponsal" class="form-label">Corresponsal</label>
-            <select class="form-control" id="assign-corresponsal" formControlName="corresponsal_id">
-              <option value="">Seleccione un corresponsal</option>
-              <option *ngFor="let corresponsal of corresponsales" [value]="corresponsal.id">
-                {{ corresponsal.numero }} - {{ corresponsal.nombre }}
-              </option>
-            </select>
-            <div *ngIf="assignCorresponsalForm.get('corresponsal_id')?.invalid && assignCorresponsalForm.get('corresponsal_id')?.touched" class="text-danger mt-1">
-              Debe seleccionar un corresponsal.
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeAssignCorresponsalModal()">Cancelar</button>
-        <button type="button" class="btn btn-success" (click)="onAssignCorresponsalSubmit()" [disabled]="assignCorresponsalForm.invalid">Asignar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Unassign Corresponsal Modal -->
-<div class="modal fade" [class.show]="isUnassignCorresponsalModalOpen" [style.display]="isUnassignCorresponsalModalOpen ? 'block' : 'none'" *ngIf="isUnassignCorresponsalModalOpen">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Desasignar Corresponsal de Referencia</h5>
-        <button type="button" class="btn-close" (click)="closeUnassignCorresponsalModal()"></button>
-      </div>
-      <div class="modal-body">
-        <p>Desasignando corresponsal de referencia: <strong>{{ selectedReferencia?.referencia }}</strong></p>
-        <form [formGroup]="unassignCorresponsalForm" (ngSubmit)="onUnassignCorresponsalSubmit()">
-          <div class="mb-3">
-            <label for="unassign-corresponsal" class="form-label">Corresponsal</label>
-            <select class="form-control" id="unassign-corresponsal" formControlName="corresponsal_id">
-              <option value="">Seleccione un corresponsal</option>
-              <option *ngFor="let corresponsal of corresponsales" [value]="corresponsal.id">
-                {{ corresponsal.numero }} - {{ corresponsal.nombre }}
-              </option>
-            </select>
-            <div *ngIf="unassignCorresponsalForm.get('corresponsal_id')?.invalid && unassignCorresponsalForm.get('corresponsal_id')?.touched" class="text-danger mt-1">
-              Debe seleccionar un corresponsal.
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeUnassignCorresponsalModal()">Cancelar</button>
-        <button type="button" class="btn btn-danger" (click)="onUnassignCorresponsalSubmit()" [disabled]="unassignCorresponsalForm.invalid">Desasignar</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <!-- Modal Backdrop -->
-<div class="modal-backdrop fade show" *ngIf="isCreateModalOpen || isAssignModalOpen || isUnassignModalOpen || isViewUsersModalOpen || isAssignCorresponsalModalOpen || isUnassignCorresponsalModalOpen"></div>
+<div class="modal-backdrop fade show" *ngIf="isCreateModalOpen || isUnassignModalOpen || isAssignCombinedModalOpen"></div>
