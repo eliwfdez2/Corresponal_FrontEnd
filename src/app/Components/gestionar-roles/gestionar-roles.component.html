@@ -1,30 +1,50 @@
 <div class="container">
-  <h2>Gestionar Roles</h2>
+  <!-- Botón Volver al inicio -->
+  <div class="back-section">
+    <button class="btn-volver" (click)="volver()">
+      <i class="icon-arrow-left"></i>
+      Volver
+    </button>
+  </div>
 
-  <button class="btn-volver" (click)="volver()">
-    <i class="icon-arrow-left"></i>
-    Volver
-  </button>
+  <div class="header">
+    <h2>Gestionar Roles</h2>
+  </div>
 
-  <div class="role-section">
-    <h3>Crear Rol</h3>
-    <div class="form-group">
-      <label for="nombreRol">Nombre del rol</label>
-      <input type="text" id="nombreRol" [(ngModel)]="newRole.nombre" placeholder="Ej. Administrador">
-    </div>
-    <div class="form-group">
-      <label for="descripcionRol">Descripción del rol</label>
-      <input type="text" id="descripcionRol" [(ngModel)]="newRole.descripcion" placeholder="Descripción del rol">
-    </div>
-    <div class="buttons">
-      <button class="btn-cancelar">Cancelar</button>
-      <button class="btn-guardar" (click)="createRole()">Crear Rol</button>
+  <!-- Acciones Disponibles -->
+  <div class="mb-4">
+    <h3 class="section-title">Acciones Disponibles</h3>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <!-- Crear Rol -->
+    <div class="col-lg-12">
+      <div class="card action-card h-100">
+        <div class="card-body d-flex flex-column">
+          <h4 class="card-title">Crear Rol</h4>
+          <form>
+            <div class="form-group">
+              <label for="nombreRol">Nombre del rol</label>
+              <input type="text" id="nombreRol" [(ngModel)]="newRole.nombre" name="nombre" placeholder="Ej. Administrador" required>
+            </div>
+            <div class="form-group">
+              <label for="descripcionRol">Descripción del rol</label>
+              <input type="text" id="descripcionRol" [(ngModel)]="newRole.descripcion" name="descripcion" placeholder="Descripción del rol" required>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary" (click)="resetForm()">Limpiar</button>
+              <button type="button" class="btn btn-primary" (click)="createRole()">Crear Rol</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="roles-table-section">
+  <!-- Tabla de Roles -->
+  <div class="table-container">
     <h3>Lista de Roles</h3>
-    <table>
+    <table class="users-table">
       <thead>
         <tr>
           <th>ID</th>
@@ -38,8 +58,10 @@
           <td>{{ role.nombre }}</td>
           <td>{{ role.descripcion }}</td>
         </tr>
+        <tr *ngIf="roles.length === 0">
+          <td colspan="3" style="text-align: center; color: #666;">No hay roles registrados</td>
+        </tr>
       </tbody>
     </table>
   </div>
-
 </div>

@@ -11,6 +11,7 @@ import { RolesService, Role } from '../../core/services/roles.service';
   templateUrl: './gestionar-roles.component.html',
   styleUrls: ['./gestionar-roles.component.css']
 })
+
 export class GestionarRolesComponent implements OnInit {
   roles: Role[] = [];
   newRole: Omit<Role, 'id'> = { nombre: '', descripcion: '' };
@@ -31,9 +32,13 @@ export class GestionarRolesComponent implements OnInit {
     if (this.newRole.nombre && this.newRole.descripcion) {
       this.rolesService.createRole(this.newRole).subscribe((createdRole: Role) => {
         this.roles.push(createdRole);
-        this.newRole = { nombre: '', descripcion: '' }; // Reset form
+        this.resetForm();
       });
     }
+  }
+
+  resetForm() {
+    this.newRole = { nombre: '', descripcion: '' };
   }
 
   volver() {
