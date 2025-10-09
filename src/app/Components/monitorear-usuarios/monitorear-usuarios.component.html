@@ -30,11 +30,33 @@
 
   <div class="row g-4 mb-4">
     <!-- Crear Usuario -->
-    <div class="col-lg-12">
+    <div class="col-lg-4">
       <div class="card action-card h-100">
         <div class="card-body d-flex flex-column">
           <h4 class="card-title">Crear Usuario</h4>
           <button class="btn btn-action w-100" (click)="openCreateUserModal()">
+            Crear <i class="fas fa-plus ms-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Crear Corresponsal -->
+    <div class="col-lg-4">
+      <div class="card action-card h-100">
+        <div class="card-body d-flex flex-column">
+          <h4 class="card-title">Crear Corresponsal</h4>
+          <button class="btn btn-action w-100" (click)="openCreateCorresponsalModal()">
+            Crear <i class="fas fa-plus ms-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Crear Ejecutivas -->
+    <div class="col-lg-4">
+      <div class="card action-card h-100">
+        <div class="card-body d-flex flex-column">
+          <h4 class="card-title">Crear Ejecutivas</h4>
+          <button class="btn btn-action w-100" (click)="openCreateEjecutivasModal()">
             Crear <i class="fas fa-plus ms-2"></i>
           </button>
         </div>
@@ -73,64 +95,24 @@
     </table>
   </div>
 
-    <!-- Tabla de Usuarios Activos -->
-  <div class="table-container">
-    <h3>Usuarios Activos</h3>
-    <table class="users-table">
-      <thead>
-        <tr>
-          <th>Usuario</th>
-          <th>Rol</th>
-          <th>IP pública</th>
-          <th>Dispositivo/Navegador</th>
-          <th>Inicio de sesión</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let usuario of usuariosActivos">
-          <td>{{usuario.nombre}}</td>
-          <td>{{usuario.rol}}</td>
-          <td>{{usuario.ip}}</td>
-          <td>{{usuario.dispositivo}}</td>
-          <td>{{usuario.inicioSesion | date:'medium'}}</td>
-          <td>
-            <span [class]="'status ' + usuario.estado.toLowerCase()">
-              {{usuario.estado}}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Bitácora de Actividades -->
-  <div class="log-container">
-    <h3>Bitácora de Actividades</h3>
-    <table class="log-table">
-      <thead>
-        <tr>
-          <th>Fecha/Hora</th>
-          <th>Usuario</th>
-          <th>Acción</th>
-          <th>Detalle</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let log of registroActividades">
-          <td>{{log.fecha | date:'medium'}}</td>
-          <td>{{log.usuario}}</td>
-          <td>{{log.accion}}</td>
-          <td>{{log.detalle}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
   <!-- Create User Modal -->
   <app-crear-usuario
     *ngIf="showCreateUserModal"
     (close)="closeCreateUserModal()"
     (userCreated)="onUserCreated()">
   </app-crear-usuario>
+
+  <!-- Create Corresponsal Modal -->
+  <app-crear-corresponsal
+    [isOpen]="showCreateCorresponsalModal"
+    (modalClosed)="closeCreateCorresponsalModal()"
+    (corresponsalCreated)="onCorresponsalCreated()">
+  </app-crear-corresponsal>
+
+  <!-- Create Ejecutivas Modal -->
+  <app-crear-ejecutivas
+    [isOpen]="showCreateEjecutivasModal"
+    (modalClosed)="closeCreateEjecutivasModal()"
+    (corresponsalCreated)="onEjecutivasCreated()">
+  </app-crear-ejecutivas>
 </div>

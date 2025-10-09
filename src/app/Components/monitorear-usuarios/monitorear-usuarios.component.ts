@@ -3,20 +3,22 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, User } from '../../core/services/user.service';
 import { CrearUsuarioComponent } from '../../Modals/crear-usuario/crear-usuario.component';
+import { CrearCorresponsalComponent } from '../../Modals/crear-corresponsal/crear-corresponsal.component';
+import { CrearEjecutivasComponent } from '../../Modals/crear-ejecutivas/crear-ejecutivas.component';
 
 @Component({
   selector: 'app-monitorear-usuarios',
   standalone: true,
-  imports: [CommonModule, CrearUsuarioComponent],
+  imports: [CommonModule, CrearUsuarioComponent, CrearCorresponsalComponent, CrearEjecutivasComponent],
   templateUrl: './monitorear-usuarios.component.html',
   styleUrls: ['./monitorear-usuarios.component.css']
 })
 export class MonitorearUsuariosComponent implements OnInit {
   ultimaActualizacion: string = new Date().toLocaleString();
-  usuariosActivos: any[] = [];
-  registroActividades: any[] = [];
   usuarios: User[] = [];
   showCreateUserModal: boolean = false;
+  showCreateCorresponsalModal: boolean = false;
+  showCreateEjecutivasModal: boolean = false;
 
   constructor(private router: Router, private userService: UserService) { }
 
@@ -56,6 +58,32 @@ export class MonitorearUsuariosComponent implements OnInit {
 
   onUserCreated() {
     this.closeCreateUserModal();
+    this.refrescarDatos();
+  }
+
+  openCreateCorresponsalModal() {
+    this.showCreateCorresponsalModal = true;
+  }
+
+  closeCreateCorresponsalModal() {
+    this.showCreateCorresponsalModal = false;
+  }
+
+  onCorresponsalCreated() {
+    this.closeCreateCorresponsalModal();
+    this.refrescarDatos();
+  }
+
+  openCreateEjecutivasModal() {
+    this.showCreateEjecutivasModal = true;
+  }
+
+  closeCreateEjecutivasModal() {
+    this.showCreateEjecutivasModal = false;
+  }
+
+  onEjecutivasCreated() {
+    this.closeCreateEjecutivasModal();
     this.refrescarDatos();
   }
 
