@@ -50,10 +50,6 @@ export class DashboardComponent implements OnInit {
       this.referenciasService.getReferencias().subscribe(references => {
         this.dashboardStats.totalReferences = references.length;
       });
-
-      this.corresponsalService.getCorresponsalesActivos().subscribe(corresponsales => {
-        this.dashboardStats.totalProviders = corresponsales.length;
-      });
     }
   }
 
