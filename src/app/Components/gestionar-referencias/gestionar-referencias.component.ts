@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Referencia, ReferenciasService, exactlyOneSelected } from '../../core/services/referencias.service';
+import { Referencia, ReferenciasService } from '../../core/services/referencias.service';
 import { Corresponsal, CorresponsalService } from '../../core/services/corresponsal.service';
 import { User, UserService } from '../../core/services/user.service';
+import { AsignarCombinadoComponent } from '../../Modals/asignar-combinado/asignar-combinado.component';
 
 @Component({
   selector: 'app-referencias',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AsignarCombinadoComponent],
   templateUrl: './gestionar-referencias.component.html',
   styleUrl: './gestionar-referencias.component.css'
 })
@@ -30,7 +31,6 @@ export class ReferenciasComponent implements OnInit {
   selectedReferencia: Referencia | null = null;
 
   createForm: FormGroup;
-  assignCombinedForm: FormGroup;
 
   constructor(
     private referenciasService: ReferenciasService,
@@ -42,10 +42,6 @@ export class ReferenciasComponent implements OnInit {
     this.createForm = this.fb.group({
       referencia: ['', Validators.required]
     });
-    this.assignCombinedForm = this.fb.group({
-      usuario_id: [''],
-      corresponsal_id: ['']
-    }, { validators: exactlyOneSelected });
   }
 
   ngOnInit(): void {
@@ -197,7 +193,6 @@ export class ReferenciasComponent implements OnInit {
 
   openAssignCombinedModal(referencia: Referencia): void {
     this.selectedReferencia = referencia;
-    this.assignCombinedForm.reset();
     this.isAssignCombinedModalOpen = true;
   }
 
@@ -206,51 +201,9 @@ export class ReferenciasComponent implements OnInit {
     this.selectedReferencia = null;
   }
 
-  onUsuarioChange(): void {
-    if (this.assignCombinedForm.get('usuario_id')?.value) {
-      this.assignCombinedForm.get('corresponsal_id')?.setValue('');
-    }
-  }
-
-  onCorresponsalChange(): void {
-    if (this.assignCombinedForm.get('corresponsal_id')?.value) {
-      this.assignCombinedForm.get('usuario_id')?.setValue('');
-    }
-  }
-
-  onAssignCombinedSubmit(): void {
-    if (this.assignCombinedForm.valid && this.selectedReferencia) {
-      const formValue = this.assignCombinedForm.value;
-      const referencia = this.selectedReferencia.referencia;
-
-      // Assign user if selected
-      if (formValue.usuario_id) {
-        this.referenciasService.assignReferencia(referencia, +formValue.usuario_id).subscribe({
-          next: () => {
-            this.closeAssignCombinedModal();
-            alert('Usuario asignado exitosamente.');
-          },
-          error: (err) => {
-            console.error('Error assigning user', err);
-            alert('Error al asignar usuario: ' + (err.error?.message || 'Error desconocido'));
-          }
-        });
-      }
-
-      // Assign corresponsal if selected
-      if (formValue.corresponsal_id) {
-        this.referenciasService.assignCorresponsal(+formValue.corresponsal_id, referencia).subscribe({
-          next: () => {
-            this.closeAssignCombinedModal();
-            alert('Corresponsal asignado exitosamente.');
-          },
-          error: (err) => {
-            console.error('Error assigning corresponsal', err);
-            alert('Error al asignar corresponsal: ' + (err.error?.message || 'Error desconocido'));
-          }
-        });
-      }
-    }
+  onAssignmentDone(): void {
+    // Reload references or update as needed
+    this.loadReferencias();
   }
 
   volver(): void {

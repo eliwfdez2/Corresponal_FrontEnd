@@ -110,45 +110,12 @@
 </div>
 
 
-<!-- Assign Combined Modal -->
-<div class="modal fade" [class.show]="isAssignCombinedModalOpen" [style.display]="isAssignCombinedModalOpen ? 'block' : 'none'" *ngIf="isAssignCombinedModalOpen">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Asignar Usuario y Corresponsal a Referencia</h5>
-        <button type="button" class="btn-close" (click)="closeAssignCombinedModal()"></button>
-      </div>
-      <div class="modal-body">
-        <p>Asignando a referencia: <strong>{{ selectedReferencia?.referencia }}</strong></p>
-        <form [formGroup]="assignCombinedForm" (ngSubmit)="onAssignCombinedSubmit()">
-          <div *ngIf="assignCombinedForm.errors?.['exactlyOneRequired'] && assignCombinedForm.touched" class="alert alert-danger">
-            Debe seleccionar exactamente un usuario o un corresponsal.
-          </div>
-          <div class="mb-3">
-            <label for="combined-usuario" class="form-label">Usuario</label>
-            <select class="form-control" id="combined-usuario" formControlName="usuario_id" (change)="onUsuarioChange()">
-              <option value="">Seleccione un usuario</option>
-              <option *ngFor="let user of users" [value]="user.id">{{ user.nombre_completo }}</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="combined-corresponsal" class="form-label">Corresponsal</label>
-            <select class="form-control" id="combined-corresponsal" formControlName="corresponsal_id" (change)="onCorresponsalChange()">
-              <option value="">Seleccione un corresponsal</option>
-              <option *ngFor="let corresponsal of corresponsales" [value]="corresponsal.nombre">
-                {{ corresponsal.numero }}
-              </option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeAssignCombinedModal()">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="onAssignCombinedSubmit()" [disabled]="assignCombinedForm.invalid">Asignar</button>
-      </div>
-    </div>
-  </div>
-</div>
+<app-asignar-combinado
+  [isOpen]="isAssignCombinedModalOpen"
+  [selectedReferencia]="selectedReferencia"
+  (modalClosed)="closeAssignCombinedModal()"
+  (assignmentDone)="onAssignmentDone()">
+</app-asignar-combinado>
 
 <!-- Unassign Modal -->
 <div class="modal fade" [class.show]="isUnassignModalOpen" [style.display]="isUnassignModalOpen ? 'block' : 'none'" *ngIf="isUnassignModalOpen">
@@ -191,4 +158,4 @@
 
 
 <!-- Modal Backdrop -->
-<div class="modal-backdrop fade show" *ngIf="isCreateModalOpen || isUnassignModalOpen || isAssignCombinedModalOpen"></div>
+<div class="modal-backdrop fade show" *ngIf="isCreateModalOpen || isUnassignModalOpen"></div>
