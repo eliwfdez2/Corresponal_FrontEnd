@@ -42,11 +42,12 @@ export class ConceptosComponent implements OnInit {
   loadConceptos(): void {
     this.conceptosService.getConceptos().subscribe({
       next: (data) => {
-        this.conceptos = data;
+        this.conceptos = data || [];
         this.ultimaActualizacion = new Date().toLocaleString();
       },
       error: (err) => {
         console.error('Error loading conceptos', err);
+        this.conceptos = [];
       }
     });
   }

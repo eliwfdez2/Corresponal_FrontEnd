@@ -47,11 +47,23 @@ export class DashboardComponent implements OnInit {
 
   loadDashboardStats(): void {
     if (this.isAdmin()) {
-      this.referenciasService.getReferencias().subscribe(references => {
-        this.dashboardStats.totalReferences = references.length;
+      this.referenciasService.getReferencias().subscribe({
+        next: (references) => {
+          this.dashboardStats.totalReferences = references?.length || 0;
+        },
+        error: (err) => {
+          console.error('Error loading references', err);
+          this.dashboardStats.totalReferences = 0;
+        }
       });
-      this.corresponsalService.getCorresponsales().subscribe(corresponsales => {
-        this.dashboardStats.totalProviders = corresponsales.length;
+      this.corresponsalService.getCorresponsales().subscribe({
+        next: (corresponsales) => {
+          this.dashboardStats.totalProviders = corresponsales?.length || 0;
+        },
+        error: (err) => {
+          console.error('Error loading corresponsales', err);
+          this.dashboardStats.totalProviders = 0;
+        }
       });
     }
   }

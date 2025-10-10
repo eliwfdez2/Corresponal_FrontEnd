@@ -43,11 +43,12 @@ export class ExtensionesArchivosComponent implements OnInit {
   loadExtensiones(): void {
     this.extensionesService.getExtensionesArchivos().subscribe({
       next: (data) => {
-        this.extensiones = data;
+        this.extensiones = data || [];
         this.ultimaActualizacion = new Date().toLocaleString();
       },
       error: (err) => {
         console.error('Error loading extensiones', err);
+        this.extensiones = [];
       }
     });
   }

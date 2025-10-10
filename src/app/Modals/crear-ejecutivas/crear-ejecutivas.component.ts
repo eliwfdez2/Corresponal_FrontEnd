@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CorresponsalService } from '../../core/services/corresponsal.service';
+import { RolesService } from '../../core/services/roles.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -21,7 +22,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     ])
   ]
 })
-export class CrearEjecutivasComponent {
+export class CrearEjecutivasComponent implements OnInit {
   @Input() isOpen: boolean = false;
   @Output() modalClosed = new EventEmitter<void>();
   @Output() corresponsalCreated = new EventEmitter<any>();
@@ -31,12 +32,33 @@ export class CrearEjecutivasComponent {
     nombre_usuario: '',
     password: '',
     correo_electronico: '',
-    rol_nombre: 'Ejecutiva Cuenta'
+    rol_nombre: ''
   };
 
   successMessage: string = '';
+  rolNombre: string = '';
 
-  constructor(private corresponsalService: CorresponsalService) {}
+  constructor(private corresponsalService: CorresponsalService, private rolesService: RolesService) {}
+
+  ngOnInit(): void {
+    this.loadRolNombre();
+  }
+
+  private loadRolNombre(): void {
+    this.rolesService.getRoles().subscribe({
+      next: (roles) => {
+        const ejecutivaRole = roles.find(role => role.nombre === 'Ejecutiva de Cuenta');
+        if (ejecutivaRole) {
+          this.rolNombre = ejecutivaRole.nombre;
+        } else {
+          console.error('Rol "Ejecutiva de Cuenta" no encontrado');
+        }
+      },
+      error: (err) => {
+        console.error('Error loading roles', err);
+      }
+    });
+  }
 
   closeModal() {
     this.isOpen = false;
@@ -57,7 +79,7 @@ export class CrearEjecutivasComponent {
         nombre_usuario: this.EjecutivaData.nombre_usuario,
         password: this.EjecutivaData.password,
         correo_electronico: this.EjecutivaData.correo_electronico,
-        rol_nombre: 'Ejecutiva Cuenta'
+        rol_nombre: this.rolNombre
       };
 
       this.corresponsalService.crearUsuarios(payload).subscribe({
@@ -89,7 +111,7 @@ export class CrearEjecutivasComponent {
       nombre_usuario: '',
       password: '',
       correo_electronico: '',
-      rol_nombre: 'Ejecutiva Cuenta'
+      rol_nombre: this.rolNombre
     };
   }
 }

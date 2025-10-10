@@ -36,8 +36,20 @@ export class AjustesComponent implements OnInit {
    * Carga las métricas desde los servicios
    */
   private cargarMetricas(): void {
-    this.conceptosService.getConceptos().subscribe(data => this.metricas.totalConceptos = data.length);
-    this.referenciasService.getReferencias().subscribe(data => this.metricas.totalReferencias = data.length);
+    this.conceptosService.getConceptos().subscribe({
+      next: (data) => this.metricas.totalConceptos = data?.length || 0,
+      error: (err) => {
+        console.error('Error loading conceptos', err);
+        this.metricas.totalConceptos = 0;
+      }
+    });
+    this.referenciasService.getReferencias().subscribe({
+      next: (data) => this.metricas.totalReferencias = data?.length || 0,
+      error: (err) => {
+        console.error('Error loading referencias', err);
+        this.metricas.totalReferencias = 0;
+      }
+    });
     // this.documentosService.getDocumentos().subscribe(data => this.metricas.totalDocumentos = data.length);
 
     console.log('Cargando métricas del sistema...');
