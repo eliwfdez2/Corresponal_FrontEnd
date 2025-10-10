@@ -49,6 +49,20 @@
   text-align: center;
 }
 
+.codigo-input {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.codigo-input input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
 .drop-area {
   border: 2px dashed #ccc;
   border-radius: 8px;
@@ -166,8 +180,13 @@
   transition: background-color 0.3s ease;
 }
 
-.upload-btn:hover {
+.upload-btn:hover:not(:disabled) {
   background-color: #0056b3;
+}
+
+.upload-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .cancel-btn {

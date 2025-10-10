@@ -64,7 +64,7 @@
   </div>
 
   <!-- Modal para subir archivos -->
-  <app-subir-archivos *ngIf="showModal" (close)="closeModal()" (upload)="onUpload($event)"></app-subir-archivos>
+  <app-subir-archivos *ngIf="showModal" [referenciaId]="referenciaId" (close)="closeModal()"></app-subir-archivos>
 
   <!-- Modal para ver documento -->
   <app-ver-documento

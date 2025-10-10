@@ -135,6 +135,17 @@ export class VerReferenciaComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+    // Refresh documents after upload
+    this.referenciasService.getDocumentos(this.referenciaId).subscribe(docs => {
+      this.documentos = (docs || []).map((doc: any, index: number) => ({
+        id: index, // Use index as unique id since API returns id: 0 for all
+        nombre: doc.nombre_documento,
+        estado: 'pendiente' as 'valido' | 'no-valido' | 'pendiente',
+        cliente: this.userMap[doc.usuario_id] || 'Desconocido',
+        fecha: doc.subido_en
+      }));
+      this.documentosFiltrados = [...this.documentos];
+    });
   }
 
   onUpload(files: {file: File, selectedConcept: string, selectedExtension: string}[]) {

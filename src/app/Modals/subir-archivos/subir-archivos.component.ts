@@ -1,8 +1,11 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConceptosService } from '../../core/services/conceptos.service';
 import { ExtensionesArchivosService } from '../../core/services/extensiones-archivos.service';
+import { AuthService } from '../../core/services/auth.service';
+import { urlApiViviendo } from '../../core/api-url';
 
 @Component({
   selector: 'app-subir-archivos',
@@ -11,8 +14,8 @@ import { ExtensionesArchivosService } from '../../core/services/extensiones-arch
   styleUrl: './subir-archivos.component.css'
 })
 export class SubirArchivosComponent implements OnInit {
+  @Input() referenciaId: string = '';
   @Output() close = new EventEmitter<void>();
-  @Output() upload = new EventEmitter<{file: File, selectedConcept: string, selectedExtension: string}[]>();
 
   uploadedFiles: {file: File, selectedConcept: string, selectedExtension: string}[] = [];
   showConfirmation: boolean = false;
@@ -22,8 +25,10 @@ export class SubirArchivosComponent implements OnInit {
   uploading: boolean = false;
 
   constructor(
+    private http: HttpClient,
     private conceptosService: ConceptosService,
-    private extensionesService: ExtensionesArchivosService
+    private extensionesService: ExtensionesArchivosService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -83,7 +88,32 @@ export class SubirArchivosComponent implements OnInit {
     return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
+  validateFiles(): string[] {
+    const errors: string[] = [];
+    this.uploadedFiles.forEach(fileObj => {
+      if (!fileObj.selectedConcept) {
+        errors.push(`Selecciona un tipo de documento para "${fileObj.file.name}"`);
+      }
+      if (!fileObj.selectedExtension) {
+        errors.push(`Selecciona una extensión para "${fileObj.file.name}"`);
+      }
+      if (fileObj.file.size > 25 * 1024 * 1024) {
+        errors.push(`Archivo demasiado grande: "${fileObj.file.name}" (máximo 25MB)`);
+      }
+    });
+    return errors;
+  }
+
+  isValidToUpload(): boolean {
+    return this.uploadedFiles.length > 0 && this.validateFiles().length === 0;
+  }
+
   uploadFiles() {
+    const errors = this.validateFiles();
+    if (errors.length > 0) {
+      alert('Errores de validación:\n' + errors.join('\n'));
+      return;
+    }
     this.showConfirmation = true;
     this.confirmationStep = 1;
   }
@@ -93,8 +123,28 @@ export class SubirArchivosComponent implements OnInit {
       this.confirmationStep = 2;
     } else if (this.confirmationStep === 2 && !this.uploading) {
       this.uploading = true;
-      this.upload.emit(this.uploadedFiles);
-      this.close.emit();
+      const token = this.authService.getToken();
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      const formData = new FormData();
+      formData.append('codigo', this.referenciaId);
+      this.uploadedFiles.forEach(fileObj => {
+        const newFile = new File([fileObj.file], fileObj.selectedConcept + '.' + fileObj.selectedExtension, { type: fileObj.file.type });
+        formData.append('files', newFile);
+      });
+      this.http.post(`${urlApiViviendo}/documentos`, formData, { headers }).subscribe({
+        next: (response: any) => {
+          console.log('Documentos subidos:', response);
+          alert('Documentos subidos exitosamente');
+          this.close.emit();
+        },
+        error: (error) => {
+          console.error('Error al subir documentos:', error);
+          alert('Error al subir documentos: ' + (error.error?.error || 'Error desconocido'));
+          this.uploading = false;
+        }
+      });
     }
   }
 

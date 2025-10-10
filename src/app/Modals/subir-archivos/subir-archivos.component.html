@@ -11,7 +11,7 @@
           <p>Arrastra y suelta archivos aquí</p>
           <p>o</p>
           <button class="select-btn" (click)="selectFiles(fileInput)">Seleccionar archivos</button>
-          <input type="file" #fileInput multiple style="display: none;" (change)="onFileSelected($event)">
+          <input type="file" #fileInput multiple accept=".pdf,.jpg,.png" style="display: none;" (change)="onFileSelected($event)">
         </div>
       </div>
       <div *ngIf="uploadedFiles.length > 0" class="uploaded-files-list">
@@ -24,7 +24,7 @@
               <option *ngFor="let concepto of conceptos" [value]="concepto">{{ concepto }}</option>
             </select>
             <select class="file-select" [(ngModel)]="fileObj.selectedExtension">
-              <option value="" disabled>Extension</option>
+              <option value="" disabled>Extensión</option>
               <option *ngFor="let extension of extensiones" [value]="extension">{{ extension }}</option>
             </select>
             <button class="delete-btn" (click)="removeFile(i)">🗑️</button>
@@ -33,7 +33,7 @@
       </div>
       <div class="modal-footer">
         <button class="cancel-btn" (click)="closeModal()">Cancelar</button>
-        <button class="upload-btn" (click)="uploadFiles()" *ngIf="uploadedFiles.length > 0">Subir {{ uploadedFiles.length }} Archivos</button>
+        <button class="upload-btn" (click)="uploadFiles()" *ngIf="uploadedFiles.length > 0" [disabled]="!isValidToUpload()">Subir {{ uploadedFiles.length }} Archivos</button>
       </div>
     </div>
   </div>
