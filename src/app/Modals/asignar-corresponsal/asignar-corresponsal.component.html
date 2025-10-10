@@ -1,0 +1,45 @@
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" *ngIf="isOpen" (click)="closeModal()"></div>
+
+<!-- Modal Dialog -->
+<div class="modal-dialog" *ngIf="isOpen" [@slideIn]>
+  <div class="modal-content">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h5 class="modal-title">Asignar Corresponsal</h5>
+      <button type="button" class="btn-close" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="userSelect" class="form-label">Seleccionar Usuario (Corresponsal)</label>
+          <select class="form-control" id="userSelect" [(ngModel)]="selectedUser" name="user">
+          <option [ngValue]="null">Seleccione un usuario</option>
+          <option *ngFor="let u of getCorresponsalUsers()" [ngValue]="u.id">
+            {{ u.nombre_completo }}
+          </option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="corresponsalSelect" class="form-label">Seleccionar Corresponsal</label>
+          <select class="form-control" id="corresponsalSelect" [(ngModel)]="selectedCorresponsal" name="corresponsal">
+          <option [ngValue]="null">Seleccione un corresponsal</option>
+          <option *ngFor="let c of corresponsales" [ngValue]="c.id">
+            {{ c.id }}: {{ c.numero }} - {{ c.nombre }}
+          </option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="assignCorresponsal()">Asignar</button>
+    </div>
+  </div>
+</div>

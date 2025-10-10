@@ -62,6 +62,17 @@
         </div>
       </div>
     </div>
+    <!-- Asignar Corresponsal -->
+    <div class="col-lg-4">
+      <div class="card action-card h-100">
+        <div class="card-body d-flex flex-column">
+          <h4 class="card-title">Asignar Corresponsal</h4>
+          <button class="btn btn-action w-100" (click)="openAssignCorresponsalModal()">
+            Asignar <i class="fas fa-link ms-2"></i>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Tabla de Todos los Usuarios -->
@@ -115,4 +126,11 @@
     (modalClosed)="closeCreateEjecutivasModal()"
     (corresponsalCreated)="onEjecutivasCreated()">
   </app-crear-ejecutivas>
+
+  <!-- Assign Corresponsal Modal -->
+  <app-asignar-corresponsal
+    [isOpen]="showAssignCorresponsalModal"
+    (modalClosed)="closeAssignCorresponsalModal()"
+    (corresponsalAssigned)="onCorresponsalAssigned($event)">
+  </app-asignar-corresponsal>
 </div>

@@ -1,15 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { UserService, User } from '../../core/services/user.service';
+import { CorresponsalService } from '../../core/services/corresponsal.service';
 import { CrearUsuarioComponent } from '../../Modals/crear-usuario/crear-usuario.component';
 import { CrearCorresponsalComponent } from '../../Modals/crear-corresponsal/crear-corresponsal.component';
 import { CrearEjecutivasComponent } from '../../Modals/crear-ejecutivas/crear-ejecutivas.component';
+import { AsignarCorresponsalComponent } from '../../Modals/asignar-corresponsal/asignar-corresponsal.component';
 
 @Component({
   selector: 'app-monitorear-usuarios',
   standalone: true,
-  imports: [CommonModule, CrearUsuarioComponent, CrearCorresponsalComponent, CrearEjecutivasComponent],
+  imports: [CommonModule, FormsModule, CrearUsuarioComponent, CrearCorresponsalComponent, CrearEjecutivasComponent, AsignarCorresponsalComponent],
   templateUrl: './monitorear-usuarios.component.html',
   styleUrls: ['./monitorear-usuarios.component.css']
 })
@@ -19,6 +22,7 @@ export class MonitorearUsuariosComponent implements OnInit {
   showCreateUserModal: boolean = false;
   showCreateCorresponsalModal: boolean = false;
   showCreateEjecutivasModal: boolean = false;
+  showAssignCorresponsalModal: boolean = false;
 
   constructor(private router: Router, private userService: UserService) { }
 
@@ -38,6 +42,7 @@ export class MonitorearUsuariosComponent implements OnInit {
       }
     });
   }
+
 
   refrescarDatos() {
     this.cargarDatos();
@@ -89,5 +94,19 @@ export class MonitorearUsuariosComponent implements OnInit {
 
   volver() {
     this.router.navigate(['/administrar-usuarios']);
+  }
+
+  openAssignCorresponsalModal() {
+    this.showAssignCorresponsalModal = true;
+  }
+
+  closeAssignCorresponsalModal() {
+    this.showAssignCorresponsalModal = false;
+  }
+
+  onCorresponsalAssigned(data: any) {
+    console.log('Corresponsal assigned:', data);
+    this.closeAssignCorresponsalModal();
+    this.refrescarDatos();
   }
 }
